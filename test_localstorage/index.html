@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="./task.js"></script>
+
+<style>
+    li {
+        margin: 15px;
+    }
+    ul > li {
+        margin: 0;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div id='taskListDiv'></div>
+
+<div>
+    <button id="clearTasks">Clear Tasks</button>
+    <button id="reseedTasks">ReSeed Tasks</button>
+</div>
+
+<form action="javascript:;" id='taskForm'>
+    <h2>New Task</h2>
+    <div><input type="text" id="nameInput" placeholder="Name" /></div>
+    <div><input type="text" id="attachmentInput" placeholder="Attachment" /></div>
+    <div><input type="text" id="deadlineInput" placeholder="Deadline" /></div>
+    <div><input type="text" id="assigneeInput" placeholder="Assignee" /></div>
+    <div><input type="text" id="tagsInput" placeholder="Tags" /></div>
+    <div><button type="submit" id="taskSubmit">Submit</button></div>
+</form>
+
+<script>
+/* TaskList */
+var taskListDiv = document.getElementById('taskListDiv');
+var taskList = document.createElement('ol');
+var tasks = deserializeTasks(localStorage['tasks']);
+
+taskListDiv.appendChild(taskList);
+
+function refreshTaskList() {
+    taskList.innerHTML = '';
+    tasks.forEach(function(task, index) {
+        var tli = document.createElement('li');
+        tli.innerHTML +=
+            '<ul>' +
+            '<li>Name: ' + task.name + '</li>' +
+            '<li>Attachment: ' + task.attachment + '</li>' + 
+            '<li>Deadline: ' + task.deadline + '</li>' +
+            '<li>Assignee: ' + task.assignee + '</li>' +
+            '<li>Tags: ' + task.getTags() + '</li>' +
+            '<li><button onclick="deleteTask(' + index + ')">Delete</button></li>' +
+            '</ul>';
+       taskList.appendChild(tli);
+    });
+}
+
+function deleteTask(id) {
+    tasks.splice(id, 1);
+    localStorage['tasks'] = serializeTasks(tasks);
+
+    refreshTaskList();
+}
+
+refreshTaskList();
+
+/* New Task Form */
+var taskInput = {
+    name: document.getElementById('nameInput'),
+    attachment: document.getElementById('attachmentInput'),
+    deadline: document.getElementById('deadlineInput'),
+    assignee: document.getElementById('assigneeInput'),
+    tags: document.getElementById('tagsInput')
+}
+
+var taskSubmit = document.getElementById('taskSubmit');
+var clearTasks = document.getElementById('clearTasks');
+var reseedTasks = document.getElementById('reseedTasks');
+
+taskSubmit.onclick = function(e) {
+    for (var key in taskInput) {
+        if (taskInput[key].value == '') {
+            var msg = 'All inputs must be filled!'; 
+            console.log(msg);
+            alert(msg);
+            return;
+        }
+    }
+
+    var t = new Task();
+    t.setTags(taskInput['tags'].value);
+
+    for (var key in taskInput) {
+        if (key !== 'tags') {
+            t[key] = taskInput[key].value;
+        }
+        taskInput[key].value = '';
+    }
+
+    tasks.push(t);
+    localStorage['tasks'] = serializeTasks(tasks);
+
+    refreshTaskList();
+}
+
+clearTasks.onclick = function(e) {
+    tasks = [];
+    localStorage.removeItem('tasks');
+
+    refreshTaskList();
+}
+
+reseedTasks.onclick = function(e) {
+    seedTasks();
+    window.open('index.html', '_self');
+}
+</script>
+
+</body>
+</html>
