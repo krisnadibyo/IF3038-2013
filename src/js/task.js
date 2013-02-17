@@ -1,8 +1,14 @@
-if (typeof(localStorage) === 'undefined') {
-    console.log('localStorage is not supported!');
-    localStorage = {};
-}
+/** Task **/
 
+/**
+ * The task class and constructor.
+ * 
+ * @param {String} name
+ * @param {String} attachment
+ * @param {String} deadline (in date format %Y:%m:%d)
+ * @param {String} assignee
+ * @param {Array} tags (array of tags, can be set using `setTags`)
+ */
 function Task(name, attachment, deadline, assignee, tags) {
     this.name = name;
     this.attachment = attachment;
@@ -11,6 +17,11 @@ function Task(name, attachment, deadline, assignee, tags) {
     this.tags = tags;
 }
 
+/**
+ * Set tags from tags string. Tags will be stored in array (set).
+ * 
+ * @param {String} tagsString
+ */
 Task.prototype.setTags = function(tagsString) {
     if (tagsString === undefined || tagsString === '') {
         return;
@@ -28,6 +39,9 @@ Task.prototype.setTags = function(tagsString) {
     this.tags = tArr;
 }
 
+/**
+ * Get formatted tags string from tags array.
+ */
 Task.prototype.getTags = function() {
     var t = '';
     var len = this.tags.length
@@ -41,6 +55,11 @@ Task.prototype.getTags = function() {
     return t;
 }
 
+/**
+ * Serialize an array of task objects into JSON string format.
+ * 
+ * @param {Array} tasks
+ */
 function serializeTasks(tasks) {
     var serialized = '';
     tasks.forEach(function(task, index) {
@@ -53,6 +72,12 @@ function serializeTasks(tasks) {
     return serialized;
 }
 
+/**
+ * Deserialize a serialized array of JSON-string formatted tasks into array of
+ * task objects.
+ * 
+ * @param {String} serializedTasks
+ */
 function deserializeTasks(serializedTasks) {
     if (serializedTasks === undefined || serializedTasks === '') {
         return Array();
@@ -74,35 +99,3 @@ function deserializeTasks(serializedTasks) {
 
     return tasks;
 }
-
-function seedTasks() {
-    console.log('*** Seeding...');
-    var t1 = new Task(
-        'End the War',
-        'peace.mkv',
-        '20-11-2020',
-        'John',
-        ['war', 'politics']
-    );
-
-    var t2 = new Task(
-        'Eat',
-        'food.jpg',
-        '01-01-2016',
-        'Terrence',
-        ['everyday needs']
-    );
-
-    console.log('*** Tasks (Before serialization):');
-    console.log([t1, t2])
-
-    console.log('\n*** Serializing...');
-    localStorage['tasks'] = serializeTasks([t1, t2]);
-
-    console.log('\n*** After serialization:');
-    console.log(localStorage['tasks']);
-
-    console.log('\n*** After deserialization:');
-    console.log(deserializeTasks(localStorage['tasks']));
-}
-
