@@ -1,7 +1,8 @@
 /** Task **/
+/* requires: madtodo.js */
 (function($) {
     /**
-     * The task class and constructor.
+     * Task object constructor.
      * 
      * @param {String} name
      * @param {String} attachment
@@ -56,6 +57,15 @@
     }
 
     /**
+     * TaskHelper
+     */
+    $.TaskHelper = {
+        rules: {
+            
+        }  
+    };
+
+    /**
      * Tasks - Handle array of tasks
      */
     $.Tasks = {
@@ -89,10 +99,23 @@
                     dsz[i].deadline,
                     dsz[i].assignee,
                     dsz[i].tags)
-                ); 
+                );
             }
 
             return tasks;
+        },
+
+        /* Local Storage functions */
+        load: function() {
+            return Tasks.deserialize($ls['tasks']);
+        },
+
+        save: function(tasks) {
+            $ls['tasks'] = Tasks.serialize(tasks);
+        },
+
+        clear: function() {
+            $ls.removeItem('tasks');
         }
     };
 })(window);

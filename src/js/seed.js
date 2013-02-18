@@ -1,14 +1,6 @@
 /** Local Storage seeder **/
+/* requires: madtodo.js, task.js, user.js */
 (function($) {
-    $.supportLocalStorage = true;
-
-    if (typeof(localStorage) === 'undefined') {
-        $.supportLocalStorage = false;
-
-        console.log('*** WARNING! localStorage is not supported on your browser! ***');
-        localStorage = {};
-    }
-
     $.seedTasks = function() {
         console.log('*** Task Seeding... ***');
 
@@ -17,21 +9,21 @@
                 'End the War',
                 '',
                 '2020-11-01',
-                'Joe',
+                'fitzhugh',
                 ['war', 'politics']
             ),
             new Task(
                 'Eat',
                 'food.jpg',
                 '2017-07-07',
-                'Terrence',
+                'fitzhugh',
                 ['everyday needs', 'food']
             ),
             new Task(
                 'Drink Coca Cola',
                 'cocacola.png',
                 '2018-08-08',
-                'Nancy',
+                'msweaver',
                 ['fun', 'refreshing']
             ),
             new Task(
@@ -41,22 +33,41 @@
                 '',
                 ['fun', 'food']
             )
-            /*, ... */
         ];
 
-        console.log('*** Tasks (Before serialization): ***');
-        console.log(tasks)
-
-        console.log('*** Serializing... ***');
-        localStorage['tasks'] = Tasks.serialize(tasks);
-
-        console.log('*** After serialization: ***');
-        console.log(localStorage['tasks']);
-        console.log('*** After deserialization: ***');
-        console.log(Tasks.deserialize(localStorage['tasks']));
+        Tasks.save(tasks);
     }
 
     $.seedUsers = function() {
+        console.log('*** User Seeding... ***');
 
+        var users = [
+            new User(
+                'Terrence Fitzhugh',
+                'fitzhugh',
+                'chickenrice',
+                'fitzhugh@gmail.com',
+                UserHelper.parseBirthday('1950-12-04'),
+                'fitzhugh.png'  
+            ),
+            new User(
+                'Stephanie Weaver',
+                'msweaver',
+                'manhattan',
+                'sweaver@yahoo.co.uk',
+                UserHelper.parseBirthday('1986-06-28'),
+                'msweaver.png'
+            ),
+            new User(
+                'James Grainger',
+                'jgrainger',
+                'tuvalu',
+                'jgrainger@mail.ru',
+                UserHelper.parseBirthday('1964-09-11'),
+                'jgrainger.png'
+            )
+        ];
+
+        Users.save(users);
     }
 })(window);

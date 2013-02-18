@@ -1,7 +1,8 @@
 /** User **/
+/* requires: madtodo.js */
 (function($) {
     /**
-     * User class constructor
+     * User object constructor
      * 
      * @param {String} name
      * @param {String} username
@@ -71,7 +72,7 @@
          * @param {String} serializedUsers
          */
         deserialize: function(serializedUsers) {
-            if (serializedTasks === undefined || serializedTasks === '') {
+            if (serializedUsers === undefined || serializedUsers === '') {
                 return Array();
             }
 
@@ -79,17 +80,30 @@
             var users = [];
 
             for (var i = 0; i < dsz.length; i++) {
-                users.push(
+                users.push(new User(
                     dsz[i].name,
                     dsz[i].username,
                     dsz[i].password,
                     dsz[i].email,
                     dsz[i].birthday,
-                    dsz[i].avatar
+                    dsz[i].avatar)
                 );
             };
 
             return users;
+        },
+
+        /* Local Storage functions */
+        load: function() {
+            return Users.deserialize($ls['users']);
+        },
+
+        save: function(users) {
+            $ls['users'] = Users.serialize(users);
+        },
+
+        clear: function() {
+            $ls.removeItem('users');
         }
     }
 })(window);
