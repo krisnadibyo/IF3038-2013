@@ -6,32 +6,40 @@
 
         var tasks = [
             new Task(
+                'msweaver',
                 'End the War',
                 '',
                 '2020-11-01',
                 'fitzhugh',
-                ['war', 'politics']
+                ['war', 'politics'],
+                ''
             ),
             new Task(
+                'jgrainger',
                 'Eat',
                 'food.jpg',
                 '2017-07-07',
                 'fitzhugh',
-                ['everyday needs', 'food']
+                ['everyday needs', 'food'],
+                ''
             ),
             new Task(
+                'fitzhugh',
                 'Drink Coca Cola',
                 'cocacola.png',
                 '2018-08-08',
                 'msweaver',
-                ['fun', 'refreshing']
+                ['fun', 'refreshing'],
+                'done'
             ),
             new Task(
+                'fitzhugh',
                 'Cook Fish',
                 '',
                 '2014-04-04',
                 '',
-                ['fun', 'food']
+                ['fun', 'food'],
+                ''
             )
         ];
 

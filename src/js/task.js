@@ -6,16 +6,18 @@
      * 
      * @param {String} name
      * @param {String} attachment
-     * @param {String} deadline (in date format %Y:%m:%d)
+     * @param {String} deadline (in date format %Y-%m-%d)
      * @param {String} assignee
      * @param {Array} tags (array of tags, can be set using `setTags`)
      */
-    $.Task = function(name, attachment, deadline, assignee, tags) {
-        this.name = name;
+    $.Task = function(owner, name, attachment, deadline, assignee, tags, status) {
+        this.owner = owner; // username
+        this.name = name; // max 25 chars, [A-Za-z0-9 ]
         this.attachment = attachment;
-        this.deadline = deadline;
-        this.assignee = assignee;
-        this.tags = tags;
+        this.deadline = deadline; // Date %Y-%m-%d
+        this.assignee = assignee; // username, whatever
+        this.tags = tags; // array
+        this.status = status; // done or not done yet
     }
 
     /**
@@ -57,12 +59,14 @@
     }
 
     /**
-     * TaskHelper
+     * TaskHelper, deadline, assignee, tags) {
+        this.name = name;
      */
     $.TaskHelper = {
         rules: {
-            
-        }  
+            name: /[A-Za-z0-9 ]+$/,
+            date: /(\d{4})-(\d{2})-(\d{2})/
+        }
     };
 
     /**
@@ -93,16 +97,43 @@
             var tasks = [];
 
             for (var i = 0; i < dsz.length; i++) {
-               tasks.push(new Task(
+                tasks.push(new Task(
+                    dsz[i].owner,    
                     dsz[i].name,
                     dsz[i].attachment,
                     dsz[i].deadline,
                     dsz[i].assignee,
-                    dsz[i].tags)
+                    dsz[i].tags,
+                    dsz[i].status)
                 );
             }
 
             return tasks;
+        },
+
+        /* Search/Filter functions */
+        getOwnerTasks: function(tasks, owner) {
+            var ownerTasks = [];
+
+            for (var i = 0; i < tasks.length; i++) {
+                if (tasks[i].owner == owner) {
+                    ownerTasks.push(tasks[i]);
+                }
+            }
+
+            return ownerTasks;
+        },
+
+        getDoneTasks: function(tasks) {
+            var doneTasks = [];
+
+            for (var i = 0; i < tasks.length; i++) {
+                if (tasks[i].status == 'done') {
+                    doneTasks.push(tasks[i]);
+                }
+            }
+
+            return doneTasks;
         },
 
         /* Local Storage functions */

@@ -32,6 +32,7 @@
 <form action="javascript:;" id='taskForm'>
     <h2>New Task</h2>
     
+    <div><input type="text" id="ownerInput" placeholder="Owner" /></div>
     <div><input type="text" id="nameInput" placeholder="Name" /></div>
     <div><input type="text" id="attachmentInput" placeholder="Attachment" /></div>
     <div><input type="text" id="deadlineInput" placeholder="Deadline" /></div>
@@ -54,12 +55,19 @@
             var tli = document.createElement('li');
             tli.innerHTML +=
                 '<ul>' +
+                    '<li>Owner: ' + task.owner + '</li>' +
                     '<li>Name: ' + task.name + '</li>' +
                     '<li>Attachment: ' + task.attachment + '</li>' + 
                     '<li>Deadline: ' + task.deadline + '</li>' +
                     '<li>Assignee: ' + task.assignee + '</li>' +
                     '<li>Tags: ' + task.getTags() + '</li>' +
-                    '<li><button onclick="deleteTask(' + index + ')">Delete</button></li>' +
+                    '<li>Done: ' + ((task.status == 'done') ? 'Done' : 'Not yet') + '</li>' +
+                    '<li>' +
+                        '<button onclick="deleteTask(' + index + ')">Delete</button>' +
+                        ((task.status != 'done')
+                            ? '<button onclick="doneTask(' + index + ')">Done</button>'
+                            : '<button onclick="undoneTask(' + index + ')">UnDone</button>') +
+                    '</li>' +
                 '</ul>';
            taskList.appendChild(tli);
         });
@@ -71,11 +79,26 @@
     
         refreshTaskList();
     }
+    
+    $.doneTask = function(id) {
+        tasks[id].status = 'done';
+        Tasks.save(tasks);
+
+        refreshTaskList();
+    }
+
+    $.undoneTask = function(id) {
+        tasks[id].status = '';
+        Tasks.save(tasks);
+
+        refreshTaskList();
+    }
 
     refreshTaskList();
     
     /* New Task Form */
     var taskInput = {
+        owner: $id('ownerInput'),
         name: $id('nameInput'),
         attachment: $id('attachmentInput'),
         deadline: $id('deadlineInput'),
@@ -92,17 +115,18 @@
                 return;
             }
         }
-    
+
         var t = new Task();
         t.setTags(taskInput['tags'].value);
-    
+        t.status = '';
+
         for (var key in taskInput) {
             if (key !== 'tags') {
                 t[key] = taskInput[key].value;
             }
             taskInput[key].value = '';
         }
-    
+
         tasks.push(t);
         Tasks.save(tasks);
 
