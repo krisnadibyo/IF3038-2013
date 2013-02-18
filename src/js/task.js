@@ -1,101 +1,98 @@
 /** Task **/
-
-/**
- * The task class and constructor.
- * 
- * @param {String} name
- * @param {String} attachment
- * @param {String} deadline (in date format %Y:%m:%d)
- * @param {String} assignee
- * @param {Array} tags (array of tags, can be set using `setTags`)
- */
-function Task(name, attachment, deadline, assignee, tags) {
-    this.name = name;
-    this.attachment = attachment;
-    this.deadline = deadline;
-    this.assignee = assignee;
-    this.tags = tags;
-}
-
-/**
- * Set tags from tags string. Tags will be stored in array (set).
- * 
- * @param {String} tagsString
- */
-Task.prototype.setTags = function(tagsString) {
-    if (tagsString === undefined || tagsString === '') {
-        return;
+(function($) {
+    /**
+     * The task class and constructor.
+     * 
+     * @param {String} name
+     * @param {String} attachment
+     * @param {String} deadline (in date format %Y:%m:%d)
+     * @param {String} assignee
+     * @param {Array} tags (array of tags, can be set using `setTags`)
+     */
+    $.Task = function(name, attachment, deadline, assignee, tags) {
+        this.name = name;
+        this.attachment = attachment;
+        this.deadline = deadline;
+        this.assignee = assignee;
+        this.tags = tags;
     }
 
-    var tStr = tagsString.replace(/,\s+/g, ',');
-    var tArr = Array();
-
-    tStr.split(',').forEach(function(tag) {
-        if (tArr.indexOf(tag) === -1 && tag !== '') {
-            tArr.push(tag);
+    /**
+     * Set tags from tags string. Tags will be stored in array (set).
+     * 
+     * @param {String} tagsString
+     */
+    $.Task.prototype.setTags = function(tagsString) {
+        if (tagsString === undefined || tagsString === '') {
+            return;
         }
-    });
 
-    this.tags = tArr;
-}
+        var tStr = tagsString.replace(/,\s+/g, ',');
+        var tArr = Array();
 
-/**
- * Get formatted tags string from tags array.
- */
-Task.prototype.getTags = function() {
-    var t = '';
-    var len = this.tags.length
-    this.tags.forEach(function(tag, index) {
-        t += tag;
-        if (index < len - 1) {
-            t += ', ';
-        }
-    });
+        tStr.split(',').forEach(function(tag) {
+            if (tArr.indexOf(tag) === -1 && tag !== '') {
+                tArr.push(tag);
+            }
+        });
 
-    return t;
-}
-
-/**
- * Serialize an array of task objects into JSON string format.
- * 
- * @param {Array} tasks
- */
-function serializeTasks(tasks) {
-    var serialized = '';
-    tasks.forEach(function(task, index) {
-        serialized += JSON.stringify(task);
-        if (index < tasks.length - 1) {
-            serialized += ';';
-        }
-    });
-
-    return serialized;
-}
-
-/**
- * Deserialize a serialized array of JSON-string formatted tasks into array of
- * task objects.
- * 
- * @param {String} serializedTasks
- */
-function deserializeTasks(serializedTasks) {
-    if (serializedTasks === undefined || serializedTasks === '') {
-        return Array();
+        this.tags = tArr;
     }
 
-    var splitted = serializedTasks.split(';');
-    var tasks = Array();
-    splitted.forEach(function(task) {
-        task = JSON.parse(task);
+    /**
+     * Get formatted tags string from tags array.
+     */
+    $.Task.prototype.getTags = function() {
+        var t = '';
+        var len = this.tags.length
+        this.tags.forEach(function(tag, index) {
+            t += tag;
+            if (index < len - 1) {
+                t += ', ';
+            }
+        });
 
-        tasks.push(new Task(
-            task.name,
-            task.attachment,
-            task.deadline,
-            task.assignee,
-            task.tags)
-        );
-    });
+        return t;
+    }
 
-    return tasks;
-}
+    /**
+     * Tasks - Handle array of tasks
+     */
+    $.Tasks = {
+        /**
+         * Serialize an array of task objects into JSON string format.
+         * 
+         * @param {Array} tasks
+         */
+        serialize: function(tasks) {
+            return JSON.stringify(tasks);
+        },
+
+        /**
+         * Deserialize a serialized array of JSON string formatted tasks into array of
+         * task objects.
+         * 
+         * @param {String} serializedTasks
+         */
+        deserialize: function(serializedTasks) {
+            if (serializedTasks === undefined || serializedTasks === '') {
+                return Array();
+            }
+
+            var dsz = JSON.parse(serializedTasks);
+            var tasks = [];
+
+            for (var i = 0; i < dsz.length; i++) {
+               tasks.push(new Task(
+                    dsz[i].name,
+                    dsz[i].attachment,
+                    dsz[i].deadline,
+                    dsz[i].assignee,
+                    dsz[i].tags)
+                ); 
+            }
+
+            return tasks;
+        }
+    };
+})(window);

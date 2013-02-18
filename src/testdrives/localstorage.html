@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
+    <script src="../js/madtodo.js"></script>
     <script src="../js/task.js"></script>
+    <script src="../js/user.js"></script>
     <script src="../js/seed.js"></script>
 <style>
     li {
@@ -39,7 +41,7 @@
 /* TaskList */
 var taskListDiv = document.getElementById('taskListDiv');
 var taskList = document.createElement('ol');
-var tasks = deserializeTasks(localStorage['tasks']);
+var tasks = Tasks.deserialize(localStorage['tasks']);
 
 taskListDiv.appendChild(taskList);
 
@@ -62,7 +64,7 @@ function refreshTaskList() {
 
 function deleteTask(id) {
     tasks.splice(id, 1);
-    localStorage['tasks'] = serializeTasks(tasks);
+    localStorage['tasks'] = Tasks.serialize(tasks);
 
     refreshTaskList();
 }
@@ -71,16 +73,16 @@ refreshTaskList();
 
 /* New Task Form */
 var taskInput = {
-    name: document.getElementById('nameInput'),
-    attachment: document.getElementById('attachmentInput'),
-    deadline: document.getElementById('deadlineInput'),
-    assignee: document.getElementById('assigneeInput'),
-    tags: document.getElementById('tagsInput')
+    name: $id('nameInput'),
+    attachment: $id('attachmentInput'),
+    deadline: $id('deadlineInput'),
+    assignee: $id('assigneeInput'),
+    tags: $id('tagsInput')
 }
 
-var taskSubmit = document.getElementById('taskSubmit');
-var clearTasks = document.getElementById('clearTasks');
-var reseedTasks = document.getElementById('reseedTasks');
+var taskSubmit = $id('taskSubmit');
+var clearTasks = $id('clearTasks');
+var reseedTasks = $id('reseedTasks');
 
 taskSubmit.onclick = function(e) {
     for (var key in taskInput) {
@@ -103,7 +105,7 @@ taskSubmit.onclick = function(e) {
     }
 
     tasks.push(t);
-    localStorage['tasks'] = serializeTasks(tasks);
+    localStorage['tasks'] = Tasks.serialize(tasks);
 
     refreshTaskList();
 }
