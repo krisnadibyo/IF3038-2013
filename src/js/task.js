@@ -68,6 +68,11 @@
             date: /(\d{4})-(\d{2})-(\d{2})/
         },
 
+        errorMessages: {
+            name: "Max. 25 chars, only alphabetic, numeric, and space are allowed",
+            date: "Incorrect date format"
+        },
+
         testRule: function(str, rule) {
             return $.TaskHelper.rules[rule].test(str);
         }

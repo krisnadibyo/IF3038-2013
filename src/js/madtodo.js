@@ -1,6 +1,11 @@
 (function($) {
     $.$id = function(id) {
-        return document.getElementById(id);
+        var e = document.getElementById(id);
+        e.attr = function(attr) {
+            return this.getAttribute(attr);
+        }
+
+        return e;
     };
 
     $.supportLocalStorage = true;

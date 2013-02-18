@@ -27,11 +27,20 @@
         rules: {
             name: /^[A-Za-z]+ [A-Za-z\. ]+$/,
             username: /^[A-Za-z0-9]{5,}$/,
-            password: /.{8,}$/,
+            password: /^.{8,}$/,
             email: /^[A-Za-z][A-Za-z0-9_\.]*@[A-Za-z0-9\-\.]+\.[A-Za-z]{2,}$/,
-            birthday: /(\d{4})-(\d{2})-(\d{2})/
+            birthday: /^(\d{4})-(\d{2})-(\d{2})$/
         },
-        
+
+        errorMessages: {
+            name: 'Name must contain at least first name and last name, no symbols',
+            username: 'Min. 5 chars, only alphabetic and numeric are allowed, no symbols',
+            password: 'Min. 8 chars',
+            email: 'Standard email format',
+            birthday: 'Incorrect date format',
+            equalUPE: 'Username and/or email must be different with password'
+        },
+
         testRule: function(str, rule) {
             return $.UserHelper.rules[rule].test(str);
         },
