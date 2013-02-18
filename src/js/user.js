@@ -31,6 +31,10 @@
             email: /^[A-Za-z][A-Za-z0-9_\.]*@[A-Za-z0-9\-\.]+\.[A-Za-z]{2,}$/,
             birthday: /(\d{4})-(\d{2})-(\d{2})/
         },
+        
+        testRule: function(str, rule) {
+            return $.UserHelper.rules[rule].test(str);
+        },
 
         /* Check username, password, and email */
         checkUPE: function(username, password, email) {
@@ -43,7 +47,7 @@
          * @param {String} birthdayString
          */
         parseBirthday: function(birthdayString) {
-            var bArray = UserHelper.rules.birthday.exec(birthdayString).splice(1,3);
+            var bArray = $.UserHelper.rules.birthday.exec(birthdayString).splice(1,3);
             return {
                 year: bArray[0],
                 month: bArray[1],
@@ -95,11 +99,11 @@
 
         /* Local Storage functions */
         load: function() {
-            return Users.deserialize($ls['users']);
+            return $.Users.deserialize($ls['users']);
         },
 
         save: function(users) {
-            $ls['users'] = Users.serialize(users);
+            $ls['users'] = $.Users.serialize(users);
         },
 
         clear: function() {
@@ -111,7 +115,7 @@
     /* Session */
     $.Session = {
         login: function(username, password) {
-            var users = Users.load();
+            var users = $.Users.load();
 
             var user = undefined;
             for (var i = 0; i < users.length; i++) {
@@ -150,7 +154,7 @@
         },
 
         getLoggedUser: function() {
-            return Users.deserialize($ls['logged_user'])[0];
+            return $.Users.deserialize($ls['logged_user'])[0];
         }
     };
 })(window);

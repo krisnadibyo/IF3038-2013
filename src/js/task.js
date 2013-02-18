@@ -64,8 +64,12 @@
      */
     $.TaskHelper = {
         rules: {
-            name: /[A-Za-z0-9 ]+$/,
+            name: /^[A-Za-z0-9 ]{1,25}$/,
             date: /(\d{4})-(\d{2})-(\d{2})/
+        },
+
+        testRule: function(str, rule) {
+            return $.TaskHelper.rules[rule].test(str);
         }
     };
 
@@ -138,11 +142,11 @@
 
         /* Local Storage functions */
         load: function() {
-            return Tasks.deserialize($ls['tasks']);
+            return $.Tasks.deserialize($ls['tasks']);
         },
 
         save: function(tasks) {
-            $ls['tasks'] = Tasks.serialize(tasks);
+            $ls['tasks'] = $.Tasks.serialize(tasks);
         },
 
         clear: function() {
