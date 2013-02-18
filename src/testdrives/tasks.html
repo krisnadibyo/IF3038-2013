@@ -2,11 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <script src="../js/madtodo.js"></script>
-    <script src="../js/task.js"></script>
-    <script src="../js/user.js"></script>
-    <script src="../js/seed.js"></script>
-<style>
+
+    <script type="text/javascript" src="../js/madtodo.js"></script>
+    <script type="text/javascript" src="../js/user.js"></script>
+    <script type="text/javascript" src="../js/task.js"></script>
+    <script type="text/javascript" src="../js/seed.js"></script>
+
+<style type="text/css">
     li {
         margin: 15px;
     }
@@ -29,6 +31,7 @@
 
 <form action="javascript:;" id='taskForm'>
     <h2>New Task</h2>
+    
     <div><input type="text" id="nameInput" placeholder="Name" /></div>
     <div><input type="text" id="attachmentInput" placeholder="Attachment" /></div>
     <div><input type="text" id="deadlineInput" placeholder="Deadline" /></div>
@@ -37,90 +40,85 @@
     <div><button type="submit" id="taskSubmit">Submit</button></div>
 </form>
 
-<script>
-/* TaskList */
-var taskListDiv = document.getElementById('taskListDiv');
-var taskList = document.createElement('ol');
-var tasks = Tasks.deserialize(localStorage['tasks']);
+<script type="text/javascript">
+(function($) {
+    /* TaskList */
+    var taskListDiv = document.getElementById('taskListDiv');
+    var taskList = document.createElement('ol');    
+    taskListDiv.appendChild(taskList);
 
-taskListDiv.appendChild(taskList);
-
-function refreshTaskList() {
-    taskList.innerHTML = '';
-    tasks.forEach(function(task, index) {
-        var tli = document.createElement('li');
-        tli.innerHTML +=
-            '<ul>' +
-            '<li>Name: ' + task.name + '</li>' +
-            '<li>Attachment: ' + task.attachment + '</li>' + 
-            '<li>Deadline: ' + task.deadline + '</li>' +
-            '<li>Assignee: ' + task.assignee + '</li>' +
-            '<li>Tags: ' + task.getTags() + '</li>' +
-            '<li><button onclick="deleteTask(' + index + ')">Delete</button></li>' +
-            '</ul>';
-       taskList.appendChild(tli);
-    });
-}
-
-function deleteTask(id) {
-    tasks.splice(id, 1);
-    localStorage['tasks'] = Tasks.serialize(tasks);
-
-    refreshTaskList();
-}
-
-refreshTaskList();
-
-/* New Task Form */
-var taskInput = {
-    name: $id('nameInput'),
-    attachment: $id('attachmentInput'),
-    deadline: $id('deadlineInput'),
-    assignee: $id('assigneeInput'),
-    tags: $id('tagsInput')
-}
-
-var taskSubmit = $id('taskSubmit');
-var clearTasks = $id('clearTasks');
-var reseedTasks = $id('reseedTasks');
-
-taskSubmit.onclick = function(e) {
-    for (var key in taskInput) {
-        if (taskInput[key].value == '') {
-            var msg = 'All inputs must be filled!'; 
-            console.log(msg);
-            alert(msg);
-            return;
-        }
+    var tasks = Tasks.deserialize(localStorage['tasks']);
+    $.refreshTaskList = function() {
+        taskList.innerHTML = '';
+        tasks.forEach(function(task, index) {
+            var tli = document.createElement('li');
+            tli.innerHTML +=
+                '<ul>' +
+                    '<li>Name: ' + task.name + '</li>' +
+                    '<li>Attachment: ' + task.attachment + '</li>' + 
+                    '<li>Deadline: ' + task.deadline + '</li>' +
+                    '<li>Assignee: ' + task.assignee + '</li>' +
+                    '<li>Tags: ' + task.getTags() + '</li>' +
+                    '<li><button onclick="deleteTask(' + index + ')">Delete</button></li>' +
+                '</ul>';
+           taskList.appendChild(tli);
+        });
     }
 
-    var t = new Task();
-    t.setTags(taskInput['tags'].value);
-
-    for (var key in taskInput) {
-        if (key !== 'tags') {
-            t[key] = taskInput[key].value;
-        }
-        taskInput[key].value = '';
+    $.deleteTask = function(id) {
+        tasks.splice(id, 1);
+        Tasks.save(tasks);
+    
+        refreshTaskList();
     }
 
-    tasks.push(t);
-    localStorage['tasks'] = Tasks.serialize(tasks);
-
     refreshTaskList();
-}
+    
+    /* New Task Form */
+    var taskInput = {
+        name: $id('nameInput'),
+        attachment: $id('attachmentInput'),
+        deadline: $id('deadlineInput'),
+        assignee: $id('assigneeInput'),
+        tags: $id('tagsInput')
+    }
 
-clearTasks.onclick = function(e) {
-    tasks = [];
-    localStorage.removeItem('tasks');
+    $id('taskSubmit').onclick = function(e) {
+        for (var key in taskInput) {
+            if (taskInput[key].value == '') {
+                var msg = 'All inputs must be filled!'; 
+                console.log(msg);
+                alert(msg);
+                return;
+            }
+        }
+    
+        var t = new Task();
+        t.setTags(taskInput['tags'].value);
+    
+        for (var key in taskInput) {
+            if (key !== 'tags') {
+                t[key] = taskInput[key].value;
+            }
+            taskInput[key].value = '';
+        }
+    
+        tasks.push(t);
+        Tasks.save(tasks);
 
-    refreshTaskList();
-}
+        refreshTaskList();
+    }
 
-reseedTasks.onclick = function(e) {
-    seedTasks();
-    window.open('tasks.html', '_self');
-}
+    $id('clearTasks').onclick = function(e) {
+        tasks = Tasks.clear();
+        refreshTaskList();
+    }
+
+    $id('reseedTasks').onclick = function(e) {
+        seedTasks();
+        window.open('tasks.html', '_self');
+    }
+})(window);
 </script>
 
 <!-- END OF BODY -->

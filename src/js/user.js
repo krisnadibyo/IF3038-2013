@@ -104,6 +104,53 @@
 
         clear: function() {
             $ls.removeItem('users');
+            return Array();
         }
     }
+
+    /* Session */
+    $.Session = {
+        login: function(username, password) {
+            var users = Users.load();
+
+            var user = undefined;
+            for (var i = 0; i < users.length; i++) {
+                if (users[i]['username'] === username) {
+                    user = users[i];
+                    break;
+                }
+            }
+
+            if (user == undefined) {
+                console.log('SESSION Error: User not found');
+                return false;
+            }
+
+            if (user['password'] == password) {
+                $ls['logged_in'] = 'true';
+                $ls['logged_user'] = JSON.stringify([user]);
+
+                return true;
+            }
+
+            console.log('SESSION Error: Incorrect password');
+            return false;
+        },
+
+        logout: function() {
+            if ($ls['logged_in'] == undefined ||
+                $ls['logged_user'] == undefined) {
+                return false;
+            }
+
+            $ls.removeItem('logged_in');
+            $ls.removeItem('logged_user');
+
+            return true;
+        },
+
+        getLoggedUser: function() {
+            return Users.deserialize($ls['logged_user'])[0];
+        }
+    };
 })(window);

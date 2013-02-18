@@ -116,6 +116,7 @@
 
         clear: function() {
             $ls.removeItem('tasks');
+            return Array();
         }
     };
 })(window);
