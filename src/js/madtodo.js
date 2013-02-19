@@ -76,6 +76,19 @@
             return this.value;
         }
 
+        e.doTransition = function(styles, time, delay) {
+            if (delay !== undefined) {
+                setTimeout(function() { e.doTransition(styles, time); }, delay);
+                return e;
+            }
+
+            for (key in styles) {
+                this.style[key] = styles[key];
+            }
+
+            return e;            
+        }
+
         return e;
     }
 

@@ -27,6 +27,7 @@
      */
     $.Task.prototype.setTags = function(tagsString) {
         if (tagsString === undefined || tagsString === '') {
+            this.tags = Array();
             return;
         }
 
@@ -48,12 +49,13 @@
     $.Task.prototype.getTags = function() {
         var t = '';
         var len = this.tags.length
-        this.tags.forEach(function(tag, index) {
-            t += tag;
-            if (index < len - 1) {
+
+        for (var i = 0; i < len; i++) {
+            t += this.tags[i];
+            if (i < len - 1) {
                 t += ', ';
             }
-        });
+        }
 
         return t;
     }
