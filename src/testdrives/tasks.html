@@ -9,12 +9,37 @@
     <script type="text/javascript" src="../js/seed.js"></script>
 
 <style type="text/css">
-    li {
-        margin: 15px;
-    }
-    ul > li {
-        margin: 0;
-    }
+body {
+    font-family: "Ubuntu", "Verdana", sans-serif;
+}
+li {
+    margin: 15px;
+}
+ul > li {
+    margin: 0;
+}
+
+input[type=text] {
+    border: 2px solid #444;
+    margin: 2px;
+    border-radius: 5px;
+    background: transparent;
+    padding: 5px;
+}
+
+button {
+    border: 2px solid #444;
+    margin: 2px;
+    border-radius: 5px;
+    background: transparent;
+    padding: 5px;
+}
+
+.error {
+    -moz-box-shadow: inset 0 0 1em #ff0000;
+    -webkit-box-shadow: inset 0 0 1em #ff0000;
+    box-shadow: inset 0 0 1em #ff0000;
+}
 </style>
 
 </head>
@@ -104,6 +129,18 @@
         deadline: $id('deadlineInput'),
         assignee: $id('assigneeInput'),
         tags: $id('tagsInput')
+    }
+
+    for (var key in taskInput) {
+        if (taskInput[key].attr('rule')) {
+            taskInput[key].onchange = function(e) {
+                if(!TaskHelper.testRule(this.value, this.attr('rule'))) {
+                    this.addClass('error');
+                } else {
+                    this.removeClass('error');
+                }
+            }
+        }
     }
 
     $id('taskSubmit').onclick = function(e) {
