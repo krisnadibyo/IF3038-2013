@@ -76,9 +76,9 @@
             return this.value;
         }
 
-        e.doTransition = function(styles, time, delay) {
+        e.doTransition = function(styles, delay) {
             if (delay !== undefined) {
-                setTimeout(function() { e.doTransition(styles, time); }, delay);
+                setTimeout(function() { e.doTransition(styles); }, delay);
                 return e;
             }
 

@@ -3,69 +3,75 @@
 
 <head>
     <meta charset="utf-8" />
-    <style type="text/css">
-        @import url('maincss.css');
-    </style>
+    
+    <script type="text/javascript" src="./js/madtodo.js"></script>
+    <script type="text/javascript" src="./js/user.js"></script>
+
+    <style type="text/css">@import url('./css/maincss.css');</style>
+
     <title>Home</title>
 </head>
 
 <body>
 <!-- BEGIN BODY -->
 
-<div id="header">Mad To Do!</div>
+<div id="header">
+    <div>
+        <div id="logo"><a href="home.html">MadToDo!</a></div>
+        <ul id="topNav">
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="home.html">Home</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
 
 <div id="columnsContainer">
 
     <div id="coloumnOne">
-        <div id="SignUpHeader">
-            New to MadToDo? SignUp
+        <!-- Sign Up -->
+        <div class="colPlaceholder" id="signUpPlaceholder">
+            <div>Sign Up</div>
         </div>
-        <div id="SignUp">
-            <input name="UsernameSignUpForm" type="text" maxlength="30" placeholder=" Username" />
-        </div>
-        <div id="SignUp">
-            <input name="EmailSignUpForm" type="text" maxlength="30" placeholder=" Email" />
-        </div>
-        <div id="SignUp">
-            <input name="PasswordSignUpForm" type="password" maxlength="30" placeholder=" Password" />
-        </div>
-        <div id="SignUp">
-            <a href="#" id="SignUpButton"> SignUp </a>
-        </div>
+
+        <form id="signUpForm" action="javascript:;">
+            <div><input id="signup_name" rule="name" type="text" placeholder="Name *" /></div>
+            <div><input id="signup_username" rule="username" type="text" placeholder="Username *" /></div>
+            <div><input id="signup_password" rule="password" type="password" placeholder="Password *" /></div>
+            <div><input id="signup_email" rule="email" type="text" placeholder="Email *" /></div>
+            <div>
+                <label>Birthday:</label>
+                <select name="" id="bdYear"></select>-<select id="bdMonth"></select>-<select id="bdDay"></select>
+                <input id="signup_birthday" rule="birthday" type="hidden" placeholder="Birthday *" /></div>
+            <div id="uploadAvatarDiv">
+                <input id="signup_avatar" type="text" placeholder="Avatar Image (Browse...)" disabled="true" />
+                <input id="avatarFile" type="file" />
+                <img id="avatarImg" width="200px" height="200px" />
+            </div>
+            <div><label>Short bio:</label><textarea id="signup_bio"></textarea></div>
+            <div><button type="button" id="signUpButton" disabled="true">Sign Up</button></div>
+        </form>
     </div>
 
     <div class="colSpace"></div>
-
     <div id="coloumnTwo"></div>
-
+    <div class="clear"></div>
     <div id="coloumnThree"></div>
-
     <div class="colSpace"></div>
 
     <div id="coloumnFour">
         <!-- Sign In -->
-        <div id="signInHeader">
-            Welcome!
+        <div class="colPlaceholder" id="signInPlaceholder">
+            <div>Sign In</div>
         </div>
-        <div id="usernameSignIn">
-            <input name="UsernameSignInForm" type="text" maxlength="30" placeholder="Username" />
-        </div>
-        <div>
-            <div id="passwordSignIn">
-                <input name="PasswordSignInForm" type="text" maxlength="30" placeholder="Password" />
-            </div>
-            <div id="TombolSignIn">
-                <a href="#" id="SignInButton">Sign In</a>
-            </div>
-        </div>
-        <div id="forgetPassword">
-            Forget Password?
-        </div>
-        <div id="signInClear"></div>
     </div>
 
     <div class="clear"></div>
 </div>
 
+<script type="text/javascript" src="./js/home.js"></script>
+
+<!-- END BODY -->
 </body>
 </html>
