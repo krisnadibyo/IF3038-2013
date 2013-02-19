@@ -11,13 +11,14 @@
      * @param {Object} birthday
      * @param {String} avatar
      */
-    $.User = function(name, username, password, email, birthday, avatar) {
+    $.User = function(name, username, password, email, birthday, avatar, bio) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.email = email;
         this.birthday = birthday;
         this.avatar = avatar;
+        this.bio = bio;
     }
 
     /**
@@ -99,7 +100,8 @@
                     dsz[i].password,
                     dsz[i].email,
                     dsz[i].birthday,
-                    dsz[i].avatar)
+                    dsz[i].avatar,
+                    dsz[i].bio)
                 );
             };
 
