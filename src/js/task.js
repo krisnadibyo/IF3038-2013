@@ -10,8 +10,12 @@
      * @param {String} assignee
      * @param {Array} tags (array of tags, can be set using `setTags`)
      */
-    $.Task = function(owner, name, attachment, deadline, assignee, tags, status) {
+    $.Task = function(owner, category, name, attachment, deadline, assignee, tags, status) {
+        if (category === undefined || category === '') {
+            category = 'Uncategorized';
+        }
         this.owner = owner; // username
+        this.category = category;
         this.name = name; // max 25 chars, [A-Za-z0-9 ]
         this.attachment = attachment;
         this.deadline = deadline; // Date %Y-%m-%d
@@ -66,13 +70,17 @@
      */
     $.TaskHelper = {
         rules: {
+            owner: /^.+$/,
+            category: /^[A-Za-z0-9 ]{0,25}$/,
             name: /^[A-Za-z0-9 ]{1,25}$/,
-            date: /(\d{4})-(\d{2})-(\d{2})/
+            date: /^(\d{4})-(\d{2})-(\d{2})$/
         },
 
         errorMessages: {
-            name: "Max. 25 chars, only alphabetic, numeric, and space are allowed",
-            date: "Incorrect date format"
+            owner: "Required",
+            category: "Not Required. Max. 25 chars, only alphabetic, numeric, and space are allowed",
+            name: "Required. Max. 25 chars, only alphabetic, numeric, and space are allowed",
+            date: "Required. Incorrect date format, must be in YYYY-MM-DD"
         },
 
         testRule: function(str, rule) {
@@ -109,7 +117,8 @@
 
             for (var i = 0; i < dsz.length; i++) {
                 tasks.push(new Task(
-                    dsz[i].owner,    
+                    dsz[i].owner,
+                    dsz[i].category,
                     dsz[i].name,
                     dsz[i].attachment,
                     dsz[i].deadline,

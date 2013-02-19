@@ -7,6 +7,7 @@
         var tasks = [
             new Task(
                 'msweaver',
+                'Uncategorized',
                 'End the War',
                 '',
                 '2020-11-01',
@@ -16,6 +17,7 @@
             ),
             new Task(
                 'jgrainger',
+                'Uncategorized',
                 'Eat',
                 'food.jpg',
                 '2017-07-07',
@@ -25,6 +27,7 @@
             ),
             new Task(
                 'fitzhugh',
+                'Uncategorized',
                 'Drink Coca Cola',
                 'cocacola.png',
                 '2018-08-08',
@@ -34,6 +37,7 @@
             ),
             new Task(
                 'fitzhugh',
+                'Uncategorized',
                 'Cook Fish',
                 '',
                 '2014-04-04',

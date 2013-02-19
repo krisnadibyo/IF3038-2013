@@ -48,7 +48,6 @@ input[type=text].error {
 
 }
 
-
 button {
     border: 2px solid #444;
     margin: 2px;
@@ -67,12 +66,12 @@ button {
     top: 3px;
 
     padding: 4px;
-    max-width: 400px;
+    max-height: 16px;
+    max-width: 480px;
     border: 2px solid #ee4444;
     background: #ccc;
     opacity: 0;
     font-size: 0.8em;
-    max-height: 16px;
     
     -o-transition: all 0.25s;
     -ms-transition: all 0.25s;
@@ -101,10 +100,11 @@ button {
 <form action="javascript:;" id="taskForm">
     <h2>New Task</h2>
     
-    <div><input type="text" id="ownerInput" placeholder="Owner" /></div>
-    <div><input type="text" id="nameInput" rule="name" placeholder="Name" /></div>
+    <div><input type="text" id="ownerInput" rule="owner" placeholder="Owner *" /></div>
+    <div><input type="text" id="categoryInput" rule="category" placeholder="Category" /></div>
+    <div><input type="text" id="nameInput" rule="name" placeholder="Name *" /></div>
     <div><input type="text" id="attachmentInput" placeholder="Attachment" /></div>
-    <div><input type="text" id="deadlineInput" rule="date" placeholder="Deadline" /></div>
+    <div><input type="text" id="deadlineInput" rule="date" placeholder="Deadline (in YYYY-MM-DD) *" /></div>
     <div><input type="text" id="assigneeInput" placeholder="Assignee" /></div>
     <div><input type="text" id="tagsInput" placeholder="Tags" /></div>
     <div><button type="submit" id="taskSubmit">Submit</button></div>
@@ -141,6 +141,7 @@ button {
             var content =
                 '<ul>' +
                     '<li>Owner: ' + task.owner + '</li>' +
+                    '<li>Category: ' + task.category + '</li>' +
                     '<li>Name: ' + task.name + '</li>' +
                     '<li>Attachment: ' + task.attachment + '</li>' + 
                     '<li>Deadline: ' + task.deadline + '</li>' +
@@ -185,6 +186,7 @@ button {
     /* New Task Form */
     var taskInput = {
         owner: $id('ownerInput'),
+        category: $id('categoryInput'),
         name: $id('nameInput'),
         attachment: $id('attachmentInput'),
         deadline: $id('deadlineInput'),
@@ -204,11 +206,13 @@ button {
 
                 errorDiv.doTransition({ left: '200px', opacity: '1.0' }, 250, 25);
             }
+            return false;
         } else {
             if (e.hasClass('error')) {
                 e.removeClass('error')
                     .parentNode.removeChild(e.parentNode.lastChild);
             }
+            return true;
         }
     }
 
@@ -226,12 +230,17 @@ button {
     }
 
     $id('taskSubmit').onclick = function(e) {
+        var error = false;
+
         for (var key in taskInput) {
             var e = taskInput[key];
-            if (e.attr('rule') && e.val() === '' || e.hasClass('error')) {
-                checkInput(e);
-                return;
+            if (e.attr('rule') && !checkInput(e)) {
+                error = true;
             }
+        }
+
+        if (error) {
+            return;
         }
 
         var t = new Task();
@@ -245,6 +254,10 @@ button {
             if (key !== 'owner') {
                 taskInput[key].value = '';
             }
+        }
+
+        if (t.category === '') {
+            t.category = 'Uncategorized';
         }
 
         tasks.push(t);
