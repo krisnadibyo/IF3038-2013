@@ -79,6 +79,10 @@
         return e;
     }
 
+    $.$e.create = function(type) {
+        return $.$e(document.createElement(type));
+    }
+
     /**
      * Shortcut of document.getElementById() with enriched element object.
      * 
