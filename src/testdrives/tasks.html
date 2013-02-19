@@ -12,9 +12,11 @@
 body {
     font-family: "Ubuntu", "Verdana", sans-serif;
 }
+
 li {
     margin: 15px;
 }
+
 ul > li {
     margin: 0;
 }
@@ -25,6 +27,12 @@ input[type=text] {
     border-radius: 5px;
     background: transparent;
     padding: 5px;
+    width: 180px;
+}
+
+input[type=text].disabled {
+    background: #888888;
+    color: #eeeeee;
 }
 
 button {
@@ -35,11 +43,28 @@ button {
     padding: 5px;
 }
 
-.error {
+input.error {
     -moz-box-shadow: inset 0 0 1em #ff0000;
     -webkit-box-shadow: inset 0 0 1em #ff0000;
     box-shadow: inset 0 0 1em #ff0000;
 }
+
+#taskForm > div {
+    position: relative;
+}
+
+#taskForm > div > div.errorMessage {
+    position: absolute;
+    left: 200px;
+    top: 3px;
+    padding: 4px;
+    max-width: 400px;
+    border: 2px solid #ee4444;
+    background: #ccc;
+    font-size: 0.8em;
+    max-height: 16px;
+}
+
 </style>
 
 </head>
@@ -47,14 +72,18 @@ button {
 <body>
 <!-- BEGIN BODY -->
 
-<div id='taskListDiv'></div>
+<div id="header">
+    <div id="loginIndicator">asdffas</div>
+</div>
+
+<div id="taskListDiv"></div>
 
 <div>
     <button id="clearTasks">Clear Tasks</button>
     <button id="reseedTasks">ReSeed Tasks</button>
 </div>
 
-<form action="javascript:;" id='taskForm'>
+<form action="javascript:;" id="taskForm">
     <h2>New Task</h2>
     
     <div><input type="text" id="ownerInput" placeholder="Owner" /></div>
@@ -68,6 +97,22 @@ button {
 
 <script type="text/javascript">
 (function($) {
+    var loggedUser = Session.getLoggedUser();
+    if (loggedUser !== undefined) {
+        $id('loginIndicator').html('Logged as ' + loggedUser.username);
+
+        $id('ownerInput')
+            .val(loggedUser.username)
+            .attr('disabled', 'true')
+            .addClass('disabled');
+    } else {
+        $id('loginIndicator').html('Not logged in');
+        $id('ownerInput')
+            .val('')
+            .removeAttr('disabled')
+            .removeClass('disabled');
+    }
+
     /* TaskList */
     var taskListDiv = document.getElementById('taskListDiv');
     var taskList = document.createElement('ol');    
@@ -120,7 +165,7 @@ button {
     }
 
     refreshTaskList();
-    
+
     /* New Task Form */
     var taskInput = {
         owner: $id('ownerInput'),
@@ -133,11 +178,21 @@ button {
 
     for (var key in taskInput) {
         if (taskInput[key].attr('rule')) {
-            taskInput[key].onchange = function(e) {
+            taskInput[key].oninput = function(e) {
                 if(!TaskHelper.testRule(this.value, this.attr('rule'))) {
-                    this.addClass('error');
+                    if (!this.hasClass('error')) {
+                        e = $e(document.createElement('div'))
+                            .addClass('errorMessage')
+                            .html(TaskHelper.errorMessages[this.attr('rule')]);
+
+                        this.parentNode.appendChild(e);
+                        this.addClass('error');
+                    }
                 } else {
-                    this.removeClass('error');
+                    if (this.hasClass('error')) {
+                        this.removeClass('error');
+                        this.parentNode.removeChild(this.parentNode.lastChild);
+                    }
                 }
             }
         }
