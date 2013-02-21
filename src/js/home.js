@@ -1,4 +1,9 @@
 (function($) {
+    /** Check session **/
+    if (Session.getLoggedUser()) {
+        $.open('./dashboard.html', '_self');
+    }
+
     /** SIGNUP **/
     $.avatarFile = undefined;
     $.avatarImg = undefined;
@@ -60,7 +65,6 @@
     }
 
     var checkSignupInput = function(e) {
-        console.log(unlockSignup());
         if (unlockSignup()) {
             $id('signUpButton').removeAttr('disabled');
         } else {
@@ -116,16 +120,42 @@
             return;
         }
 
+        console.log(signupInputs['avatar'].val());
+
+        // Signup success
+        $ls[signupInputs['avatar'].val()] = $.avatarImg;
+
+        var user = new User(
+            signupInputs['name'].val(),
+            signupInputs['username'].val(),
+            signupInputs['password'].val(),
+            signupInputs['email'].val(),
+            UserHelper.parseBirthday(signupInputs['birthday'].val()),
+            signupInputs['avatar'].val(),
+            signupInputs['bio'].val()
+        );
+   
+        var users = Users.load();
+        users.push(user);
+        Users.save(users);
+
+        Session.login(user['username'], user['password']);
+		$.open('dashboard.html', '_self');
     }
 
-    $id('signUpPlaceholder').onclick = function(e) {
-        this.style.display = 'none';
-
-        $id('signUpForm').style.display = 'block';
-        $id('signUpForm').doTransition({
-            opacity: '1.0',
-        }, 25);
+    var openForm = function(placeholderEl, formEl) {
+        placeholderEl.onclick = function(e) {
+            placeholderEl.style.display = 'none';
+    
+            formEl.style.display = 'block';
+            formEl.doTransition({
+                opacity: '1.0',
+            }, 25);
+        }
     }
+
+    openForm($id('signUpPlaceholder'), $id('signUpForm'));
+    openForm($id('signInPlaceholder'), $id('signInForm'));
 
     $id('avatarFile').onchange = function(e) {
         $.avatarFile = this.files[0];
@@ -142,4 +172,16 @@
 
         reader.readAsDataURL($.avatarFile);
     }
+
+    $id('signInButton').onclick = function(e) {
+        var username = $id('signin_username').val();
+        var password = $id('signin_password').val();
+
+        if (!Session.login(username, password)) {
+            alert('Incorrect username/password!');
+        } else {
+            $.open('dashboard.html', '_self');
+        }
+    }
+
 })(window);

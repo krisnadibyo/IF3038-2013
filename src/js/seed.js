@@ -60,7 +60,8 @@
                 'chickenrice',
                 'fitzhugh@gmail.com',
                 UserHelper.parseBirthday('1950-12-04'),
-                'fitzhugh.png'  
+                'fitzhugh.png',
+                ''
             ),
             new User(
                 'Stephanie Weaver',
@@ -68,7 +69,8 @@
                 'manhattan',
                 'sweaver@yahoo.co.uk',
                 UserHelper.parseBirthday('1986-06-28'),
-                'msweaver.png'
+                'msweaver.png',
+                ''
             ),
             new User(
                 'James Grainger',
@@ -76,7 +78,8 @@
                 'tuvalu',
                 'jgrainger@mail.ru',
                 UserHelper.parseBirthday('1964-09-11'),
-                'jgrainger.png'
+                'jgrainger.png',
+                ''
             )
         ];
 

@@ -131,6 +131,18 @@
             return tasks;
         },
 
+        getByCategory: function(tasks, category) {
+            var sTasks = [];
+
+            for (var i = 0; i < tasks.length; i++) {
+                if (tasks[i].category == category) {
+                    sTasks.push(tasks[i]);
+                }
+            }
+
+            return sTasks;
+        },
+
         /* Search/Filter functions */
         getOwnerTasks: function(tasks, owner) {
             var ownerTasks = [];

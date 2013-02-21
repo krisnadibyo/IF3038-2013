@@ -35,7 +35,7 @@
             <div>Sign Up</div>
         </div>
 
-        <form id="signUpForm" action="javascript:;">
+        <form id="signUpForm" class="signXForm" action="javascript:;">
             <div><input id="signup_name" rule="name" type="text" placeholder="Name *" /></div>
             <div><input id="signup_username" rule="username" type="text" placeholder="Username *" /></div>
             <div><input id="signup_password" rule="password" type="password" placeholder="Password *" /></div>
@@ -65,10 +65,18 @@
         <div class="colPlaceholder" id="signInPlaceholder">
             <div>Sign In</div>
         </div>
+
+        <form id="signInForm" class="signXForm" action="javascript:;">
+            <div><input id="signin_username" type="text" placeholder="Username" /></div>
+            <div><input id="signin_password" type="password" placeholder="Password" /></div>
+            <div><button type="button" id="signInButton">Sign In</button></div>
+        </form>
     </div>
 
     <div class="clear"></div>
 </div>
+
+<div id="footer"></div>
 
 <script type="text/javascript" src="./js/home.js"></script>
 
