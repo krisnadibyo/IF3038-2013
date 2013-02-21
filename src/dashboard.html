@@ -3,14 +3,15 @@
 
 <head>
     <meta charset="utf-8" />
-    
+
     <script type="text/javascript" src="./js/madtodo.js"></script>
     <script type="text/javascript" src="./js/user.js"></script>
     <script type="text/javascript" src="./js/task.js"></script>
+    <script type="text/javascript" src="./js/seed.js"></script>
 
     <style type="text/css">@import url('./css/maincss.css');</style>
 
-    <title>Home</title>
+    <title>Dashboard</title>
 </head>
 
 <body>
@@ -28,7 +29,51 @@
     </div>
 </div>
 
+<div id="dashboardContainer">
+	<div id="welcomeMessage">
+		Welcome to your Dashboard! You're logged in in as <strong id="loggedUserText">monkey</strong>
+		<button id="signOutButton">Sign Out</button>
+	</div>
+
+	<div id="twoColumns">
+	<!-- BEGIN TWOCOLUMNS -->
+
+	<div id="categoriesDiv">
+		<ul id="categoryList">
+        
+		</ul>
+
+		<a id="newCategory" href="javascript:;">[+] New Category</a>
+		<a id="newTask" onclick="newEditTask(this, false)" href="javascript:;">[+] New Task</a>
+	</div>
+
+	<div id="tasksDiv">
+		<div id="taskListHeader">
+        <strong>Task List</strong><button onclick="newEditTask(this, false)" id="newTask">New Task</button>
+		</div>
+
+		<ul id="taskList">
+            <li>
+            </li>
+		</ul>
+	</div>
+
+	<div class="clear"></div>
+
+	<!-- END TWOCOLUMNS -->
+	</div>
+</div>
+
 <div id="footer"></div>
+
+<!-- Popups -->
+<div id="newTaskForm">
+
+</div>
+
+<div id="viewEditTaskForm">
+
+</div>
 
 <script type="text/javascript" src="./js/dashboard.js"></script>
 

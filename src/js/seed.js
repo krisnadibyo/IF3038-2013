@@ -44,6 +44,16 @@
                 '',
                 ['fun', 'food'],
                 ''
+            ),
+            new Task(
+                'fitzhugh',
+                'Kuliah',
+                'Tubes Progin',
+                '',
+                '2014-04-04',
+                '',
+                ['task'],
+                ''
             )
         ];
 
