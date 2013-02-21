@@ -165,7 +165,8 @@ ul#topNav > li > a {
     color: #cfcfcf;
 }
 
-ul#topNav > li > a:hover {
+ul#topNav > li > a:hover,
+ul#topNav > li > a.current {
     background: #767676;
 }
 
