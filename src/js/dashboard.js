@@ -14,7 +14,7 @@
         $id('newCategoryForm').style.left = (cWidth / 2) - (446 / 2) + 'px';
         $id('newTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
         $id('viewEditTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
-        $id('pageBlurrer').style.height = cHeight * multiplier + 'px';
+        // $id('pageBlurrer').style.height = cHeight * multiplier + 'px';
     }
     resizeDialogs(true);
 
@@ -151,7 +151,6 @@
 
     for (var i = 0; i < inputs.length; i++) {
         taskInputs[inputs[i]] = $id('ntask_' + inputs[i]);
-        console.log($id('ntask_' + inputs[i]));
     }
     
 
@@ -261,15 +260,40 @@
     // View/Edit Task
     $.viewTask = function(e) {
         e = $e(e);
-        $id('newTaskForm').style.display = 'block';
+        $id('viewEditTaskForm').style.display = 'block';
         $id('pageBlurrer').style.display = 'block';
 
-        $id('newTaskForm').doTransition({
+        $id('viewEditTaskForm').doTransition({
             'opacity': '1.0'
         }, 25);
         $id('pageBlurrer').doTransition({
             'opacity': '0.85'
         }, 25);
+
+        $id('taskEditSubmitButton').attr('disabled', 'true');
+
+        var cTId = e.attr('taskId');
+        var task = activeCategoryTasks[cTId];
+
+        $id('ve_name').html(task['name']);
+        $id('ve_attachment').html('Attachment: ' +(task['attachment'] == '' ? 'None' : task['attachment']));
+        
+        $id('ve_deadline').html('Deadline: <strong>' + task['deadline'] + '</strong>');
+        $id('ve_assignee').html('Assignee: <strong>' + (task['assignee'] == '' ? 'None' : task['assignee']) +  '</strong>');
+        $id('ve_tags').html('Tags: <strong>' + task.getTags() + '</strong>');
+        $id('ve_status').html('Status: <strong>' + (task['status'] == '' ? 'Not Done' : 'Done!') + '</strong>');
+        
+        $id('taskEditButton').onclick = function(evt) {
+            $id('ve_deadline').html('<label>Deadline:</label><input id="ve_deadlineInput" type="date" value="' + task['deadline'] + '" />');
+            $id('ve_assignee').html('<label>Assignee:</label><input id="ve_assigneeInput" type="text" value="' + task['assignee'] + '" />');
+            $id('ve_tags').html('<label>Tags:</label><input id="ve_tagsInput" type="text" value="' + task.getTags() + '" />');
+            $id('taskEditSubmitButton').removeAttr('disabled');
+        }
+        
+        $id('taskEditSubmitButton').onclick = function(evt) {
+            alert('Not implemented yet.');
+            $.closeDialog($e.create('div').attr('dialogId', 'viewEditTaskForm'));
+        }
     }
 
 })(window);

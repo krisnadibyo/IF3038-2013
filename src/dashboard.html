@@ -89,6 +89,24 @@
     <div>
         <div dialogId="viewEditTaskForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
     </div>
+
+    <form dialogId="newTaskForm" action="javascript:;">
+        <h2 id="ve_name">Task Name</h2>
+
+        <div id="ve_attachment"></div>
+        <div id="ve_deadline"></div>
+        <div id="ve_assignee"></div>
+        <div id="ve_tags"></div>
+        <div id="ve_status"></div>
+        <div id="ve_comment"></div>
+
+        <div><label>Comment:</label><textarea id="ve_inputComment"></textarea></div>
+
+        <div>
+            <button type="button" id="taskEditButton">Edit</button>
+            <button type="submit" id="taskEditSubmitButton" disabled="true">Save Editing</button>
+        </div>
+    </form>
 </div>
 
 <div id="newCategoryForm" class="formDialog">
