@@ -3,39 +3,39 @@
 
 <head>
     <meta charset="utf-8" />
-    <style type="text/css">
-        @import url('./css/maincss.css');
-        @import url('./css/anotherstyle.css');
-    </style>
+
+    <script type="text/javascript" src="./js/madtodo.js"></script>
+    <script type="text/javascript" src="./js/user.js"></script>
+    <script type="text/javascript" src="./js/task.js"></script>
+
+    <style type="text/css">@import url('./css/maincss.css');</style>
+
     <title>Profile</title>
 </head>
 
 <body>
 <!-- BEGIN BODY -->
 
-<div id="headerBackground">
-    <div id="headerHomeLogin">
-        <div id="menuHeader">
-            <a href="#">Home</a>
-        </div>
-        <div id="menuHeader">
-            <a href="#">Dashboard</a>
-        </div>
-        <div id="menuHeader">
-            <a href="#">Profil</a>
-        </div>
-        <div id="menuHeader">
-            <a href="#">Logout</a>
-        </div>
+<div id="header">
+    <div>
+        <div id="logo"><a href="home.html">MadToDo!</a></div>
+        <ul id="topNav">
+            <li><a href="profile.html" class="current">Profile</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="index.html">Home</a></li>
+        </ul>
         <div class="clear"></div>
     </div>
 </div>
 
-<div id="bodyDashboard">
-    <div id="leftDashboard">lalala</div>
-    <div id="spaceDashboard">&nbsp;</div>
-    <div id="rightDashboard">&nbsp;</div>
+<div id="profileContainer">
+    
 </div>
 
+<div id="footer"></div>
+
+<script type="text/javascript" src="./js/profile.js"></script>
+
+<!-- END BODY -->
 </body>
 </html>

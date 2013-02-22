@@ -12,8 +12,8 @@
         var cHeight = document.body.clientHeight;
 
         $id('newCategoryForm').style.left = (cWidth / 2) - (446 / 2) + 'px';
-        $id('newTaskForm').style.left = (cWidth / 2) - (686 / 2) + 'px';
-        $id('viewEditTaskForm').style.left = (cWidth / 2) - (686 / 2) + 'px';
+        $id('newTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
+        $id('viewEditTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
         $id('pageBlurrer').style.height = cHeight * multiplier + 'px';
     }
     resizeDialogs(true);
@@ -80,7 +80,7 @@
     var showActiveCategoryTasks = function() {
         activeCategoryTasks = Tasks.getByCategory(userTasks, activeCategory);
         
-        $id('taskList').html('');
+        $id('taskList').html('');600
         for (var i = 0; i < activeCategoryTasks.length; i++) {
             var task = activeCategoryTasks[i];
             var li = $e.create('li').attr('acTaskId', i);
@@ -122,11 +122,43 @@
         }
     }
 
+
+    // New Task
+    var checkTaskInput = function(e) {
+        if(!TaskHelper.testRule(e.val(), e.attr('rule'))) {
+            if (!e.hasClass('error')) {
+                var errorDiv = $e.create('div')
+                    .addClass('errorMessage')
+                    .html(TaskHelper.errorMessages[e.attr('rule')]);
+
+                e.addClass('error')
+                    .parentNode.insertBefore(errorDiv, e);
+
+                errorDiv.doTransition({ margin: '0 0 0 -20px', opacity: '1.0' }, 25);
+            }
+            return false;
+        } else {
+            if (e.hasClass('error')) {
+                e.removeClass('error')
+                    .parentNode.removeChild(e.parentNode.firstChild);
+            }
+            return true;
+        }
+    }
+
+    var inputs = ['owner', 'category', 'name', 'attachment', 'deadline', 'assignee', 'tags'];
+    var taskInputs = {};
+
+    for (var i = 0; i < inputs.length; i++) {
+        taskInputs[inputs[i]] = $id('ntask_' + inputs[i]);
+        console.log($id('ntask_' + inputs[i]));
+    }
+    
+
     $.newEditTask = function(e, edit) {
         e = $e(e);
         $id('newTaskForm').style.display = 'block';
         $id('pageBlurrer').style.display = 'block';
-
 
         $id('newTaskForm').doTransition({
             'opacity': '1.0'
@@ -134,8 +166,62 @@
         $id('pageBlurrer').doTransition({
             'opacity': '0.85'
         }, 25);
+
+
+        taskInputs['owner'].val(user['username']);
+        taskInputs['category'].val(activeCategory);
+
+        for (key in taskInputs) {
+            var e = taskInputs[key];
+    
+            e.onkeyup = function() {
+                if (this.attr('rule')) {
+                    checkTaskInput(this);
+                }
+            }
+
+            if (e.attr('rule') && e.val() !== '') {
+                checkTaskInput(e);
+            }
+        }
     }
     
+    $id('taskSubmitButton').onclick = function(evt) {
+        var error = false;
+
+        for (var key in taskInputs) {
+            var e = taskInputs[key];
+            if (e.attr('rule') && !checkTaskInput(e)) {
+                error = true;
+            }
+        }
+
+        if (error) {
+            return;
+        }
+
+        var t = new Task();
+        t.setTags(taskInputs['tags'].value);
+        t.status = '';
+
+        for (var key in taskInputs) {
+            if (key !== 'tags') {
+                t[key] = taskInputs[key].value;
+            }
+            if (key !== 'owner') {
+                taskInputs[key].value = '';
+            }
+        }
+
+        if (t.category === '') {
+            t.category = 'Uncategorized';
+        }
+
+        tasks.push(t);
+        Tasks.save(tasks);
+        $.open('./dashboard.html', '_self');
+    }
+
     // Dialogs
     $.closeDialog = function(e) {
         e = $e(e);
@@ -147,7 +233,7 @@
         dialog.doTransition({
             opacity: '0'
         }, 25);
-        
+
         setTimeout(function() {
             $id('pageBlurrer').style.display = 'none';
             dialog.style.display = 'none';
