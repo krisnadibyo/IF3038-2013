@@ -9,10 +9,11 @@ MadToDo
 A simple offline web-based ToDoList application, using HTML5 Local
 Storage feature as persistent storage.
 
+**Be sure** to read [INSTALL.md](https://github.com/ynov/MadToDo/blob/master/INSTALL.md) first!
+
 Links:
 ======
 
--   [Live deployment: https://vojety.appspot.com/madtodo/index.html](https://vojety.appspot.com/madtodo/index.html)
+-   [Live deployment: https://vojety.appspot.com/madtodo/install.html](https://vojety.appspot.com/madtodo/install.html)
 -   [Group Members](https://github.com/ynov/MadToDo/blob/master/MEMBERS.md)
 -   [Installation](https://github.com/ynov/MadToDo/blob/master/INSTALL.md)
-

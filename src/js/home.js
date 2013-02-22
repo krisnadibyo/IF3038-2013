@@ -140,7 +140,7 @@
         Users.save(users);
 
         Session.login(user['username'], user['password']);
-		$.open('dashboard.html', '_self');
+        $.open('dashboard.html', '_self');
     }
 
     var openForm = function(placeholderEl, formEl) {
@@ -178,8 +178,8 @@
         var password = $id('signin_password').val();
 
         if (!Session.login(username, password)) {
-        	$id('signin_username').addClass('error');
-        	$id('signin_password').addClass('error');
+            $id('signin_username').addClass('error');
+            $id('signin_password').addClass('error');
             alert('Incorrect username/password!');
         } else {
             $.open('dashboard.html', '_self');
