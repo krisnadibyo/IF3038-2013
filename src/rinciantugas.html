@@ -1,0 +1,176 @@
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="umum.css">
+		<link type="text/css" rel="stylesheet" href="rinciantugas.css">
+        <link type="text/css" rel="stylesheet" href="utama.css">
+		<script src="rinciantugas.js"></script>
+	</head>
+	<body class="bghijau1" onload="isiSemua();">
+    	<div id="header">    	        
+  
+            <div id="logo">
+                
+            </div>
+            
+            
+      		 <ul>     
+            <div id="dashboard">
+                <article id="dashboard" >
+                    <a href="Dashboard.html">
+                    Dashboard
+                    </a>
+                </article>
+            </div>
+                    
+            <div id="profil">
+                <article id="profil">
+                <a href="Profil.html" >
+                    Profil
+                </a>                
+                </article>
+            </div>
+            
+            <div id="logout">
+                <article id="logout">
+                <a href="index.html" >
+                    Logout
+                </a>                
+                </article>
+       	    </div>
+        </div>
+		<div class="fhidden" id="bground" onclick="takLihatAttachment();">
+			<div></div>
+		</div>
+		<div class="fhidden fhiddenisi" id="fhkotakijowrapper">
+			<div id="fhkotakijo" class="bghijau2">
+				<div>
+					
+				</div>
+			</div>
+		</div>
+		<div id=""  class="container bghijau2">
+			<div id="" class="subcontainer bghijau3 pad10">
+				<div id=""  class="subsubcontainer bghijau3 pad10">
+					<div class="bghijau2">
+						<div id="judul" class="mepet"><a class="fsize1 font1 twarna3">Rincian Tugas</a></div>
+					</div>					
+				</div>
+				<div id=""  class="subsubcontainer bghijau3 pad10">
+					<div class="bghijau2 mepet">
+						<div id="divform" class="fcreatetugas pad10">
+							<div class="floright">
+								<div class="infokolom"><a class="font2 iteks twarna3">Nama</a></div>
+								<div class="infowrapper">
+									<input readonly id="infojudul" class="iteks bghijau1 twarna3 borderradius" type="text" value=""/>
+								</div>
+							</div>
+							<div class="floright">
+								<div class="infokolom"><a class="font2 iteks twarna3">Assignee</a></div>
+								<div class="infowrapper">
+									<input readonly id="infoassignee" class="iteks bghijau1 twarna3 borderradius" type="text" value=""/>
+								</div>
+								<input id="editassignee" onclick="editAssignee();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="edit">
+							</div>
+							<div class="floright">
+								<div class="infokolom"><a class="font2 iteks twarna3">Date</a></div>
+								<div id="divinfowrapper" class="infowrapper">
+									<input readonly id="infotanggal" class="infokalender iteks bghijau1 twarna3 borderradius" type="text" value=""/>
+									<input readonly id="infobulan" class="infokalender iteks bghijau1 twarna3 borderradius" type="text" value=""/>
+									<input readonly id="infotahun" class="infokalender iteks bghijau1 twarna3 borderradius" type="text" value=""/>
+								</div>
+								<div id="diveditdatewrapper" class="disnone">
+									<select id="ntanggal" class="nkalender iteks2 bghijau1 twarna3 borderradius" onChange="validateTanggal()">
+										<option value="01">01</option>
+										<option value="02">02</option>
+										<option value="03">03</option>
+										<option value="04">04</option>
+										<option value="05">05</option>
+										<option value="06">06</option>
+										<option value="07">07</option>
+										<option value="08">08</option>
+										<option value="09">09</option>
+										<option value="10">10</option>
+										<option value="11">11</option>
+										<option value="12">12</option>
+										<option value="13">13</option>
+										<option value="14">14</option>
+										<option value="15">15</option>
+										<option value="16">16</option>
+										<option value="17">17</option>
+										<option value="18">18</option>
+										<option value="19">19</option>
+										<option value="20">20</option>
+										<option value="21">21</option>
+										<option value="22">22</option>
+										<option value="23">23</option>
+										<option value="24">24</option>
+										<option value="25">25</option>
+										<option value="26">26</option>
+										<option value="27">27</option>
+										<option value="28">28</option>
+										<option value="29">29</option>
+										<option value="30">30</option>
+										<option value="31" selected="selected">31</option>
+									</select>
+									<select id="nbulan" class="nkalender iteks2 bghijau1 twarna3 borderradius" onChange="validateTanggal()">
+										<option value="01">Jan</option>
+										<option value="02" selected="selected">Feb</option>
+										<option value="03">Mar</option>
+										<option value="04">Apr</option>
+										<option value="05">May</option>
+										<option value="06">Jun</option>
+										<option value="07">Jul</option>
+										<option value="08">Aug</option>
+										<option value="09">Sep</option>
+										<option value="10">Oct</option>
+										<option value="11">Nov</option>
+										<option value="12">Des</option>
+									</select>
+									<select id="ntahun" class="nkalender iteks2 bghijau1 twarna3 borderradius" onChange="validateTanggal()">
+										<option value="2012" selected="selected">2012</option>
+										<option value="2013" selected="selected">2013</option>
+										<option value="2014" selected="selected">2014</option>
+										<option value="2015" selected="selected">2015</option>
+										<option value="2016" selected="selected">2016</option>
+									</select>
+								</div>
+								<input id="editdate" onclick="editDate();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="edit">
+							</div>
+							<div class="floright">
+								<div class="infokolom"><a class="font2 iteks twarna3">Attachment</a></div>
+								<div class="infowrapper">
+									<input readonly id="infonama" class="iteks bghijau1 twarna3 borderradius" type="text" value=""/>
+									<input readonly id="infoext" class="iteks bghijau1 twarna3 borderradius" type="text" value=""/>
+								</div>
+								
+								<input id="lihatattachment" onclick="lihatAttachment();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="lihat">
+							</div>
+							<div id="divinfotag" class="floright">
+								<div class="infokolom"><a class="font2 iteks twarna3">Tag</a></div>
+								<div id="divtagwrapper" class="infowrapper">
+									<input id="tagno0" class=" iteks bghijau1 twarna3 borderradius" type="button" value="IMK">
+									<input id="tagno1" class=" iteks bghijau1 twarna3 borderradius" type="button" value="Progin">
+									<input id="tagno2" class=" iteks bghijau1 twarna3 borderradius" type="button" value="AI">
+									<input id="tagno3" class=" iteks bghijau1 twarna3 borderradius" type="button" value="Sister">
+									<input id="tagno4" class=" iteks bghijau1 twarna3 borderradius" type="button" value="KAP">
+								</div>
+								<div id="divedittagwrapper" class="disnone">
+									<input id="inputedittag" class="iteks bghijau1 twarna3 borderradius" type="text" value=""/>
+								</div>
+								<input id="edittag" class="butedit iteks bghijau1 twarna3 borderradius" onclick="editTag();" type="button" value="edit">
+							</div>	
+							<div class="floright">
+								<div class="infokolom"><a class="font2 iteks twarna3">Komentar</a></div>
+								<div class="infowrapper">
+									<article class="komentar font2 bghijau1 twarna3 borderradius">tugas ini bagus sekali</article>
+									<article class="komentar font2 bghijau1 twarna3 borderradius">wah hebat hebat</article>
+									<article class="komentar font2 bghijau1 twarna3 borderradius">lumayan menarik sih, tapi...</article>
+								</div>
+							</div>	
+						</div>					
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>	
+</html>
