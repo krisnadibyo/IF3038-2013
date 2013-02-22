@@ -14,7 +14,6 @@
         $id('newCategoryForm').style.left = (cWidth / 2) - (446 / 2) + 'px';
         $id('newTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
         $id('viewEditTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
-        // $id('pageBlurrer').style.height = cHeight * multiplier + 'px';
     }
     resizeDialogs(true);
 

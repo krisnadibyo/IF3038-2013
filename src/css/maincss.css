@@ -477,7 +477,7 @@ div#signInPlaceholder:hover  {
     width: 440px;
     min-height: 200px;
     
-    top: 20%;
+    top: 100px;
 }
 
 .formDialog > div {
@@ -529,4 +529,14 @@ div#signInPlaceholder:hover  {
 #profileContainer h1 {
     margin: 0 0 10px 0;
     padding: 20px 0 0 0;
+}
+
+#profileContainer p {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+#profileContainer ol {
+    margin: 0 0 0 20px;
+    padding: 0;
 }
