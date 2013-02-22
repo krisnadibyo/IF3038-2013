@@ -5,7 +5,7 @@
         <link type="text/css" rel="stylesheet" href="utama.css">
 		<script src="pembuatantugas.js"></script>
 	</head>
-	<body class="bghijau1" onload="validateAll();">
+	<body class="bghijau1" onLoad="validateAll();">
     	<div id="header">    	        
 <!--      
       <nav>
@@ -24,16 +24,17 @@
       </nav>
 -->      
       
-        
-        <div id="logo">
+   <a href="Dashboard.html">
+        <div id="logo" >
         	
         </div>
+        </a>
         
         
    <ul>     
         <div id="dashboard">
         	<article id="dashboard" >
-            	<a href="header.html">
+            	<a href="Dashboard.html">
             	Dashboard
                 </a>
             </article>
@@ -41,7 +42,7 @@
                 
         <div id="profil">
         	<article id="profil">
-            <a href="header.html" >
+            <a href="Profil.html" >
             	Profil
 			</a>                
             </article>
@@ -49,7 +50,7 @@
         
         <div id="logout">
         	<article id="logout">
-			<a href="tubes1/pembuatantugas.html" >
+			<a href="index.html" >
             	Logout
 			</a>                
             </article>
@@ -59,16 +60,11 @@
         <div align="right" id="search">
         <form action="" method="get">
         								
-		        <input type="text" class="searchcss" hidden="">		
+		        <input type="text" class="searchcss" >		
 
-				<input type="submit" value="Cari" class="btnloginsearch" hidden="">
+				<input type="submit" value="Cari" class="btnloginsearch" >
                 
-	         	
-                <input type="text" id="loginuser" value="Username" class="searchcss" onfocus="setVal('loginuser','Username','')"onblur="setVal('loginuser','','Username')">		
-                
-                <input type="text" id="loginpwd" value="Password" class="searchcss" onfocus="setVal('loginpwd','Password','')"onblur="setVal('loginpwd','','Password')">		
-
-				<input type="submit" value="Login" class="btnloginsearch" >
+	         			
 
 				
 			</form>	
@@ -92,7 +88,7 @@
 				<div id=""  class="subsubcontainer bghijau3 pad10">
 					<div class="bghijau2 mepet">
 						<div id="divform" class="fcreatetugas pad10">
-							<form action="Dashboard.html" id="fcreatetugas" class="" onsubmit="return isValidAll()">
+							<form action="Dashboard.html" id="fcreatetugas" class="" onSubmit="return isValidAll()">
 								<div>
 									<input class="iteks bghijau1 twarna3 borderradius"
 									       type="text"

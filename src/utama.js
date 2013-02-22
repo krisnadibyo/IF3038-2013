@@ -108,18 +108,34 @@ function validateTanggalIndex(x) {
     var warnaasli = x;
     var warnasalah = '#FF6666';
     if (!isTanggalValid()) {
-	document.getElementById('infotanggal').style.backgroundColor=warnasalah;
-	document.getElementById('infobulan').style.backgroundColor=warnasalah;
-	document.getElementById('infotahun').style.backgroundColor=warnasalah;
+	document.getElementById('ntanggal').style.backgroundColor=warnasalah;
+	document.getElementById('nbulan').style.backgroundColor=warnasalah;
+	document.getElementById('ntahun').style.backgroundColor=warnasalah;
     }
     else {
-	document.getElementById('infotanggal').style.backgroundColor=warnaasli;
-	document.getElementById('infobulan').style.backgroundColor=warnaasli;
-	document.getElementById('infotahun').style.backgroundColor=warnaasli;
+	document.getElementById('ntanggal').style.backgroundColor=warnaasli;
+	document.getElementById('nbulan').style.backgroundColor=warnaasli;
+	document.getElementById('ntahun').style.backgroundColor=warnaasli;
     }
     return false;
 }
 
+function isTanggalValid () {
+    var a = (document.getElementById('ntanggal').value);
+    var b = (document.getElementById('nbulan').value);
+    var c = (document.getElementById('ntahun').value);
+    var z = ''+a+'-'+b+'-'+c;
+    var s = z.split('-');
+    var d = new Date(+s[2], s[1]-1, +s[0]);
+    if (Object.prototype.toString.call(d) === "[object Date]") {
+	    if (!isNaN(d.getTime()) && d.getDate() == s[0] && 
+		    d.getMonth() == (s[1] - 1)) {
+		    return true;
+	    } else
+		return false;
+    } else
+	return false;
+}
 function setInfoTanggalIdx () {
     var a = (document.getElementById('ntanggal').value);
     var b = (document.getElementById('nbulan').value);

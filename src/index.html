@@ -5,6 +5,7 @@
 <title>Halaman Utama</title>
 
 <link href="utama.css" rel="stylesheet" type="text/css" /> 
+<link href="umum.css" rel="stylesheet" type="text/css" /> 
 
 <script src="utama.js">
 </script>
@@ -14,10 +15,11 @@
 <body>
 	<div id="header">    	        
 
-        <div id="logo">
+
+        <div id="logo" >
         	
         </div>
-        
+
         
        <ul>     
            
@@ -61,8 +63,8 @@
 	<div id="register">
     <ul>
         <div>
-            <form action="" method="get">                    
-                    <input class="formcss" type="text" id="username" value="Masukkan Username" onfocus="setVal('username','Masukkan Username','')" onkeyup="alertUsername('username','','Masukkan Username','pwd','reg')">				        
+            <form action="profil.html" method="get">                    
+                    <input class="formcss" type="text" id="username"  placeholder="Masukan Username" onkeyup="alertUsername('username','','Masukkan Username','pwd','reg')">				        
 
 					<br />
                     <br />                                             
@@ -79,7 +81,7 @@
 					<br />
                     <br />
 
-<select id="ntanggal" class="tglcss" onChange="setInfoTanggalIdx(); validateTanggalIndex('#A3FFA3')">
+<select id="ntanggal" class="tglcss" onChange="validateTanggalIndex('#A3FFA3')">
 										<option value="01">01</option>
 										<option value="02">02</option>
 										<option value="03">03</option>
@@ -112,7 +114,7 @@
 										<option value="30">30</option>
 										<option value="31" selected="selected">31</option>
 									</select>
-									<select id="nbulan" class="tglcss" onChange="setInfoTanggalIdx(); validateTanggalIndex('#A3FFA3')">
+									<select id="nbulan" class="tglcss" onChange="validateTanggalIndex('#A3FFA3'); validateTanggalIndex('#A3FFA3')">
 										<option value="01">Jan</option>
 										<option value="02" selected="selected">Feb</option>
 										<option value="03">Mar</option>
@@ -126,7 +128,7 @@
 										<option value="11">Nov</option>
 										<option value="12">Des</option>
 									</select>
-									<select id="ntahun" class="tglcss" onChange="setInfoTanggalIdx(); validateTanggalIndex('#A3FFA3')">
+									<select id="ntahun" class="tglcss" onChange="validateTanggalIndex('#A3FFA3'); validateTanggalIndex('#A3FFA3')">
 										<option value="2012" selected="selected">2012</option>
 										<option value="2013" selected="selected">2013</option>
 										<option value="2014" selected="selected">2014</option>
@@ -146,7 +148,7 @@
 					<br />
                     <br />
 
-                    <input type="file" class="clsavatar" >				
+                    <input type="file" class="clsavatar"  accept="image/jpg, image/jpeg" >				
                     
                     <br />
 					<br />

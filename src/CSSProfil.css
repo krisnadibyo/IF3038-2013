@@ -29,8 +29,7 @@ div#container {
 	height: 100%;
     background-color:#999;
 	border:2px medium;
-	border-radius:25px;
-	-moz-border-radius:25px;
+	
 }
 
 
@@ -41,9 +40,10 @@ div#boxphotos {
 	width:75%;
 	margin-left:8%;
 	margin-top:2%;
+	src:url(DSC_1844%20-%20Copy.jpg);
 	background-image:url(DSC_1844%20-%20Copy.jpg);
-	border-radius:25px;
-    -moz-border-radius:25px; 
+	
+	
 
 	
 }
@@ -53,8 +53,7 @@ div#SideMenu {
 	height:99%;
 	background-color:#CCC;
 	
-	border-radius:25px;
-    -moz-border-radius:25px;
+	
 	border:2px solid; 
 	float:left;
 }
@@ -75,8 +74,7 @@ div#IsiTugas {
 	background-color:#CCC;
 	float:left;
 	
-	border-radius:25px;
-    -moz-border-radius:25px;
+	
 	border:2px solid; 
 }
 
@@ -88,8 +86,7 @@ div#IsiTugasDone {
 	background-color:#CCC;
 	float:left;
 	
-	border-radius:25px;
-    -moz-border-radius:25px;
+	
 	border:2px solid; 
 }
 

@@ -3,6 +3,8 @@
 <head>
 	<link href="CSSDashboard.css" type="text/css" rel="stylesheet">
     <link href="utama.css" type="text/css" rel="stylesheet">
+	<link href="umum.css" rel="stylesheet" type="text/css" /> 
+
     <script src="DashboardScript.js" > </script>
 	
 <meta charset="utf-8">
@@ -12,9 +14,11 @@
 <body>
 	<div id="header">    	        
 
-        <div id="logo">
+      <a href="Dashboard.html">
+        <div id="logo" >
         	
         </div>
+        </a>
         
         
        <ul>     
@@ -47,7 +51,7 @@
  	</div>
     <br>
     <div id="container">
-    	<div id="Kategori">
+    	<div id="Kategori" class="borderradius">
         	<div class="divJudul">
             	<article class="atklJudul">
                 	Kategori Tugas
@@ -176,7 +180,7 @@
                  </div>
                   <div class="divbtnAddTugas" id="AddTugasOS">
                   	<form action="pembuatantugas.html" method="get">
-                	<Button type="Button" id="TambahTugasStima" class="tombol"><article class="atklKonten"> Tambah Tugas </button> 					</form>
+                	<Button type="submit" id="TambahTugasStima" class="tombol"><article class="atklKonten"> Tambah Tugas </button> 					</form>
                 </div>	
             </div>
         </div>

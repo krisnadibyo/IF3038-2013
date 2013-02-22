@@ -5,12 +5,14 @@
         <link type="text/css" rel="stylesheet" href="utama.css">
 		<script src="rinciantugas.js"></script>
 	</head>
-	<body class="bghijau1" onload="isiSemua();">
+	<body class="bghijau1" onLoad="isiSemua();">
     	<div id="header">    	        
   
-            <div id="logo">
-                
-            </div>
+           <a href="Dashboard.html">
+        <div id="logo" >
+        	
+        </div>
+        </a>
             
             
       		 <ul>     
@@ -38,7 +40,7 @@
                 </article>
        	    </div>
         </div>
-		<div class="fhidden" id="bground" onclick="takLihatAttachment();">
+		<div class="fhidden" id="bground" onClick="takLihatAttachment();">
 			<div></div>
 		</div>
 		<div class="fhidden fhiddenisi" id="fhkotakijowrapper">
@@ -69,7 +71,7 @@
 								<div class="infowrapper">
 									<input readonly id="infoassignee" class="iteks bghijau1 twarna3 borderradius" type="text" value=""/>
 								</div>
-								<input id="editassignee" onclick="editAssignee();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="edit">
+								<input id="editassignee" onClick="editAssignee();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="edit">
 							</div>
 							<div class="floright">
 								<div class="infokolom"><a class="font2 iteks twarna3">Date</a></div>
@@ -134,7 +136,7 @@
 										<option value="2016" selected="selected">2016</option>
 									</select>
 								</div>
-								<input id="editdate" onclick="editDate();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="edit">
+								<input id="editdate" onClick="editDate();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="edit">
 							</div>
 							<div class="floright">
 								<div class="infokolom"><a class="font2 iteks twarna3">Attachment</a></div>
@@ -143,7 +145,7 @@
 									<input readonly id="infoext" class="iteks bghijau1 twarna3 borderradius" type="text" value=""/>
 								</div>
 								
-								<input id="lihatattachment" onclick="lihatAttachment();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="lihat">
+								<input id="lihatattachment" onClick="lihatAttachment();" class="butedit iteks bghijau1 twarna3 borderradius" type="button" value="lihat">
 							</div>
 							<div id="divinfotag" class="floright">
 								<div class="infokolom"><a class="font2 iteks twarna3">Tag</a></div>
@@ -157,7 +159,7 @@
 								<div id="divedittagwrapper" class="disnone">
 									<input id="inputedittag" class="iteks bghijau1 twarna3 borderradius" type="text" value=""/>
 								</div>
-								<input id="edittag" class="butedit iteks bghijau1 twarna3 borderradius" onclick="editTag();" type="button" value="edit">
+								<input id="edittag" class="butedit iteks bghijau1 twarna3 borderradius" onClick="editTag();" type="button" value="edit">
 							</div>	
 							<div class="floright">
 								<div class="infokolom"><a class="font2 iteks twarna3">Komentar</a></div>
