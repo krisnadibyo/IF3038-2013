@@ -109,6 +109,9 @@ class Model
         return $sql;
     }
 
+    /**
+     * Fetch many rows
+     */
     public static function getAll($args=array())
     {
         $sql = self::createSelectSql($args);
@@ -122,11 +125,34 @@ class Model
             }
         }
 
-        return self::returnArray(
-            self::db()->executeSqlAndFetch($sql, $bv)
-        );
+        $rows = self::db()->executeSqlAndFetch($sql, $bv);
+        return $rows != null ? self::returnArray($rows) : null;
     }
 
+    /**
+     * Fetch one row
+     */
+    public static function getOne($args=array('limit' => 1)) {
+        $sql = self::createSelectSql($args);
+
+        $bv = array();
+        if (isset($args['where'])) {
+            foreach ($args['where'] as $w) {
+                if (is_array($w)) {
+                    $bv[$w[0]] = $w[2];
+                }
+            }
+        }
+
+        $class = get_called_class();
+        $row = self::db()->executeSqlAndFetch($sql, $bv, false);
+        return $row != null ? new $class($row) : null;        
+    }
+
+    /**
+     * Example:
+     * Model::deleteWhere('id = :id AND name = :name', array('id' => 0, 'name' => 'jack'));
+     */
     public static function deleteWhere($where=null, $bindVal=array())
     {
         if (!$where) {
@@ -218,12 +244,18 @@ class Model
         self::db()->executeSql($sql, $bv);
     }
 
+    /**
+     * Delete record
+     */
     public function delete()
     {
         $sql = "DELETE FROM " . self::$table . " WHERE id = :id";
         self::db()->executeSql($sql, array('id' => $this->id));
     }
 
+    /**
+     * Set a col value
+     */
     public function set($col, $val)
     {
         $this->{$col} = $val;
@@ -234,6 +266,9 @@ class Model
         $this->changes[] = $col;
     }
 
+    /**
+     * Get a col value
+     */
     public function get($col)
     {
         return $this->{$col};

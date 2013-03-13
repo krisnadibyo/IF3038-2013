@@ -29,13 +29,13 @@ class Db
 
     public function prepareStmt($sqlStmt)
     {
-        $stmt = $this->dbh->prepare($sqlStmt);
-        return $stmt;
+        return $this->dbh->prepare($sqlStmt);
     }
 
     public function executeSql($sqlStmt, $bindVal=array())
     {
-        $stmt = $this->dbh->prepare($sqlStmt);
+        $stmt = $this->prepareStmt($sqlStmt);
+
         if (count($bindVal) > 0) {
             $keys = array_keys($bindVal);
             for ($i = 0; $i < count($bindVal); $i++) {
