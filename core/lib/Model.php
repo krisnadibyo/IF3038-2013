@@ -48,7 +48,7 @@ class Model
      *   'offset': integer,
      *   'orderBy': string
      */
-    public static function createSql($args=array())
+    public static function createSelectSql($args=array())
     {
         $sql = 'SELECT ';
 
@@ -111,19 +111,30 @@ class Model
 
     public static function getAll($args=array())
     {
-        $sql = self::createSql($args);
-        $stmt = self::db()->prepareStmt($sql);
+        $sql = self::createSelectSql($args);
 
+        $bv = array();
         if (isset($args['where'])) {
             foreach ($args['where'] as $w) {
                 if (is_array($w)) {
-                    $stmt->bindValue($w[0], $w[2]);
+                    $bv[$w[0]] = $w[2];
                 }
             }
         }
 
-        $stmt->execute();
-        return self::returnArray($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return self::returnArray(
+            self::db()->executeSqlAndFetch($sql, $bv)
+        );
+    }
+
+    public static function deleteWhere($where=null, $bindVal=array())
+    {
+        if (!$where) {
+            return;
+        }
+
+        $sql = 'DELETE FROM ' . self::$table . ' WHERE ' . $where;
+        self::db()->executeSql($sql, $bindVal);
     }
 
     /**
@@ -131,46 +142,50 @@ class Model
      */
     public function save_new()
     {
-        $validation = $this->validate();
-        if (!$validation['valid']) {
-            return array(false, $validation['errors']);
+        if (!$this->validate(true)) {
+            return;
         }
 
         $sql = 'INSERT INTO ' . self::$table . ' (';
         $vars = get_object_vars($this);
         $keys = array_keys($vars);
         for ($i = 0; $i < count($keys); $i++) {
-            if ($keys[$i] == 'changes' || $vars[$keys[$i]] == null) {
+            $key = $keys[$i];
+            if ($key == 'changes' || $vars[$key] == null) {
                 continue;
             }
 
-            $sql .= $keys[$i];
+            $sql .= $key;
             if ($i < count($keys) - 1) {
                 $sql .= ', ';
             }            
         }
+
         $sql .= ') VALUES (';
         for ($i = 0; $i < count($keys); $i++) {
-            if ($keys[$i] == 'changes' || $vars[$keys[$i]] == null) {
+            $key = $keys[$i];
+            if ($key == 'changes' || $vars[$key] == null) {
                 continue;
             }
 
-            $sql .= ':' . $keys[$i];
+            $sql .= ':' . $key;
             if ($i < count($keys) - 1) {
                 $sql .= ', ';
-            }            
+            }
         }
         $sql .= ')';
 
-        $stmt = self::db()->prepareStmt($sql);
+        $bv = array();
         for ($i = 0; $i < count($keys); $i++) {
-            if ($keys[$i] == 'changes' || $vars[$keys[$i]] == null) {
+            $key = $keys[$i];
+            if ($key == 'changes' || $vars[$key] == null) {
                 continue;
             }
-            $stmt->bindValue($keys[$i], $vars[$keys[$i]]);
-        }
-        $stmt->execute();
 
+            $bv[$key] = $vars[$key];
+        }
+
+        self::db()->executeSql($sql, $bv);
         $this->id = self::db()->getDbHandler()->lastInsertId();
     }
 
@@ -179,9 +194,8 @@ class Model
      */
     public function save()
     {
-        $validation = $this->validate();
-        if (!$validation['valid']) {
-            return array(false, $validation['errors']);
+        if (!$this->validate(true)) {
+            return;
         }
 
         $vars = get_object_vars($this);
@@ -195,21 +209,19 @@ class Model
         }
 
         $sql .= ' WHERE id = :id';
-
-        $stmt = self::db()->prepareStmt($sql);
+        
+        $bv = array('id' => $this->id);
         for ($i = 0; $i < count($this->changes); $i++) {
-            $stmt->bindValue($this->changes[$i], $vars[$this->changes[$i]]);
+            $bv[$this->changes[$i]] = $vars[$this->changes[$i]];
         }
-        $stmt->bindValue('id', $this->id);
-        $stmt->execute();
+
+        self::db()->executeSql($sql, $bv);
     }
 
     public function delete()
     {
         $sql = "DELETE FROM " . self::$table . " WHERE id = :id";
-        $stmt = self::db()->prepareStmt($sql);
-        $stmt->bindValue('id', $this->id);
-        $stmt->execute();
+        self::db()->executeSql($sql, array('id' => $this->id));
     }
 
     public function set($col, $val)
@@ -228,8 +240,12 @@ class Model
     }
 
     /* Need to be overriden! */
-    public function validate()
+    public function validate($boolReturn=false)
     {
+        if ($boolReturn) {
+            return true;
+        }
+
         return array(
             'valid' => true,
         );

@@ -36,8 +36,30 @@ class Db
     public function executeSql($sqlStmt, $bindVal=array())
     {
         $stmt = $this->dbh->prepare($sqlStmt);
-        $stmt->execute($bindVal); 
+        if (count($bindVal) > 0) {
+            $keys = array_keys($bindVal);
+            for ($i = 0; $i < count($bindVal); $i++) {
+                $bv = $bindVal[$keys[$i]];
+                if (is_array($bv)) {
+                    $stmt->bindValue($keys[$i], $bv[0], $bv[1]);
+                } else {
+                    $stmt->bindValue($keys[$i], $bv);
+                }
+            }
+        }
+
+        $stmt->execute();
         return $stmt;
+    }
+
+    public function executeSqlAndFetch($sqlStmt, $bindVal=array(), $all=true)
+    {
+        $stmt = $this->executeSql($sqlStmt, $bindVal);
+        if ($all) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
     }
 
     public static function loadConfig($cfg)

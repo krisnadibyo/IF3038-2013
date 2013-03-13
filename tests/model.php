@@ -20,10 +20,10 @@ $qArgs = array(
 );
 
 println("(1) Normal createSql without argument:");
-println(Hello::createSql());
+println(Hello::createSelectSql());
 
 println("\n(2) createSql with argument:");
-println(Hello::createSql($qArgs));
+println(Hello::createSelectSql($qArgs));
 
 println("\nexecute (1):");
 print_r($all = Hello::getAll());
