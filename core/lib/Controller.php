@@ -10,10 +10,7 @@ class Controller
     protected $request;
     protected $response;
 
-    protected function init()
-    {
-        
-    }
+    protected function init() {}
 
     public function __construct()
     {
