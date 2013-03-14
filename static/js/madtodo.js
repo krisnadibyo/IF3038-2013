@@ -1,6 +1,10 @@
 /** MadToDo JS Lib **/
 /* requires: A web browser */
 (function($) {
+    if (!$.AppRoot) {
+        $.AppRoot = './';
+    }
+
     /**
      * Enrich the element object.
      * 

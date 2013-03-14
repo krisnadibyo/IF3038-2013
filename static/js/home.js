@@ -1,7 +1,7 @@
 (function($) {
     /** Check session **/
     if (Session.getLoggedUser()) {
-        $.open('./dashboard.html', '_self');
+        $.open($.AppRoot + 'page/dashboard', '_self');
     }
 
     /** SIGNUP **/
@@ -140,7 +140,7 @@
         Users.save(users);
 
         Session.login(user['username'], user['password']);
-        $.open('dashboard.html', '_self');
+        $.open($.AppRoot + 'page/dashboard', '_self');
     }
 
     var openForm = function(placeholderEl, formEl) {
@@ -182,7 +182,7 @@
             $id('signin_password').addClass('error');
             alert('Incorrect username/password!');
         } else {
-            $.open('dashboard.html', '_self');
+            $.open($.AppRoot + 'page/dashboard', '_self');
         }
     }
 

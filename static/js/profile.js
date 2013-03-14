@@ -3,7 +3,7 @@
 
     if (!user) {
     alert("You're not signed in! Please sign in first!");
-        $.open('./index.html', '_self');
+        $.open($.AppRoot, '_self');
     }
 
     var tasks = Tasks.load();

@@ -3,7 +3,7 @@
 
     if (!user) {
     alert("You're not signed in! Please sign in first!");
-        $.open('./index.html', '_self');
+        $.open($.AppRoot, '_self');
     }
 
     var resizeDialogs = function(firstTime) {
@@ -28,7 +28,7 @@
     $id('signOutButton').onclick = function(e) {
         Session.logout();
         alert("You have been logged out!");
-        $.open('./index.html', '_self');
+        $.open($.AppRoot, '_self');
     }
 
     // Populate tasks
@@ -217,7 +217,7 @@
 
         tasks.push(t);
         Tasks.save(tasks);
-        $.open('./dashboard.html', '_self');
+        $.open($.AppRoot + 'page/dashboard', '_self');
     }
 
     // Dialogs
