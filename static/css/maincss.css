@@ -436,7 +436,7 @@ div#signInPlaceholder:hover  {
     opacity: 0;
 
     width: 100%;
-    height: 500%;
+    height: 100%;
 
     background: #444;
     z-index: 2;
@@ -446,6 +446,7 @@ div#signInPlaceholder:hover  {
     -moz-transition: all 0.35s;
     -webkit-transition: all 0.35s;
     transition: all 0.35s;
+    box-shadow: 0 0 80px #000;
 }
 
 .formDialog {
@@ -457,7 +458,7 @@ div#signInPlaceholder:hover  {
     border-radius: 20px;
 
     position: absolute;
-    top: 100px;
+    top: 40px;
     left: 0;
 
     background: #e8e8e8;
@@ -477,7 +478,7 @@ div#signInPlaceholder:hover  {
     width: 440px;
     min-height: 200px;
     
-    top: 100px;
+    top: 40px;
 }
 
 .formDialog > div {

@@ -12,7 +12,7 @@ class Response
         }
 
         header('Content-Type: ' . $contentType);
-        require_once dirname(__FILE__) . '/../../views/' . preg_replace('/\./', '/', $viewPath) . '.php';
+        require_once dirname(__FILE__) . '/../../views/' . preg_replace('/\./', '/', $viewPath) . '.phtml';
     }
 
     public function setHeader($header)

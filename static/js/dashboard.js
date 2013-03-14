@@ -162,9 +162,8 @@
             'opacity': '1.0'
         }, 25);
         $id('pageBlurrer').doTransition({
-            'opacity': '0.85'
+            'opacity': '0.4'
         }, 25);
-
 
         taskInputs['owner'].val(user['username']);
         taskInputs['category'].val(activeCategory);
@@ -247,7 +246,7 @@
             'opacity': '1.0'
         }, 25);
         $id('pageBlurrer').doTransition({
-            'opacity': '0.85'
+            'opacity': '0.4'
         }, 25);
     }
 
@@ -266,7 +265,7 @@
             'opacity': '1.0'
         }, 25);
         $id('pageBlurrer').doTransition({
-            'opacity': '0.85'
+            'opacity': '0.4'
         }, 25);
 
         $id('taskEditSubmitButton').attr('disabled', 'true');

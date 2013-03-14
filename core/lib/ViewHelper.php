@@ -19,10 +19,6 @@ class ViewHelper
         $link = Config::$config['root_path'] . 'static/' . $url;
         return $link;
     }
-
-    public static function render($viewPath) {
-         require_once dirname(__FILE__) . '/../../views/' . preg_replace('/\./', '/', $viewPath) . '.php';
-    }
 }
 
 /* Shortcuts */
@@ -43,5 +39,5 @@ function vh_render($viewPath, $data=array()) {
         ${$key} = $val;
     }
 
-    include dirname(__FILE__) . '/../../views/' . preg_replace('/\./', '/', $viewPath) . '.php';
+    include dirname(__FILE__) . '/../../views/' . preg_replace('/\./', '/', $viewPath) . '.phtml';
 }
