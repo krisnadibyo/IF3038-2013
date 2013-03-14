@@ -28,19 +28,22 @@ class App
             $action = Config::$config['default_action'];
         }
 
-        $paramStr = '';
         $params = Router::getParams();
-        if (count($params) > 0) {        
-            for ($i = 0; $i < count($params); $i++) {
-                $paramStr .= "'" . $params[$i] . "'";
-                if ($i != count($params) - 1) {
-                    $paramStr .= ', ';
-                }
-            }
-        }
 
-        $cobj = self::loadController($controller);
-        eval('$cobj->{$action}' . '(' . $paramStr . ');');
+        try {
+            $cobj = self::loadController($controller);
+            if (method_exists($cobj, $action)) {
+                call_user_func_array(array($cobj, $action), $params);
+            } else {
+                throw new Exception("Action did not exist", 1);
+            }
+        } catch (Exception $e) {
+            $res = new Response();
+            $res->setHeader('Status: 404 Not Found');
+            $res->renderView('pages.404');
+
+            exit();
+        }
     }
 
     public static function run()
@@ -52,7 +55,7 @@ class App
     public static function loadModel($modelName)
     {
         import('models.' . $modelName);
-        eval($modelName . '::load();');
+        call_user_func(array($modelName, 'load'));
     }
 
     public static function loadController($ctrlName)
