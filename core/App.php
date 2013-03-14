@@ -1,12 +1,12 @@
 <?php
 import('config.config');
 import('config.db');
+
 import('core.Router');
 import('core.Db');
+
 import('core.lib.Model');
 import('core.lib.Controller');
-import('core.lib.Session');
-import('core.lib.ViewHelper');
 
 class App
 {

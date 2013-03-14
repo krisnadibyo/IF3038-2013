@@ -1,7 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../core/Core.php';
-import('core.App');
-App::init();
+import('core.lib.ViewHelper');
 
 vh_render('hello.header', array('title' => 'Controller Test')); ?>
 

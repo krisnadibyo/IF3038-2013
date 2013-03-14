@@ -1,4 +1,7 @@
 <?php
+import('core.lib.Session');
+import('core.lib.ViewHelper');
+
 import('core.lib.Request');
 import('core.lib.Response');
 

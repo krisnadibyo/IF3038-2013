@@ -1,4 +1,6 @@
 <?php
+import('config.config');
+
 class ViewHelper
 {
     public static function link($url)
