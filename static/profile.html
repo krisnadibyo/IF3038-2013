@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+
+    <script type="text/javascript" src="./js/madtodo.js"></script>
+    <script type="text/javascript" src="./js/user.js"></script>
+    <script type="text/javascript" src="./js/task.js"></script>
+
+    <style type="text/css">@import url('./css/maincss.css');</style>
+
+    <title>Profile</title>
+</head>
+
+<body>
+<!-- BEGIN BODY -->
+
+<div id="header">
+    <div>
+        <div id="logo"><a href="home.html">MadToDo!</a></div>
+        <ul id="topNav">
+            <li><a href="profile.html" class="current">Profile</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="index.html">Home</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="profileContainer">
+    <h1 id="name"></h1>
+    <div id="username"></div>
+    <div id="email"></div>
+    <div id="birthday"></div>
+    <div id="avatar">
+        Avatar:<br />
+        <img width="200px" height="200px" id="avaImg" alt="Avatar" />
+    </div>
+    <div id="bio"></div>
+    <div><button onclick="alert('Not implemented')">Edit Profile</button></div>
+    <br />
+
+    <div>
+        <h1>User's tasks</h1>
+        <ol id="userTasks">
+            
+        </ol><br />
+        <div><a href="./dashboard.html">View in dashboard</a></div>
+    </div>
+    
+</div>
+
+<div id="footer"></div>
+
+<script type="text/javascript" src="./js/profile.js"></script>
+
+<!-- END BODY -->
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    
+    <script type="text/javascript" src="./js/madtodo.js"></script>
+    <script type="text/javascript" src="./js/user.js"></script>
+
+    <style type="text/css">@import url('./css/maincss.css');</style>
+
+    <title>Home</title>
+</head>
+
+<body>
+<!-- BEGIN BODY -->
+
+<div id="header">
+    <div>
+        <div id="logo"><a href="home.html">MadToDo!</a></div>
+        <ul id="topNav">
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="index.html" class="current">Home</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="columnsContainer">
+
+    <div id="coloumnOne">
+        <!-- Sign Up -->
+        <div class="colPlaceholder" id="signUpPlaceholder">
+            <div>Sign Up</div>
+        </div>
+
+        <form id="signUpForm" class="signXForm" action="javascript:;">
+            <div><input id="signup_name" rule="name" type="text" placeholder="Name *" /></div>
+            <div><input id="signup_username" rule="username" type="text" placeholder="Username *" /></div>
+            <div><input id="signup_password" rule="password" type="password" placeholder="Password *" /></div>
+            <div><input id="signup_email" rule="email" type="text" placeholder="Email *" /></div>
+            <div>
+                <label>Birthday:</label>
+                <select name="" id="bdYear"></select>-<select id="bdMonth"></select>-<select id="bdDay"></select>
+                <input id="signup_birthday" rule="birthday" type="hidden" placeholder="Birthday *" /></div>
+            <div id="uploadAvatarDiv">
+                <input id="signup_avatar" type="text" placeholder="Avatar Image (Browse...)" disabled="true" />
+                <input id="avatarFile" type="file" />
+                <img id="avatarImg" width="200px" height="200px" />
+            </div>
+            <div><label>Short bio:</label><textarea id="signup_bio"></textarea></div>
+            <div><button type="submit" id="signUpButton" disabled="true">Sign Up</button></div>
+        </form>
+    </div>
+
+    <div class="colSpace"></div>
+    <div id="coloumnTwo"></div>
+    <div class="clear"></div>
+    <div id="coloumnThree"></div>
+    <div class="colSpace"></div>
+
+    <div id="coloumnFour">
+        <!-- Sign In -->
+        <div class="colPlaceholder" id="signInPlaceholder">
+            <div>Sign In</div>
+        </div>
+
+        <form id="signInForm" class="signXForm" action="javascript:;">
+            <div><input id="signin_username" type="text" placeholder="Username" /></div>
+            <div><input id="signin_password" type="password" placeholder="Password" /></div>
+            <div><button type="submit" id="signInButton">Sign In</button></div>
+        </form>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+<div id="footer"></div>
+
+<script type="text/javascript" src="./js/home.js"></script>
+
+<!-- END BODY -->
+</body>
+</html>

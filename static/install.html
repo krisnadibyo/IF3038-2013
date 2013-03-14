@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+
+    <script type="text/javascript" src="./js/madtodo.js"></script>
+    <script type="text/javascript" src="./js/user.js"></script>
+    <script type="text/javascript" src="./js/task.js"></script>
+    <script type="text/javascript" src="./js/seed.js"></script>
+
+    <style type="text/css">@import url('./css/maincss.css');</style>
+
+    <title>Dashboard</title>
+</head>
+
+<body>
+<!-- BEGIN BODY -->
+
+<div id="header">
+    <div>
+        <div id="logo"><a href="home.html">MadToDo!</a></div>
+        <ul id="topNav">
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="install.html" class="current">Install</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div id="dashboardContainer">
+    <div id="welcomeMessage">
+        Welcome to your Dashboard! You're logged in as <strong id="loggedUserText">monkey</strong>
+        <button id="signOutButton">Sign Out</button>
+    </div>
+
+    <div id="twoColumns">
+    <!-- BEGIN TWOCOLUMNS -->
+
+    <div id="categoriesDiv">
+        <ul id="categoryList">
+            <li><button onclick="reinit()">(Re)Initialize Local Storage</button></li>
+        </ul>
+    </div>
+
+    <div id="tasksDiv">
+
+    </div>
+
+    <div class="clear"></div>
+
+    <!-- END TWOCOLUMNS -->
+    </div>
+</div>
+
+<div id="footer"></div>
+
+<script type="text/javascript">
+(function($) {
+    $.reinit = function() {
+        seedUsers();
+        seedTasks();
+        Session.logout();
+        alert('Local Storage (Re)Initialization finished!');
+        $.open('./index.html', '_self');
+    }
+})(window);
+</script>
+
+<!-- END BODY -->
+</body>
+</html>

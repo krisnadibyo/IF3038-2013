@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+
+    <script type="text/javascript" src="../js/madtodo.js"></script>
+    <script type="text/javascript" src="../js/user.js"></script>
+    <script type="text/javascript" src="../js/task.js"></script>
+    <script type="text/javascript" src="../js/seed.js"></script>
+
+<style type="text/css">
+body {
+    font-family: "Ubuntu", "Verdana", sans-serif;
+}
+
+li {
+    margin: 15px;
+}
+
+ul > li {
+    margin: 0;
+}
+
+input[type=text] {
+    border: 2px solid #444;
+    margin: 2px;
+    border-radius: 5px;
+    background: transparent;
+    padding: 5px;
+    width: 180px;
+
+    -o-transition: all 0.25s;
+    -ms-transition: all 0.25s;
+    -moz-transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}
+
+input[type=text].disabled {
+    background: #888888;
+    color: #eeeeee;
+}
+
+input[type=text].error {
+    -moz-box-shadow: inset 0 0 .4em #ff0000;
+    -webkit-box-shadow: inset 0 0 .4em #ff0000;
+    box-shadow: inset 0 0 .4em #ff0000;
+
+}
+
+button {
+    border: 2px solid #444;
+    margin: 2px;
+    border-radius: 5px;
+    background: transparent;
+    padding: 5px;
+}
+
+#taskForm > div {
+    position: relative;
+}
+
+#taskForm > div > div.errorMessage {
+    position: absolute;
+    left: 250px;
+    top: 3px;
+
+    padding: 4px;
+    max-height: 16px;
+    max-width: 480px;
+    border: 2px solid #ee4444;
+    background: #ccc;
+    opacity: 0;
+    font-size: 0.8em;
+    
+    -o-transition: all 0.25s;
+    -ms-transition: all 0.25s;
+    -moz-transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}
+</style>
+
+</head>
+
+<body>
+<!-- BEGIN BODY -->
+
+<div id="header">
+    <div id="loginIndicator">asdffas</div>
+</div>
+
+<div id="taskListDiv"></div>
+
+<div>
+    <button id="clearTasks">Clear Tasks</button>
+    <button id="reseedTasks">ReSeed Tasks</button>
+</div>
+
+<form action="javascript:;" id="taskForm">
+    <h2>New Task</h2>
+    
+    <div><input type="text" id="ownerInput" rule="owner" placeholder="Owner *" /></div>
+    <div><input type="text" id="categoryInput" rule="category" placeholder="Category" /></div>
+    <div><input type="text" id="nameInput" rule="name" placeholder="Name *" /></div>
+    <div><input type="text" id="attachmentInput" placeholder="Attachment" /></div>
+    <div><input type="text" id="deadlineInput" rule="date" placeholder="Deadline (in YYYY-MM-DD) *" /></div>
+    <div><input type="text" id="assigneeInput" placeholder="Assignee" /></div>
+    <div><input type="text" id="tagsInput" placeholder="Tags" /></div>
+    <div><button type="submit" id="taskSubmit">Submit</button></div>
+</form>
+
+<script type="text/javascript">
+(function($) {
+    var loggedUser = Session.getLoggedUser();
+    if (loggedUser !== undefined) {
+        $id('loginIndicator').html('Logged as ' + loggedUser.username);
+
+        $id('ownerInput')
+            .val(loggedUser.username)
+            .attr('disabled', 'true')
+            .addClass('disabled');
+    } else {
+        $id('loginIndicator').html('Not logged in');
+        $id('ownerInput')
+            .val('')
+            .removeAttr('disabled')
+            .removeClass('disabled');
+    }
+
+    /* TaskList */
+    var taskList = $e.create('ol');    
+    $id('taskListDiv').appendChild(taskList);
+
+    var tasks = Tasks.load();
+
+    $.refreshTaskList = function() {
+        taskList.html('');
+
+        tasks.forEach(function(task, index) {
+            var content =
+                '<ul>' +
+                    '<li>Owner: ' + task.owner + '</li>' +
+                    '<li>Category: ' + task.category + '</li>' +
+                    '<li>Name: ' + task.name + '</li>' +
+                    '<li>Attachment: ' + task.attachment + '</li>' + 
+                    '<li>Deadline: ' + task.deadline + '</li>' +
+                    '<li>Assignee: ' + task.assignee + '</li>' +
+                    '<li>Tags: ' + task.getTags() + '</li>' +
+                    '<li>Done: ' + ((task.status == 'done') ? 'Done' : 'Not yet') + '</li>' +
+                    '<li>' +
+                        '<button onclick="deleteTask(' + index + ')">Delete</button>' +
+                        ((task.status != 'done')
+                            ? '<button onclick="doneTask(' + index + ')">Done</button>'
+                            : '<button onclick="undoneTask(' + index + ')">UnDone</button>') +
+                    '</li>' +
+                '</ul>';
+
+            taskList.appendChild($e.create('li').html(content));
+        });
+    }
+
+    $.deleteTask = function(id) {
+        tasks.splice(id, 1);
+        Tasks.save(tasks);
+
+        refreshTaskList();
+    }
+    
+    $.doneTask = function(id) {
+        tasks[id].status = 'done';
+        Tasks.save(tasks);
+
+        refreshTaskList();
+    }
+
+    $.undoneTask = function(id) {
+        tasks[id].status = '';
+        Tasks.save(tasks);
+
+        refreshTaskList();
+    }
+
+    refreshTaskList();
+
+    /* New Task Form */
+    var taskInput = {
+        owner: $id('ownerInput'),
+        category: $id('categoryInput'),
+        name: $id('nameInput'),
+        attachment: $id('attachmentInput'),
+        deadline: $id('deadlineInput'),
+        assignee: $id('assigneeInput'),
+        tags: $id('tagsInput')
+    }
+    
+    var checkInput = function(e) {
+        if(!TaskHelper.testRule(e.val(), e.attr('rule'))) {
+            if (!e.hasClass('error')) {
+                var errorDiv = $e.create('div')
+                    .addClass('errorMessage')
+                    .html(TaskHelper.errorMessages[e.attr('rule')]);
+
+                e.addClass('error')
+                    .parentNode.appendChild(errorDiv);
+
+                errorDiv.doTransition({ left: '200px', opacity: '1.0' }, 250, 25);
+            }
+            return false;
+        } else {
+            if (e.hasClass('error')) {
+                e.removeClass('error')
+                    .parentNode.removeChild(e.parentNode.lastChild);
+            }
+            return true;
+        }
+    }
+
+    for (var key in taskInput) {
+        var e = taskInput[key]; 
+        if (e.attr('rule')) {
+            e.onkeyup = function(e) {
+                checkInput(this);
+            }
+
+            if (e.val() !== '') {
+                checkInput(e);
+            }
+        }
+    }
+
+    $id('taskSubmit').onclick = function(e) {
+        var error = false;
+
+        for (var key in taskInput) {
+            var e = taskInput[key];
+            if (e.attr('rule') && !checkInput(e)) {
+                error = true;
+            }
+        }
+
+        if (error) {
+            return;
+        }
+
+        var t = new Task();
+        t.setTags(taskInput['tags'].value);
+        t.status = '';
+
+        for (var key in taskInput) {
+            if (key !== 'tags') {
+                t[key] = taskInput[key].value;
+            }
+            if (key !== 'owner') {
+                taskInput[key].value = '';
+            }
+        }
+
+        if (t.category === '') {
+            t.category = 'Uncategorized';
+        }
+
+        tasks.push(t);
+        Tasks.save(tasks);
+
+        refreshTaskList();
+    }
+
+    $id('clearTasks').onclick = function(e) {
+        tasks = Tasks.clear();
+        refreshTaskList();
+    }
+
+    $id('reseedTasks').onclick = function(e) {
+        seedTasks();
+        window.open('tasks.html', '_self');
+    }
+})(window);
+</script>
+
+<!-- END OF BODY -->
+</body>
+</html>
