@@ -17,6 +17,7 @@ class PageController extends Controller
             'isHome' => true,
             'headerScripts' => array(
                 'js/madtodo.js',
+                'js/xhr.js',
                 'js/user.js',
             ),
             'footerScripts' => array(
@@ -39,6 +40,7 @@ class PageController extends Controller
             'isDashboard' => true,
             'headerScripts' => array(
                 'js/madtodo.js',
+                'js/xhr.js',
                 'js/user.js',
                 'js/task.js',
             ),
@@ -57,6 +59,7 @@ class PageController extends Controller
             'isProfile' => true,
             'headerScripts' => array(
                 'js/madtodo.js',
+                'js/xhr.js',
                 'js/user.js',
                 'js/task.js',
             ),
