@@ -1,10 +1,18 @@
 <?php
 class Response
 {
-    public function renderView($viewPath, $data, $contentType='text/html')
+    public function renderView($viewPath, $data=array(), $contentType='text/html')
     {
+        if (!$data) {
+            $data = array();
+        }
+
+        foreach($data as $key => $val) {
+            ${$key} = $val;
+        }
+
         header('Content-Type: ' . $contentType);
-        import('views.' . $viewPath);
+        require_once dirname(__FILE__) . '/../../views/' . preg_replace('/\./', '/', $viewPath) . '.php';
     }
 
     public function setHeader($header)

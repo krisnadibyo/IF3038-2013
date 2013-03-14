@@ -1,7 +1,7 @@
 <?php
 class HelloController extends Controller
 {
-    public function init()
+    protected function init()
     {
         App::loadModel('Hello');
     }
@@ -35,4 +35,12 @@ class HelloController extends Controller
 
         $this->response->renderJson($hellos, true);
     }
+
+    public function view($msg='Hello!')
+    {
+        $this->response->renderView('hello.content', array(
+            'title' => 'Rendered From Hello::view()',
+            'msg' => urldecode($msg),
+        ));
+    }    
 }

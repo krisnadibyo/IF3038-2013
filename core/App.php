@@ -6,31 +6,26 @@ import('core.Db');
 import('core.lib.Model');
 import('core.lib.Controller');
 import('core.lib.Session');
+import('core.lib.ViewHelper');
 
 class App
 {
-    private static $config;
-
     public static function init()
     {
-        self::$config = Config::$config;
         Router::init();
         Db::loadConfig(DbConfig::$config);
     }
 
-    public static function run()
+    public static function dispatch()
     {
-        self::init();
-
-        /* TODO: Deal with controller and view */
         $controller = Router::getController();
         if (!$controller) {
-            $controller = self::$config['default_controller'];
+            $controller = Config::$config['default_controller'];
         }
 
         $action = (string) Router::getAction();
         if (!$action) {
-            $action = self::$config['default_action'];
+            $action = Config::$config['default_action'];
         }
 
         $paramStr = '';
@@ -46,6 +41,12 @@ class App
 
         $cobj = self::loadController($controller);
         eval('$cobj->' . $action . '(' . $paramStr . ');');
+    }
+
+    public static function run()
+    {
+        self::init();
+        self::dispatch();
     }
 
     public static function loadModel($modelName)
