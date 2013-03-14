@@ -18,7 +18,7 @@ class App
 
     public static function dispatch()
     {
-        $controller = Router::getController();
+        $controller = (string) Router::getController();
         if (!$controller) {
             $controller = Config::$config['default_controller'];
         }
@@ -40,7 +40,7 @@ class App
         }
 
         $cobj = self::loadController($controller);
-        eval('$cobj->' . $action . '(' . $paramStr . ');');
+        eval('$cobj->{$action}' . '(' . $paramStr . ');');
     }
 
     public static function run()
