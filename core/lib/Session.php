@@ -23,6 +23,28 @@ class Session
         }
     }
 
+    public static function loggedIn()
+    {
+        if (self::get('login') == null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function login($user)
+    {
+        self::set('login', true);
+        self::set('user', $user);
+    }
+
+    public static function logout()
+    {
+        self::remove('login');
+        self::remove('user');
+        self::destroy();
+    }
+
     public static function destroy()
     {
         session_destroy();

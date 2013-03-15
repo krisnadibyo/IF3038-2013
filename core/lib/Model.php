@@ -265,7 +265,7 @@ class Model
             $bv[$bvkey] = $vars[$key];
         }
 
-        println($sql);
+        // println($sql);
         self::db()->executeSql($sql, $bv);
         $this->id = self::db()->getDbHandler()->lastInsertId();
     }
@@ -294,7 +294,7 @@ class Model
             $bv[$this->changes[$i]] = $vars[$this->changes[$i]];
         }
 
-        println($sql);
+        // println($sql);
         self::db()->executeSql($sql, $bv);
         unset($this->changes);
     }

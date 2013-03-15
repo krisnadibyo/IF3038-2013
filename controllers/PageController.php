@@ -1,6 +1,11 @@
 <?php
 class PageController extends Controller
 {
+    public function init()
+    {
+        Session::init();
+    }
+
     public function approot_js()
     {
         $data = array(
@@ -81,5 +86,21 @@ class PageController extends Controller
     {
         $this->response->redirect(vh_link('hello/view/'
             . urlencode('The quick<br/>brown fox<br/>jumps over<br/>the lazy<br/>dog')));
+    }
+
+    public function magiclogin()
+    {
+        App::loadModel('User');
+
+        $user = User::getAll();
+        Session::login($user[0]);
+
+        $this->response->write("Logged in!");
+    }
+
+    public function logout()
+    {
+        Session::logout();
+        $this->response->write("Logged out!");
     }
 }
