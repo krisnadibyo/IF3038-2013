@@ -110,7 +110,7 @@ class Model
     /**
      * Fetch many rows
      */
-    public static function getAll($args=array())
+    public static function getAll($args=array(), $returnArrayObject=true)
     {
         $sql = self::createSelectSql($args);
 
@@ -124,13 +124,17 @@ class Model
         }
 
         $rows = self::db()->executeSqlAndFetch($sql, $bv);
-        return $rows != null ? self::returnArray($rows) : null;
+        if ($returnArrayObject) {
+            return $rows != null ? self::returnArray($rows) : null;
+        }
+
+        return $rows;
     }
 
     /**
      * Fetch one row
      */
-    public static function getOne($args=array('limit' => 1)) {
+    public static function getOne($args=array('limit' => 1), $returnObject=true) {
         $sql = self::createSelectSql($args);
 
         $bv = array();
@@ -144,7 +148,11 @@ class Model
 
         $class = get_called_class();
         $row = self::db()->executeSqlAndFetch($sql, $bv, false);
-        return $row != null ? new $class($row) : null;        
+        if ($returnObject) {
+            return $row != null ? new $class($row) : null;
+        }
+
+        return $row;
     }
 
     /**
