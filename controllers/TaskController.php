@@ -1,7 +1,7 @@
 <?php
 class TaskController extends Controller
 {
-    public function init()
+    protected function init()
     {
         foreach (array('User', 'Category', 'Task', 'Tag', 'Comment') as $model) {
             App::loadModel($model);
@@ -19,7 +19,7 @@ class TaskController extends Controller
     {
         $tasks = Task::getAll();
 
-        if ($complete) {
+        if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
                 $task->user = $task->get_user()->get_name();
                 $task->category = $task->get_category()->get_name();
@@ -39,7 +39,7 @@ class TaskController extends Controller
             ),
         ));
 
-        if ($complete) {
+        if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
                 $task->user = $task->get_user()->get_name();
                 $task->category = $task->get_category()->get_name();
@@ -75,7 +75,7 @@ class TaskController extends Controller
     public function category($category='Uncategorized', $complete=false)
     {
         $tasks = Task::getByCategoryName($category);
-        if ($complete) {
+        if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
                 $task->user = $task->get_user()->get_name();
                 $task->category = $task->get_category()->get_name();
@@ -90,13 +90,7 @@ class TaskController extends Controller
     public function get($id=0, $complete=false)
     {
         $task = Task::getOneById($id);
-        if (!$task) {
-            // task not found
-            $this->response->renderJson(null);
-            return;
-        }
-
-        if ($complete) {
+        if ($complete && $task != null) {
             $task->user = $task->get_user()->get_name();
             $task->category = $task->get_category()->get_name();
             $task->tags = $task->get_tags(true);
@@ -111,15 +105,13 @@ class TaskController extends Controller
     {
         // make sure the request method is POST and sending data
         if ($this->request->isGET() || !$this->request->getParam('data')) {
-            $this->response->renderJson(null);
-            return;
+            return $this->response->nullJson();
         }
 
         $taskData = json_decode($this->request->getParam('data'), true);
         if (!$taskData || !is_array($taskData)) {
             // bad task data
-            $this->response->renderJson(null);
-            return;
+            return $this->response->nullJson();
         }
 
         $task = new Task($taskData);
@@ -129,7 +121,7 @@ class TaskController extends Controller
             return;
         }
 
-        $task->save_new();
+        $task->save_new(false);
         $this->response->renderJson(array('status' => 'success'));
     }
 
@@ -138,22 +130,19 @@ class TaskController extends Controller
     {
         // make sure the request method is POST and sending data
         if ($this->request->isGET() || !$this->request->getParam('data')) {
-            $this->response->renderJson(null);
-            return;
+            return $this->response->nullJson();
         }
 
         $task = Task::getOneById($id);
         if (!$task) {
             // task not found
-            $this->response->renderJson(null);
-            return;
+            return $this->response->nullJson();
         }
 
         $taskData = json_decode($this->request->getParam('data'), true);
         if (!$taskData || !is_array($taskData)) {
             // bad task data
-            $this->response->renderJson(null);
-            return;
+            return $this->response->nullJson();
         }
 
         foreach ($taskData as $col => $val) {
@@ -166,7 +155,7 @@ class TaskController extends Controller
             return;
         }
 
-        $task->save();
+        $task->save(false);
         $this->response->renderJson(array('status' => 'success'));
     }
 
@@ -175,15 +164,13 @@ class TaskController extends Controller
     {
         // make sure the request method is POST
         if ($this->request->isGET()) {
-            $this->response->renderJson(null);
-            return;
+            return $this->response->nullJson();
         }
 
         $task = Task::getOneById($id);
         if (!$task) {
             // task not found
-            $this->response->renderJson(null);
-            return;
+            return $this->response->nullJson();
         }
 
         $task->delete();
