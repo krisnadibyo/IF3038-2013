@@ -109,14 +109,14 @@ class TagController extends Controller
         $this->response->renderJson(array('status' => 'success'));
     }
 
-    // POST /tag/delete/<id>
-    public function delete($id=0)
+    // POST /tag/delete/<name>
+    public function delete($name=0)
     {
         if ($this->request->isGET()) {
             return $this->response->nullJson();
         }
 
-        $tag = Tag::getOneById($id);
+        $tag = Tag::getOneByName($name);
         if (!$tag) {
             return $this->response->nullJson();
         }
@@ -125,36 +125,60 @@ class TagController extends Controller
         $this->response->renderJson(array('status' => 'success'));
     }
 
-    // POST /tag/assign/<tag_id>/<task_id>
-    public function assign($tag_id=0, $task_id=0)
+    // POST /tag/reassign/<task_id> -- data=JSON
+    public function reassign($task_id)
+    {
+        if ($this->request->isGET() || !$this->request->getParam('data')) {
+            return $this->response->nullJson();
+        }
+
+        $tagArr = json_decode($this->request->getParam('data'), true);
+        if (!$tagArr || !is_array($tagArr)) {
+            return $this->response->nullJson();
+        }
+
+        $tagIds = array();
+        foreach ($tagArr as $tagName) {
+            if (!$tag = Tag::getOneByName($tagName)) {
+                $tag = new Tag(array('name' => $tagName));
+                $tag->save_new();
+            }
+            $tagIds[] = $tag->get_id();
+        }
+
+        Tag::reassign($tagIds, $task_id);        
+    }
+
+    // POST /tag/assign/<tag_name>/<task_id>
+    public function assign($tag_name=0, $task_id=0)
     {
         if ($this->request->isGET()) {
             return $this->response->nullJson();
         }
 
-        if (Task::getOneById($task_id) == null || Tag::getOneById($tag_id) == null) {
+        $tag = Tag::getOneByName($tag_name);
+        if (Task::getOneById($task_id) == null || $tag == null) {
             return $this->response->nullJson();
         }
 
-        $tt = new Task_Tag(array(
-            'task_id' => $task_id,
-            'tag_id' => $tag_id,
-        ));
-        $tt->save_new(false);
-
+        Tag::assign($tag->get_id(), $task_id);
         $this->response->renderJson(array('status' => 'success'));
     }
 
-    // POST /tag/unassign/<tag_id>/<task_id>
-    public function unassign($tag_id, $task_id)
+    // POST /tag/unassign/<tag_name>/<task_id>
+    public function unassign($tag_name, $task_id)
     {
         if ($this->request->isGET()) {
             return $this->response->nullJson();
         }
 
-        Task_Tag::deleteWhere('task_id = :task_id AND tag_id = :tag_id', array(
-            'task_id' => $task_id,
-            'tag_id' => $tag_id,
+        $tag = Tag::getOneByName($tag_name);
+        if (!$tag) {
+            return $this->response->nullJson();
+        }
+
+        Task_Tag::deleteWhere('task_id = :task_id', array(
+            'task_id' => $task_id
         ));
 
         $this->response->renderJson(array('status' => 'success'));

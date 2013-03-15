@@ -44,6 +44,10 @@ function vh_render($viewPath, $data=array()) {
 
 function vh_printTags($tags)
 {
+    if (!$tags) {
+        return '';
+    }
+
     $tagStr = '';
     foreach ($tags as $tag) {
         $tagStr .= $tag->get_name() . ', ';

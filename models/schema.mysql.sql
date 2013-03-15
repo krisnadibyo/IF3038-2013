@@ -33,6 +33,7 @@ CREATE TABLE `task`(
     `name` VARCHAR(32) NOT NULL,
     `attachment` VARCHAR(255) NOT NULL,
     `deadline` DATE NOT NULL,
+    `status` INTEGER DEFAULT 0,
 
     /* FKs */
     `user_id` INTEGER NOT NULL,
@@ -74,7 +75,8 @@ CREATE TABLE `task_tag`(
     CONSTRAINT `fk_task_tag_task_id` FOREIGN KEY (`task_id`)
         REFERENCES `task` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT `fk_task_tag_tag_id` FOREIGN KEY (`tag_id`)
-        REFERENCES `tag` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
+        REFERENCES `tag` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    UNIQUE KEY `task_id_tag_id` (`task_id`, `tag_id`)
 );
 
 /* For testing purpose */

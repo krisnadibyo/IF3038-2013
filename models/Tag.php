@@ -44,6 +44,32 @@ class Tag extends Model
         ));
     }
 
+    public static function assign($tag_ids, $task_id)
+    {
+        $sql = "INSERT IGNORE INTO task_tag (task_id, tag_id) VALUES (:task_id, :tag_id)";
+
+        if (!is_array($tag_ids)) {
+            self::db()->executeSql($sql, array(
+                'task_id' => $task_id,
+                'tag_id' => $tag_ids,
+            ));
+            return;
+        }
+        
+        foreach ($tag_ids as $tag_id) {
+            self::db()->executeSql($sql, array(
+                'task_id' => $task_id,
+                'tag_id' => $tag_id,
+            ));
+        }
+    }
+
+    public static function reassign($tag_ids, $task_id)
+    {
+        Task_Tag::deleteWhere('task_id = :task_id', array('task_id' => $task_id));
+        self::assign($tag_ids, $task_id);
+    }
+
     public function validate($boolReturn=false)
     {
         $error = array();

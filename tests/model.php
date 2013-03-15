@@ -26,17 +26,17 @@ println("\n(2) createSql with argument:");
 println(Hello::createSelectSql($qArgs));
 
 println("\nexecute (1):");
-print_r($all = Hello::getAll());
+print_rmos($all = Hello::getAll());
 
 println("\nexecute (2):");
-print_r(Hello::getAll($qArgs));
+print_rmos(Hello::getAll($qArgs));
 
 println("\nNew Hello object and save");
 
 $h = new Hello(array('msg' => 'The Wizard of Oz'));
 $h->save_new();
 
-print_r($h);
+print_r($h->toArray());
 
 println("Edit and save the new Hello object");
 
@@ -44,11 +44,11 @@ $h->set('msg', 'Spamalot');
 $h->save();
 
 println("\nExecute (1) again:");
-print_r($all = Hello::getAll());
+print_rmos($all = Hello::getAll());
 
 println("\nDelete the last object (row) returned");
 $all[count($all) - 1]->delete();
 
 println("\nExecute (1) again:");
-print_r($all = Hello::getAll());
+print_rmos($all = Hello::getAll());
 
