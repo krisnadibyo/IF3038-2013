@@ -35,13 +35,13 @@ class Session
     public static function login($user)
     {
         self::set('login', true);
-        self::set('user', $user);
+        self::set('username', $user);
     }
 
     public static function logout()
     {
         self::remove('login');
-        self::remove('user');
+        self::remove('username');
         self::destroy();
     }
 

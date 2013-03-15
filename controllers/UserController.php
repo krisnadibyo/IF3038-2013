@@ -30,7 +30,7 @@ class UserController extends Controller
             exit();
         }
 
-        $username = Session::get('user')->get_username();
+        $this->username = Session::get('username');
     }
 
     // GET /user/get (logged user)

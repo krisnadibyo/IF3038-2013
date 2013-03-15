@@ -93,7 +93,8 @@ class PageController extends Controller
         App::loadModel('User');
 
         $user = User::getAll();
-        Session::login($user[0]);
+        $user = $user[0];
+        Session::login($user->get_username());
 
         $this->response->write("Logged in!");
     }
