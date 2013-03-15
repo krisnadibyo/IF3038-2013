@@ -21,4 +21,17 @@ class Tag extends Model
         parent::load();
         Task_Tag::load();
     }
+
+    public static function getAllByTaskId($task_id, $returnObjectArray=true)
+    {
+        $tags = self::getAll(array(
+            'select' => array('tag.id', 'tag.name'),
+            'from' => 'tag LEFT JOIN task_tag ON (task_tag.tag_id = tag.id)',
+            'where'=> array(
+                array('task_id', '=', $task_id)
+            )
+        ), $returnObjectArray);
+
+        return $tags;
+    }
 }

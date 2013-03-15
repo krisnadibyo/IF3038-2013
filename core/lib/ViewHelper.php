@@ -41,3 +41,22 @@ function vh_render($viewPath, $data=array()) {
 
     include dirname(__FILE__) . '/../../views/' . preg_replace('/\./', '/', $viewPath) . '.phtml';
 }
+
+function vh_printTags($tags)
+{
+    $tagStr = '';
+    foreach ($tags as $tag) {
+        $tagStr .= $tag->get_name() . ', ';
+    }
+    return substr($tagStr, 0, -strlen(', '));
+}
+
+function print_rmos($objs)
+{
+    $objs_n = array();
+    foreach ($objs as $obj) {
+        $objs_n[] = $obj->toArray();
+    }
+
+    print_r($objs_n);
+}

@@ -47,11 +47,20 @@ $users = array(
 foreach ($users as $u) { $u->save_new(); }
 
 // Category
-$category = new Category(array(
-    'name' => 'Uncategorized'
+$uncategorized = new Category(array(
+    'name' => 'Uncategorized',
 ));
-$category->save_new();
-$catId = $category->get('id');
+$uncategorized->save_new();
+
+$musical = new Category(array(
+    'name' => 'Musical',
+));
+$musical->save_new();
+
+$misc = new Category(array(
+    'name' => 'Misc',
+));
+$misc->save_new();
 
 // Task
 $tasks = array(
@@ -59,25 +68,25 @@ $tasks = array(
         'name' => 'Sing Bring Him Home',
         'attachment' => '',
         'deadline' => '2013-05-05',
-        'user_id' => $users['eponine']->get('id'),
-        'assignee_id' => $users['valjean']->get('id'),
-        'category_id' => $catId,
+        'user_id' => $users['eponine']->get_id(),
+        'assignee_id' => $users['valjean']->get_id(),
+        'category_id' => $musical->get_id(),
     )),
     'captureValjean' => new Task(array(
         'name' => 'Capture Valjean',
         'attachment' => '',
         'deadline' => '2013-12-20',
-        'user_id' => $users['javert']->get('id'),
+        'user_id' => $users['javert']->get_id(),
         'assignee_id' => null,
-        'category_id' => $catId,
+        'category_id' => $uncategorized->get_id(),
     )),
     'protectCosette' => new Task(array(
         'name' => 'Protect Cosette',
         'attachment' => '',
         'deadline' => '2013-11-01',
-        'user_id' => $users['valjean']->get('id'),
+        'user_id' => $users['valjean']->get_id(),
         'assignee_id' => null,
-        'category_id' => $catId,
+        'category_id' => $uncategorized->get_id(),
     )),
 );
 foreach ($tasks as $t) { $t->save_new(); }
@@ -91,14 +100,17 @@ $tags = array(
 foreach ($tags as $tag) {
     $tag->save_new();
     $tt = new Task_Tag(array(
-        'task_id' => $tasks['singBringHimHome']->get('id'),
-        'tag_id' => $tag->get('id'),
+        'task_id' => $tasks['singBringHimHome']->get_id(),
+        'tag_id' => $tag->get_id(),
     ));
     $tt->save_new();
 }
 
-$tasks['singBringHimHome']->set('name', 'Sing One Day More');
+$tasks['singBringHimHome']->set_name('Sing One Day More');
 $tasks['singBringHimHome']->save();
+
+$tasks['protectCosette']->set_category($misc->get_id());
+$tasks['protectCosette']->save();
 
 header('Content-Type: text/plain');
 echo 'Reseed complete!';

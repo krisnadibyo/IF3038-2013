@@ -11,6 +11,31 @@ class Model
         for ($i = 0; $i < count($keys); $i++) {
             $this->{$keys[$i]} = $row[$keys[$i]];
         }
+
+        // Auto (dynamic) getter & setter
+        $vars = get_object_vars($this);
+        $keys = array_keys($vars);
+        for ($i = 0; $i < count($keys); $i++) {
+            $key = $keys[$i];
+            if (is_array($key)) {
+                continue;
+            }
+
+            $func = 'get_' . $key;
+            $this->{$func} = create_function('$obj', 'return $obj->get(\'' . $key . '\');');
+            $func = 'set_' . $key;
+            $this->{$func} = create_function('$val,$obj', 'return $obj->set(\'' . $key . '\', $val);');
+        }
+    }
+
+    public function __call($method, $args)
+    {
+        if (is_callable($this->$method)) {
+            $args['obj'] = $this;
+            return call_user_func_array($this->$method, $args);
+        } else {
+            throw new Exception('Error! Method `' . $method . '` not found in ' . get_class($this), 1);
+        }
     }
 
     public static function load()
@@ -79,7 +104,8 @@ class Model
 
             for ($i = 0; $i < count($args['where']); $i++) {
                 if (is_array($args['where'][$i])) {
-                    $sql .= $args['where'][$i][0] . ' ' . $args['where'][$i][1] . ' :' . $args['where'][$i][0];
+                    $bvkey = preg_replace('/\./', '', $args['where'][$i][0]);
+                    $sql .= $args['where'][$i][0] . ' ' . $args['where'][$i][1] . ' :' . $bvkey;
                 } else {
                     $sql .= $args['where'][$i];
                 }
@@ -118,7 +144,8 @@ class Model
         if (isset($args['where'])) {
             foreach ($args['where'] as $w) {
                 if (is_array($w)) {
-                    $bv[$w[0]] = $w[2];
+                    $bvkey = preg_replace('/\./', '', $w[0]);
+                    $bv[$bvkey] = $w[2];
                 }
             }
         }
@@ -141,7 +168,8 @@ class Model
         if (isset($args['where'])) {
             foreach ($args['where'] as $w) {
                 if (is_array($w)) {
-                    $bv[$w[0]] = $w[2];
+                    $bvkey = preg_replace('/\./', '', $w[0]);
+                    $bv[$bvkey] = $w[2];
                 }
             }
         }
@@ -153,6 +181,16 @@ class Model
         }
 
         return $row;
+    }
+
+    /**
+     * Fetch one row by id
+     */
+    public static function getOneById($id, $returnObject=true) {
+        return self::getOne(array(
+            'where' => array(array('id', '=', $id)),
+            'limit' => 1,
+        ), $returnObject);
     }
 
     /**
@@ -172,7 +210,14 @@ class Model
 
     public function toArray()
     {
-        return get_object_vars($this);
+        $arr = array();
+        foreach (get_object_vars($this) as $key => $val) {
+            if (!is_array($key) && !is_callable($this->{$key}) && $val != null) {
+                $arr[$key] = $val;
+            }
+        }
+
+        return $arr;
     }
 
     /**
@@ -186,45 +231,41 @@ class Model
         }
 
         $sql = 'INSERT INTO ' . $class::$table . ' (';
+ 
         $vars = get_object_vars($this);
         $keys = array_keys($vars);
 
-        for ($i = 0; $i < count($keys); $i++) {
-            $key = $keys[$i];
-            if ($key == 'changes' || $vars[$key] == null) {
+        foreach ($keys as $key) {
+            if (is_array($key) || is_callable($this->{$key}) || $vars[$key] == null) {
                 continue;
             }
-
-            $sql .= $key;
-            if ($i < count($keys) - 1) {
-                $sql .= ', ';
-            }            
+            $sql .= $key . ', ';
         }
+        $sql = substr($sql, 0, -strlen(', '));
 
         $sql .= ') VALUES (';
-        for ($i = 0; $i < count($keys); $i++) {
-            $key = $keys[$i];
-            if ($key == 'changes' || $vars[$key] == null) {
+        foreach ($keys as $key) {
+            if (is_array($key) || is_callable($this->{$key}) || $vars[$key] == null) {
                 continue;
             }
-
-            $sql .= ':' . $key;
-            if ($i < count($keys) - 1) {
-                $sql .= ', ';
-            }
+            $bvkey = preg_replace('/\./', '', $key);
+            $sql .= ':' . $bvkey . ', ';
         }
+        $sql = substr($sql, 0, -strlen(', '));
         $sql .= ')';
 
         $bv = array();
         for ($i = 0; $i < count($keys); $i++) {
             $key = $keys[$i];
-            if ($key == 'changes' || $vars[$key] == null) {
+            if (is_array($key) || is_callable($this->{$key}) || $vars[$key] == null) {
                 continue;
             }
 
-            $bv[$key] = $vars[$key];
+            $bvkey = preg_replace('/\./', '', $key);
+            $bv[$bvkey] = $vars[$key];
         }
 
+        println($sql);
         self::db()->executeSql($sql, $bv);
         $this->id = self::db()->getDbHandler()->lastInsertId();
     }
@@ -242,21 +283,20 @@ class Model
         $vars = get_object_vars($this);
 
         $sql = 'UPDATE ' . $class::$table . ' SET ';
-        for ($i = 0; $i < count($this->changes); $i++) {
-            $sql .= $this->changes[$i] . ' = :' . $this->changes[$i];
-            if ($i < count($this->changes) - 1) {
-                $sql .= ', ';
-            }            
+        foreach ($this->changes as $change) {
+            $sql .= $change . ' = :' . $change . ', ';
         }
-
+        $sql = substr($sql, 0, -strlen(', '));
         $sql .= ' WHERE id = :id';
-        
+
         $bv = array('id' => $this->id);
         for ($i = 0; $i < count($this->changes); $i++) {
             $bv[$this->changes[$i]] = $vars[$this->changes[$i]];
         }
 
+        println($sql);
         self::db()->executeSql($sql, $bv);
+        unset($this->changes);
     }
 
     /**
