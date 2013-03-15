@@ -16,9 +16,6 @@ class Model
     public static function load()
     {
         self::$db = Db::getInstance();
-        if (self::$table == null) {
-            self::$table = strtolower(get_called_class());
-        }
     }
 
     protected static function db()
@@ -50,6 +47,7 @@ class Model
      */
     public static function createSelectSql($args=array())
     {
+        $class = get_called_class();
         $sql = 'SELECT ';
 
         // SELECT [...]
@@ -72,7 +70,7 @@ class Model
         if (isset($args['from'])) {
             $sql .= $args['from'];
         } else {
-            $sql .= self::$table;
+            $sql .= $class::$table;
         }
 
         // WHERE
@@ -155,11 +153,12 @@ class Model
      */
     public static function deleteWhere($where=null, $bindVal=array())
     {
+        $class = get_called_class();
         if (!$where) {
             return;
         }
 
-        $sql = 'DELETE FROM ' . self::$table . ' WHERE ' . $where;
+        $sql = 'DELETE FROM ' . $class::$table . ' WHERE ' . $where;
         self::db()->executeSql($sql, $bindVal);
     }
 
@@ -173,13 +172,15 @@ class Model
      */
     public function save_new()
     {
+        $class = get_called_class();
         if (!$this->validate(true)) {
             return;
         }
 
-        $sql = 'INSERT INTO ' . self::$table . ' (';
+        $sql = 'INSERT INTO ' . $class::$table . ' (';
         $vars = get_object_vars($this);
         $keys = array_keys($vars);
+
         for ($i = 0; $i < count($keys); $i++) {
             $key = $keys[$i];
             if ($key == 'changes' || $vars[$key] == null) {
@@ -225,13 +226,14 @@ class Model
      */
     public function save()
     {
+        $class = get_called_class();
         if (!$this->validate(true)) {
             return;
         }
 
         $vars = get_object_vars($this);
 
-        $sql = 'UPDATE ' . self::$table . ' SET ';
+        $sql = 'UPDATE ' . $class::$table . ' SET ';
         for ($i = 0; $i < count($this->changes); $i++) {
             $sql .= $this->changes[$i] . ' = :' . $this->changes[$i];
             if ($i < count($this->changes) - 1) {
@@ -254,7 +256,8 @@ class Model
      */
     public function delete()
     {
-        $sql = "DELETE FROM " . self::$table . " WHERE id = :id";
+        $class = get_called_class();
+        $sql = "DELETE FROM " . $class::$table . " WHERE id = :id";
         self::db()->executeSql($sql, array('id' => $this->id));
     }
 
