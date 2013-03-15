@@ -63,26 +63,45 @@ class Task extends Model
     public function validate($boolReturn=false)
     {
         $error = array();
+
+        // name
         if (!$this->name) {
-            $error[] = json_encode(array('name' => 'Required'));
+            $error['name'][] = 'Required';
+        } else {
+            if (strlen($this->name) > 25) {
+                $error['name'][] = 'Name length exceeded; Max. 25 chars';
+            }
         }
 
+        // deadline
         if (!$this->deadline) {
-            $error[] = json_encode(array('deadline' => 'Required'));
+            $error['deadline'][] = 'Required';
+        } else {
+            $dateCorrect = preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $this->deadline, $m);
+            if (!$dateCorrect) {
+                $error['deadline'][] = 'Bad format; Must be in YYYY-MM-DD';
+            } else {
+                if ((int) $m[2] > 12 || (int) $m[2] < 1 || (int) $m[3] > 31 || (int) $m[3] < 1) {
+                    $error['deadline'][] = 'Bad date';
+                }
+            }
         }
 
+        // user
         if (!$this->user_id || !User::getOneById($this->user_id)) {
-            $error[] = json_encode(array('user' => 'User not found'));
+            $error['user'][] = 'User not found';
         }
 
+        // assignee
         if ($this->assignee_id && !User::getOneById($this->assignee_id)) {
-            $error[] = json_encode(array('assignee' => 'User not found'));
+            $error['assignee'][] = 'User (assignee) not found';
         }
 
+        // category
         if (!$this->category_id || !Category::getOneById($this->category_id)) {
-            $error[] = json_encode(array('category' => 'Category not found'));
+            $error['category'][] = 'Category not found';
         }
-        
+
         if ($boolReturn) {
             return $error === array() ? true : false;
         }

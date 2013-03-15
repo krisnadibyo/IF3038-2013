@@ -227,6 +227,7 @@ class Model
     {
         $class = get_called_class();
         if (!$this->validate(true)) {
+            throw new Exception('Model validation failed', 1);
             return;
         }
 
@@ -277,6 +278,7 @@ class Model
     {
         $class = get_called_class();
         if (!$this->validate(true)) {
+            throw new Exception('Model validation failed', 1);
             return;
         }
 
@@ -337,8 +339,6 @@ class Model
             return true;
         }
 
-        return array(
-            'valid' => true,
-        );
+        return array();
     }
 }
