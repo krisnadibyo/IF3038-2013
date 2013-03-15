@@ -1,0 +1,35 @@
+List of implemented REST API url:
+
+Task:
+
+    GET     /task/all/[<complete>]
+    GET     /task/search_name/<name>/[<complete>]
+    GET     /task/hint/<name>
+    GET     /task/category/<category_name>/[<complete>]
+    GET     /task/get/<id>/[<complete>]
+    POST    /task/create + JSON data
+    POST    /task/edit/<id> + JSON data
+    POST    /task/delete/<id>
+
+Tag:
+
+    GET     /tag/all
+    GET     /tag/get/<id>
+    GET     /tag/name/<name>
+    GET     /tag/hint/<name>
+    POST    /tag/create/<name>
+    POST    /tag/delete/<name>
+    POST    /tag/reassign/<task_id> + JSON data (array of tag names)
+    POST    /tag/edit/<id> + JSON data
+
+Category:
+
+    GET     /category/all
+    GET     /category/get/<id>
+    GET     /category/name/<name>
+    POST    /category/create/<name>
+    POST    /category/delete/<name>
+
+User:
+
+    
