@@ -10,20 +10,21 @@ DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `user`(
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `name` VARCHAR(96) NOT NULL,
-    `username` VARCHAR(96) NOT NULL,
+    `username` VARCHAR(96) NOT NULL UNIQUE,
     `password` VARCHAR(32) NOT NULL,
-    `email` VARCHAR(128) NOT NULL,
+    `email` VARCHAR(128) NOT NULL UNIQUE,
     `birthday` DATE NOT NULL,
     `avatar` VARCHAR(128) NOT NULL,
     `bio` TEXT NOT NULL
 );
 
+CREATE INDEX `user_username_idx` ON `user` (`username`) USING BTREE;
 CREATE INDEX `user_email_idx` ON `user` (`email`) USING BTREE;
 CREATE INDEX `user_name_idx` ON `user` (`name`) USING BTREE;
 
 CREATE TABLE `category`(
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name` VARCHAR(32) NOT NULL
+    `name` VARCHAR(32) NOT NULL UNIQUE
 );
 
 CREATE INDEX `category_name_idx` ON `category` (`name`) USING BTREE;
@@ -63,8 +64,10 @@ CREATE TABLE `comment`(
 
 CREATE TABLE `tag`(
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name` VARCHAR(32) NOT NULL
+    `name` VARCHAR(32) NOT NULL UNIQUE
 );
+
+CREATE INDEX `tag_name_idx` ON `tag` (`name`) USING BTREE;
 
 CREATE TABLE `task_tag`(
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -79,8 +82,12 @@ CREATE TABLE `task_tag`(
     UNIQUE KEY `task_id_tag_id` (`task_id`, `tag_id`)
 );
 
+CREATE INDEX `task_tag_task_id_idx` ON `task_tag` (`task_id`) USING BTREE;
+CREATE INDEX `task_tag_tag_id_idx` ON `task_tag` (`tag_id`) USING BTREE;
+
 /* For testing purpose */
 CREATE TABLE IF NOT EXISTS `hello`(
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
     `msg` VARCHAR(255)
 );
+
