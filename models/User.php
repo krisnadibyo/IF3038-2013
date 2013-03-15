@@ -11,4 +11,13 @@ class User extends Model
     protected $birthday = null;
     protected $avatar = null;
     protected $bio = null;
+
+    public static function getOneByUsername($username)
+    {
+        return self::getOne(array(
+            'where' => array(
+                array('username', '=', $username),
+            ),
+        ));
+    }
 }
