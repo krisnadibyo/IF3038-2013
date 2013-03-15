@@ -71,7 +71,7 @@ class TaskController extends Controller
         $this->response->renderJson($hints);
     }
 
-    // GET /task/category/<id>/[<complete>]
+    // GET /task/category/<category_name>/[<complete>]
     public function category($category='Uncategorized', $complete=false)
     {
         $tasks = Task::getByCategoryName($category);

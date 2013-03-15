@@ -20,6 +20,22 @@ class TagController extends Controller
         $this->response->renderJson($tags, true);
     }
 
+    // GET /tag/get/<id>
+    public function get($id=0)
+    {
+        $tag = Tag::getOneById($id);
+        $tag = !$tag ? null : $tag->toArray();
+        $this->response->renderJson($tag);
+    }
+
+    // GET /tag/name/<name>
+    public function name($name='')
+    {
+        $tag = Tag::getOneByName($name);
+        $tag = !$tag ? null : $tag->toArray();
+        $this->response->renderJson($tag);
+    }
+
     // GET /tag/hint/<name>
     public function hint($name='')
     {
@@ -39,39 +55,17 @@ class TagController extends Controller
         $this->response->renderJson($hints);
     }
 
-    // GET /tag/name/<name>
-    public function name($name='')
+    // POST /tag/create/<name>
+    public function create($name='')
     {
-        $tag = Tag::getOneByName($name);
-        $tag = !$tag ? null : $tag->toArray();
-
-        $this->response->renderJson($tag);
-    }
-
-    // GET /tag/get/<id>
-    public function get($id=0)
-    {
-        $tag = Tag::getOneById($id);
-        $tag = !$tag ? null : $tag->toArray();
-
-        $this->response->renderJson($tag);
-    }
-
-    // POST /tag/create -- data=JSON
-    public function create()
-    {
-        if ($this->request->isGET() || !$this->request->getParam('data')) {
+        if ($this->request->isGET() && $name == '') {
             return $this->response->nullJson();
         }
 
-        $tagData = json_decode($this->request->getParam('data'), true);
-        if (!$tagData || !is_array($tagData)) {
-            return $this->response->nullJson();
-        }
-
-        $tag = new Tag($tagData);
-        if (!$tag->validate(true)) {
-            $this->response->renderJson($tag->validate());
+        $tag = new Tag(array('name' => $name));
+        $validation = $tag->validate();
+        if ($validation !== array()) {
+            $this->response->renderJson($validation);
             return;
         }
 
@@ -79,6 +73,48 @@ class TagController extends Controller
         $this->response->renderJson(array('status' => 'success'));
     }
 
+    // POST /tag/delete/<name>
+    public function delete($name=0)
+    {
+        if ($this->request->isGET()) {
+            return $this->response->nullJson();
+        }
+
+        $tag = Tag::getOneByName($name);
+        if (!$tag) {
+            return $this->response->nullJson();
+        }
+
+        $tag->delete();
+        $this->response->renderJson(array('status' => 'success'));
+    }
+
+    // POST /tag/reassign/<task_id> -- data=JSON (array of tag names)
+    public function reassign($task_id)
+    {
+        if ($this->request->isGET() || !$this->request->getParam('data')) {
+            return $this->response->nullJson();
+        }
+
+        $tagArr = json_decode($this->request->getParam('data'), true);
+        if (!$tagArr || !is_array($tagArr)) {
+            return $this->response->nullJson();
+        }
+
+        $tagIds = array();
+        foreach ($tagArr as $tagName) {
+            if (!$tag = Tag::getOneByName($tagName)) {
+                $tag = new Tag(array('name' => $tagName));
+                $tag->save_new();
+            }
+            $tagIds[] = $tag->get_id();
+        }
+
+        Tag::reassign($tagIds, $task_id);
+        $this->response->renderJson(array('status' => 'success'));
+    }
+
+    // Rarely used
     // POST /tag/edit/<id> -- data=JSON
     public function edit($id=0)
     {
@@ -106,81 +142,6 @@ class TagController extends Controller
         }
 
         $tag->save(false);
-        $this->response->renderJson(array('status' => 'success'));
-    }
-
-    // POST /tag/delete/<name>
-    public function delete($name=0)
-    {
-        if ($this->request->isGET()) {
-            return $this->response->nullJson();
-        }
-
-        $tag = Tag::getOneByName($name);
-        if (!$tag) {
-            return $this->response->nullJson();
-        }
-
-        $tag->delete();
-        $this->response->renderJson(array('status' => 'success'));
-    }
-
-    // POST /tag/reassign/<task_id> -- data=JSON
-    public function reassign($task_id)
-    {
-        if ($this->request->isGET() || !$this->request->getParam('data')) {
-            return $this->response->nullJson();
-        }
-
-        $tagArr = json_decode($this->request->getParam('data'), true);
-        if (!$tagArr || !is_array($tagArr)) {
-            return $this->response->nullJson();
-        }
-
-        $tagIds = array();
-        foreach ($tagArr as $tagName) {
-            if (!$tag = Tag::getOneByName($tagName)) {
-                $tag = new Tag(array('name' => $tagName));
-                $tag->save_new();
-            }
-            $tagIds[] = $tag->get_id();
-        }
-
-        Tag::reassign($tagIds, $task_id);        
-    }
-
-    // POST /tag/assign/<tag_name>/<task_id>
-    public function assign($tag_name=0, $task_id=0)
-    {
-        if ($this->request->isGET()) {
-            return $this->response->nullJson();
-        }
-
-        $tag = Tag::getOneByName($tag_name);
-        if (Task::getOneById($task_id) == null || $tag == null) {
-            return $this->response->nullJson();
-        }
-
-        Tag::assign($tag->get_id(), $task_id);
-        $this->response->renderJson(array('status' => 'success'));
-    }
-
-    // POST /tag/unassign/<tag_name>/<task_id>
-    public function unassign($tag_name, $task_id)
-    {
-        if ($this->request->isGET()) {
-            return $this->response->nullJson();
-        }
-
-        $tag = Tag::getOneByName($tag_name);
-        if (!$tag) {
-            return $this->response->nullJson();
-        }
-
-        Task_Tag::deleteWhere('task_id = :task_id', array(
-            'task_id' => $task_id
-        ));
-
         $this->response->renderJson(array('status' => 'success'));
     }
 }

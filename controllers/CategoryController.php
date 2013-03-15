@@ -1,0 +1,71 @@
+<?php
+class CategoryController extends Controller
+{
+    protected function init()
+    {
+        App::loadModel('Category');
+
+        Session::init();
+        if (!Session::loggedIn() && !$this->request->getParam('magicauth')) {
+            $this->response->renderJson('Not Authenticated!');
+            exit();
+        }
+    }
+
+    // GET /category/all
+    public function all()
+    {
+        $cats = Category::getAll();
+        $this->response->renderJson($cats, true);
+    }
+
+    // GET /category/get/<id>
+    public function get($id=0)
+    {
+        $cat = Category::getOneById($id);
+        $cat = !$cat ? null : $cat->toArray();
+        $this->response->renderJson($cat);
+    }
+
+    // GET /category/name/<name>
+    public function name($name='')
+    {
+        $cat = Category::getOneByName($name);
+        $cat = !$cat ? null : $cat->toArray();
+        $this->response->renderJson($cat);
+    }
+
+    // POST /category/create/<name>
+    public function create($name='')
+    {
+        if ($this->request->isGET() && $name == '') {
+            return $this->response->nullJson();
+        }
+
+        $cat = new Category(array('name' => $name));
+        $validation = $cat->validate();
+        if ($validation !== array()) {
+            $this->response->renderJson($validation);
+            return;
+        }
+
+        $cat->save_new(false);
+        $this->response->renderJson(array('status' => 'success'));
+    }
+
+    // POST /category/delete/<name>
+    public function delete($name='')
+    {
+        if ($this->request->isGET()) {
+            return $this->response->nullJson();
+        }
+
+        $cat = Category::getOneByName($name);
+        if (!$cat) {
+            return $this->response->nullJson();
+        }
+
+        $cat->delete();
+        $this->response->renderJson(array('status' => 'success'));
+    }
+}
