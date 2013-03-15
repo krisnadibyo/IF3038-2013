@@ -223,10 +223,10 @@ class Model
     /**
      * New record
      */
-    public function save_new()
+    public function save_new($doValidate=true)
     {
         $class = get_called_class();
-        if (!$this->validate(true)) {
+        if ($doValidate && !$this->validate(true)) {
             throw new Exception('Model validation failed', 1);
             return;
         }
@@ -274,10 +274,10 @@ class Model
     /**
      * Update record
      */
-    public function save()
+    public function save($doValidate=true)
     {
         $class = get_called_class();
-        if (!$this->validate(true)) {
+        if ($doValidate && !$this->validate(true)) {
             throw new Exception('Model validation failed', 1);
             return;
         }

@@ -34,4 +34,32 @@ class Tag extends Model
 
         return $tags;
     }
+
+    public static function getOneByName($name)
+    {
+        return self::getOne(array(
+            'where' => array(
+                array('name', '=', $name),
+            ),
+        ));
+    }
+
+    public function validate($boolReturn=false)
+    {
+        $error = array();
+
+        if (self::getOneByName($this->name) != null) {
+            $error['name'][] = 'Tag with the same name exist';
+        }
+
+        if (preg_match('/,/', $this->name)) {
+            $error['name'][] = 'Tag name should not contain any commas';
+        }
+
+        if ($boolReturn) {
+            return $error === array() ? true : false;
+        }
+
+        return $error;
+    }
 }

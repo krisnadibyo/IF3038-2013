@@ -45,6 +45,15 @@ class Response
         echo $json;
     }
 
+    public function nullJson()
+    {
+        $json = json_encode(null);
+        header('Content-Type: application/json');
+        echo $json;
+
+        return null;
+    }    
+
     public function write($str)
     {
         echo $str;
