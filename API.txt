@@ -32,4 +32,7 @@ Category:
 
 User:
 
-    
+    GET     /user/get (logged user)
+    ~ POST    /user/edit (logged user edit)
+    ~ POST    /user/register + JSON data
+    ~ POST    /user/delete/<username>/<magic_password>
