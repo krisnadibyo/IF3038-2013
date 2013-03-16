@@ -7,6 +7,7 @@ class Task extends Model
     protected $name = null;
     protected $attachment = null;
     protected $deadline = null;
+    protected $status = 0;
 
     // Foreign Keys:
     protected $user_id = null;
