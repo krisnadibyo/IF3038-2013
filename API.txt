@@ -47,5 +47,6 @@ Auth:
 
 Upload:
 
-    ~ POST  /upload/avatar + multipart data
-    ~ POST  /upload/attachment/<name_as_in_task> + multipart data
+    ~ POST  /upload/test + multipart data
+    ~ POST  /upload/avatar/<username> + multipart data
+    ~ POST  /upload/attachment/<task_id> + multipart data

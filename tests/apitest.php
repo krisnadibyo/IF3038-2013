@@ -1,0 +1,104 @@
+<?php
+require_once dirname(__FILE__) . '/../core/Core.php';
+import('core.lib.ViewHelper');
+
+$filename = dirname(__FILE__) . '/../API.txt';
+$file = fopen($filename, "r");
+$apiListTxt = htmlspecialchars(fread($file, filesize($filename)));
+fclose($file);
+
+header('Content-Type: text/html');
+?><!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>API Test</title>
+    <script type="text/javascript" src="<?php echo vh_link('page/approot_js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo vh_slink('js/xhr.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo vh_slink('js/madtodo.js'); ?>"></script>
+    <style type="text/css">@import url(<?php echo vh_slink('css/maincss.css'); ?>);</style>
+    <style>
+        body {
+            margin: 10px;
+        }
+        #apiTestForm {
+            width: 420px;
+            float: left;
+        }
+        #responseDiv {
+            margin: 4px;
+            float: left;
+        }
+        #responseBox, #apiList > pre {
+            border: 2px solid #444;
+            width: 400px;
+            height: 500px;
+            padding: 10px;
+            background: #fff;
+            overflow: auto;
+        }
+        #apiList {
+            float: left;
+            margin: 4px;
+        }
+    </style>
+</head>
+<body>
+    <form id="apiTestForm" action="javascript:;">
+        <label>Method: </label>
+        <select id="method">
+            <option value="POST" selected="">POST</option>
+            <option value="GET">GET</option>
+        </select><br />
+        <label>REST URL:</label>
+        <input id="url" type="text" placeholder="e.g., <?php echo vh_link(''); ?>auth/login"  />
+        <label>Data: (POST only, in JSON)</label>
+        <textarea id="data">{"username": "valjean", "password": "valjean123"}</textarea><br />
+        <button id="sendButton">Send</button>
+    </form>
+    <div id="responseDiv">
+        Response:
+        <pre id="responseBox"></pre>
+    </div>
+    <div id="apiList">
+        API List:
+        <pre><?php echo $apiListTxt; ?></pre>
+    </div>
+    <div class="clear"></div>
+
+<script type="text/javascript">
+(function($) {
+
+    $id('apiTestForm').onsubmit = function(e) {
+        var method = $id('method').val();
+        var url = $id('url').val();
+        var data = JSON.parse($id('data').val());
+
+        if (method == 'GET') {
+            $.XHR.doReq({
+               method: 'GET',
+               url: url,
+               callback: function(res) {
+                   $id('responseBox').html(JSON.stringify(res, null, '  '));
+               }
+            });
+        }
+        else if (method == 'POST') {
+            $.XHR.doReq({
+                method: 'POST',
+                url: url,
+                jsonData: true,
+                data: data,
+                callback: function(res) {
+                    $id('responseBox').html(JSON.stringify(res, null, '  '));
+                }
+            })
+        }
+        console.log(data);
+    }
+
+})(window);
+</script>
+
+</body>
+</html>
