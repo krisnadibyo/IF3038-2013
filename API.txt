@@ -33,6 +33,9 @@ Category:
 User:
 
     GET     /user/get (logged user)
-    ~ POST    /user/edit (logged user edit)
-    ~ POST    /user/register + JSON data
-    ~ POST    /user/delete/<username>/<magic_password>
+    POST    /user/edit + JSON data (logged user edit)
+    POST    /user/register + JSON data
+
+    GET     /user/all/<magic_password>
+    GET     /user/username/<username>/<magic_password>
+    POST    /user/delete/<username>/<magic_password>

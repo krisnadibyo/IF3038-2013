@@ -37,24 +37,80 @@ class UserController extends Controller
     public function get()
     {
         $user = User::getOneByUsername($this->username);
-        $this->response->renderJson($user);
+        return $this->response->renderJson($user);
     }
 
     // POST /user/edit (logged user edit)
     public function edit()
     {
-        
+        $data = null;
+        if (!$this->_isPOSTandHasData($data)) {
+            return $this->response->nullJson();
+        }
+
+        $user = User::getOneByUsername($this->username);
+        foreach ($data as $col => $val) {
+            $user->set($col, $val);
+        }
+
+        $validation = $user->validate();
+        if ($validation !== array()) {
+            return $this->response->renderJson($validation);
+        }
+
+        $user->save(false);
+        return $this->response->renderJson(array('status' => 'success'));
     }
 
     // POST /user/register + JSON data
     public function register()
     {
-        
+        $data = null;
+        if (!$this->_isPOSTandHasData($data)) {
+            return $this->response->nullJson();
+        }
+
+        $user = new User($data);
+        $validation = $user->validate();
+        if ($validation !== array()) {
+            return $this->response->renderJson($validation);
+        }
+
+        $user->save_new(false);
+        return $this->response->renderJson(array('status' => 'success'));
+    }
+
+    // Magic functions
+    ////
+    private $magicpass = 'samantha';
+
+    // GET /user/all/<magic_password>
+    public function all($magicpass=null)
+    {
+        if ($magicpass != $this->magicpass) {
+            return $this->response->nullJson();
+        }
+
+        $users = User::getAll();
+        return $this->response->renderJson($users, true);
+    }
+
+    // GET /user/username/<username>/<magic_password>
+    public function username($username=null, $magicpass=null)
+    {
+        if (!$username || $magicpass != $this->magicpass ||
+            !$user = User::getOneByUsername($username)) {
+            return $this->response->nullJson();
+        }
+
+        return $this->response->renderJson($user->toArray());
     }
 
     // POST /user/delete/<username>/<magic_password>
-    public function delete()
+    public function delete($username=null, $magicpass=null)
     {
-        $magicpass = 'samantha';
+        if (!$this->_isPOST() || !$username || $magicpass != $this->magicpass) {
+            return $this->response->nullJson();
+        }
     }
 }

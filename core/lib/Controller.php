@@ -18,4 +18,29 @@ class Controller
         $this->response = new Response();
         $this->init();
     }
+    
+    // Extra functions (protected)
+    ////
+    protected function _isPOST()
+    {
+        if ($this->request->isPOST()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function _isPOSTandHasData(&$data)
+    {
+        if (!$this->request->isPOST() || !$this->request->getParam('data')) {
+            return false;
+        }
+
+        $data = json_decode($this->request->getParam('data'), true);
+        if (!$data || !is_array($data)) {
+            return false;
+        }
+
+        return true;
+    }
 }
