@@ -39,3 +39,13 @@ User:
     GET     /user/all/<magic_password>
     GET     /user/username/<username>/<magic_password>
     POST    /user/delete/<username>/<magic_password>
+
+Auth:
+
+    POST    /auth/login + JSON data (username & password)
+    GET     /auth/logout    
+
+Upload:
+
+    ~ POST  /upload/avatar + multipart data
+    ~ POST  /upload/attachment/<name_as_in_task> + multipart data
