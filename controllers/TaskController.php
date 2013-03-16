@@ -27,7 +27,7 @@ class TaskController extends Controller
             }
         }
 
-        $this->response->renderJson($tasks, true);
+        return $this->response->renderJson($tasks, true);
     }
 
     // GET /task/search_name/<name>/[<complete>]
@@ -47,7 +47,7 @@ class TaskController extends Controller
             }
         }
 
-        $this->response->renderJson($tasks, true);
+        return $this->response->renderJson($tasks, true);
     }
 
     // Autocomplete hint
@@ -68,13 +68,14 @@ class TaskController extends Controller
             }
         }
 
-        $this->response->renderJson($hints);
+        return $this->response->renderJson($hints);
     }
 
     // GET /task/category/<category_name>/[<complete>]
     public function category($category='Uncategorized', $complete=false)
     {
         $tasks = Task::getByCategoryName($category);
+
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
                 $task->user = $task->get_user()->get_name();
@@ -83,65 +84,54 @@ class TaskController extends Controller
             }
         }
 
-        $this->response->renderJson($tasks, true);
+        return $this->response->renderJson($tasks, true);
     }
 
     // GET /task/get/<id>/[<complete>]
     public function get($id=0, $complete=false)
     {
-        $task = Task::getOneById($id);
-        if ($complete && $task != null) {
+        if (!$task = Task::getOneById($id)) {
+            return $this->response->nullJson();
+        }
+
+        if ($complete) {
             $task->user = $task->get_user()->get_name();
             $task->category = $task->get_category()->get_name();
             $task->tags = $task->get_tags(true);
             $task->comments = $task->get_comments(true);
         }
 
-        $this->response->renderJson($task->toArray());
+        return $this->response->renderJson($task->toArray());
     }
 
-    // POST /task/create -- data=JSON
+    // POST /task/create + JSON data
     public function create()
     {
         // make sure the request method is POST and sending data
-        if ($this->request->isGET() || !$this->request->getParam('data')) {
-            return $this->response->nullJson();
-        }
-
-        $taskData = json_decode($this->request->getParam('data'), true);
-        if (!$taskData || !is_array($taskData)) {
-            // bad task data
+        // and task data isn't bad
+        $taskData = null;
+        if (!$this->_isPOSTandHasData($taskData)) {
             return $this->response->nullJson();
         }
 
         $task = new Task($taskData);
-        if (!$task->validate(true)) {
-            // task not valid
-            $this->response->renderJson($task->validate());
-            return;
+        if (($validation = $task->validate()) !== array()) {
+            return $this->response->renderJson($validation);
         }
 
         $task->save_new(false);
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 
-    // POST /task/edit/<id> -- data=JSON
+    // POST /task/edit/<id> + JSON data
     public function edit($id=0)
     {
-        // make sure the request method is POST and sending data
-        if ($this->request->isGET() || !$this->request->getParam('data')) {
+        $taskData = null;
+        if (!$this->_isPOSTandHasData($taskData)) {
             return $this->response->nullJson();
         }
 
-        $task = Task::getOneById($id);
-        if (!$task) {
-            // task not found
-            return $this->response->nullJson();
-        }
-
-        $taskData = json_decode($this->request->getParam('data'), true);
-        if (!$taskData || !is_array($taskData)) {
-            // bad task data
+        if (!$task = Task::getOneById($id)) {
             return $this->response->nullJson();
         }
 
@@ -149,31 +139,22 @@ class TaskController extends Controller
             $task->set($col, $val);
         }
 
-        if (!$task->validate(true)) {
-            // task not valid
-            $this->response->renderJson($task->validate());
-            return;
+        if (($validation = $task->validate()) !== array()) {
+            return $this->response->renderJson($validation);
         }
 
         $task->save(false);
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 
     // POST /task/delete/<id>
     public function delete($id=0)
     {
-        // make sure the request method is POST
-        if ($this->request->isGET()) {
-            return $this->response->nullJson();
-        }
-
-        $task = Task::getOneById($id);
-        if (!$task) {
-            // task not found
+        if (!$this->_isPOST() || !$task = Task::getOneById($id)) {
             return $this->response->nullJson();
         }
 
         $task->delete();
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 }

@@ -16,7 +16,7 @@ class CategoryController extends Controller
     public function all()
     {
         $cats = Category::getAll();
-        $this->response->renderJson($cats, true);
+        return $this->response->renderJson($cats, true);
     }
 
     // GET /category/get/<id>
@@ -24,7 +24,7 @@ class CategoryController extends Controller
     {
         $cat = Category::getOneById($id);
         $cat = !$cat ? null : $cat->toArray();
-        $this->response->renderJson($cat);
+        return $this->response->renderJson($cat);
     }
 
     // GET /category/name/<name>
@@ -32,40 +32,33 @@ class CategoryController extends Controller
     {
         $cat = Category::getOneByName($name);
         $cat = !$cat ? null : $cat->toArray();
-        $this->response->renderJson($cat);
+        return $this->response->renderJson($cat);
     }
 
     // POST /category/create/<name>
     public function create($name='')
     {
-        if ($this->request->isGET() && $name == '') {
+        if (!$this->_isPOST() || $name == '') {
             return $this->response->nullJson();
         }
 
         $cat = new Category(array('name' => $name));
-        $validation = $cat->validate();
-        if ($validation !== array()) {
-            $this->response->renderJson($validation);
-            return;
+        if (($validation = $cat->validate()) !== array()) {
+            return $this->response->renderJson($validation);
         }
 
         $cat->save_new(false);
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 
     // POST /category/delete/<name>
     public function delete($name='')
     {
-        if ($this->request->isGET()) {
-            return $this->response->nullJson();
-        }
-
-        $cat = Category::getOneByName($name);
-        if (!$cat) {
+        if (!$this->_isPOST() && !$cat = Category::getOneByName($name)) {
             return $this->response->nullJson();
         }
 
         $cat->delete();
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 }

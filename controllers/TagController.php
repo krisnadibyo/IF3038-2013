@@ -17,7 +17,7 @@ class TagController extends Controller
     public function all()
     {
         $tags = Tag::getAll();
-        $this->response->renderJson($tags, true);
+        return $this->response->renderJson($tags, true);
     }
 
     // GET /tag/get/<id>
@@ -25,7 +25,7 @@ class TagController extends Controller
     {
         $tag = Tag::getOneById($id);
         $tag = !$tag ? null : $tag->toArray();
-        $this->response->renderJson($tag);
+        return $this->response->renderJson($tag);
     }
 
     // GET /tag/name/<name>
@@ -33,7 +33,7 @@ class TagController extends Controller
     {
         $tag = Tag::getOneByName($name);
         $tag = !$tag ? null : $tag->toArray();
-        $this->response->renderJson($tag);
+        return $this->response->renderJson($tag);
     }
 
     // GET /tag/hint/<name>
@@ -52,52 +52,41 @@ class TagController extends Controller
             }
         }
 
-        $this->response->renderJson($hints);
+        return $this->response->renderJson($hints);
     }
 
     // POST /tag/create/<name>
     public function create($name='')
     {
-        if ($this->request->isGET() && $name == '') {
+        if (!$this->_isPOST() || $name == '') {
             return $this->response->nullJson();
         }
 
         $tag = new Tag(array('name' => $name));
-        $validation = $tag->validate();
-        if ($validation !== array()) {
-            $this->response->renderJson($validation);
-            return;
+        if (($validation = $tag->validate()) !== array()) {
+            return $this->response->renderJson($validation);
         }
 
         $tag->save_new(false);
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 
     // POST /tag/delete/<name>
-    public function delete($name=0)
+    public function delete($name='')
     {
-        if ($this->request->isGET()) {
-            return $this->response->nullJson();
-        }
-
-        $tag = Tag::getOneByName($name);
-        if (!$tag) {
+        if (!$this->_isPOST() || !$tag = Tag::getOneByName($name)) {
             return $this->response->nullJson();
         }
 
         $tag->delete();
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 
     // POST /tag/reassign/<task_id> -- data=JSON (array of tag names)
     public function reassign($task_id)
     {
-        if ($this->request->isGET() || !$this->request->getParam('data')) {
-            return $this->response->nullJson();
-        }
-
-        $tagArr = json_decode($this->request->getParam('data'), true);
-        if (!$tagArr || !is_array($tagArr)) {
+        $tagArr = null;
+        if (!$this->_isPOSTandHasData($tagArr)) {
             return $this->response->nullJson();
         }
 
@@ -111,37 +100,28 @@ class TagController extends Controller
         }
 
         Tag::reassign($tagIds, $task_id);
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 
     // Rarely used
-    // POST /tag/edit/<id> -- data=JSON
+    // POST /tag/edit/<id> + JSON data
     public function edit($id=0)
     {
-        if ($this->request->isGET() || !$this->request->getParam('data')) {
+        $tagData = null;
+        if (!$this->_isPOSTandHasData($tagData) ||
+            !$tag = Tag::getOneById($id)) {
             return $this->response->nullJson();
-        }
-
-        $tagData = json_decode($this->request->getParam('data'), true);
-        if (!$tagData || !is_array($tagData)) {
-            return $this->response->nullJson();
-        }
-
-        $tag = Tag::getOneById($id);
-        if (!$tag) {
-           return $this->response->nullJson();
         }
 
         foreach ($tagData as $col => $val) {
-            $tag->{$col} = $val;
+            $tag->set($col, $val);
         }
 
-        if (!$tag->validate(true)) {
-            $this->response->renderJson($tag->validate());
-            return;
+        if (($validation = $tag->validate()) !== array()) {
+            return $this->response->renderJson($validation);
         }
 
         $tag->save(false);
-        $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success'));
     }
 }
