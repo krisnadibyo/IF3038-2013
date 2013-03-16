@@ -188,7 +188,7 @@ class Model
      */
     public static function getOneById($id, $returnObject=true) {
         return self::getOne(array(
-            'where' => array(array('id', '=', $id)),
+            'where' => array(array('id', '=', (int) $id)),
             'limit' => 1,
         ), $returnObject);
     }
@@ -227,8 +227,10 @@ class Model
     {
         $class = get_called_class();
         if ($doValidate && !$this->validate(true)) {
+            header('Content-Type: text/plain');
+            print_r($this->validate());
             throw new Exception('Model validation failed', 1);
-            return;
+            exit();
         }
 
         $sql = 'INSERT INTO ' . $class::$table . ' (';
@@ -268,7 +270,13 @@ class Model
 
         // println($sql);
         self::db()->executeSql($sql, $bv);
-        $this->id = self::db()->getDbHandler()->lastInsertId();
+        if (!$this->id) {
+            if (DbConfig::$config['driver'] == 'pgsql') {
+                $this->id = self::db()->getDbHandler()->lastInsertId($class::$table . '_id_seq');
+            } else {
+                $this->id = self::db()->getDbHandler()->lastInsertId();
+            }
+        }
     }
 
     /**
@@ -278,8 +286,10 @@ class Model
     {
         $class = get_called_class();
         if ($doValidate && !$this->validate(true)) {
+            header('Content-Type: text/plain');
+            print_r($this->validate());
             throw new Exception('Model validation failed', 1);
-            return;
+            exit();
         }
 
         $vars = get_object_vars($this);
@@ -291,7 +301,7 @@ class Model
         $sql = substr($sql, 0, -strlen(', '));
         $sql .= ' WHERE id = :id';
 
-        $bv = array('id' => $this->id);
+        $bv = array('id' => (int) $this->id);
         for ($i = 0; $i < count($this->changes); $i++) {
             $bv[$this->changes[$i]] = $vars[$this->changes[$i]];
         }

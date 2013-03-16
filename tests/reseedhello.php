@@ -4,7 +4,7 @@ import('core.App');
 App::init();
 App::loadModel('Hello');
 
-$db = Db::getInstance()->executeSql('DELETE FROM hello');
+$db = Db::getInstance()->executeSql('DELETE FROM tbl_hello');
 
 $hellos = array(
     new Hello(array('id' => 1, 'msg' => 'Les Miserables')),

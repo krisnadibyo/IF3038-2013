@@ -1,7 +1,7 @@
 <?php
 class Task_Tag extends Model
 {
-    protected static $table = 'task_tag';
+    protected static $table = 'tbl_task_tag';
 
     protected $id = null;
 
@@ -11,7 +11,7 @@ class Task_Tag extends Model
 
 class Tag extends Model
 {
-    protected static $table = 'tag';
+    protected static $table = 'tbl_tag';
 
     protected $id = null;
     protected $name = null;
@@ -25,8 +25,8 @@ class Tag extends Model
     public static function getAllByTaskId($task_id, $returnObjectArray=true)
     {
         $tags = self::getAll(array(
-            'select' => array('tag.id', 'tag.name'),
-            'from' => 'tag LEFT JOIN task_tag ON (task_tag.tag_id = tag.id)',
+            'select' => array('tbl_tag.id', 'tbl_tag.name'),
+            'from' => 'tbl_tag LEFT JOIN tbl_task_tag ON (tbl_task_tag.tag_id = tbl_tag.id)',
             'where'=> array(
                 array('task_id', '=', $task_id)
             )
@@ -46,7 +46,7 @@ class Tag extends Model
 
     public static function assign($tag_ids, $task_id)
     {
-        $sql = "INSERT IGNORE INTO task_tag (task_id, tag_id) VALUES (:task_id, :tag_id)";
+        $sql = "INSERT IGNORE INTO tbl_task_tag (task_id, tag_id) VALUES (:task_id, :tag_id)";
 
         if (!is_array($tag_ids)) {
             self::db()->executeSql($sql, array(

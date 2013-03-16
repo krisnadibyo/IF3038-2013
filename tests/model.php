@@ -8,15 +8,9 @@ header('Content-Type: text/plain');
 println("Using model Hello\n");
 
 $qArgs = array(
-    'select' => array('id', 'msg'),
     'where' => array(
-        array('id' , '=', 0),
-        'OR',
-        array('msg', 'LIKE', '%Les'),
+        array('msg', 'LIKE', '%Les%'),
     ),
-    'limit' => 10,
-    'offset' => 0,
-    'orderBy' => 'id',
 );
 
 println("(1) Normal createSql without argument:");

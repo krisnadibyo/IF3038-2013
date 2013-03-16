@@ -1,7 +1,7 @@
 <?php
 class Comment extends Model
 {
-    protected static $table = 'comment';
+    protected static $table = 'tbl_comment';
 
     protected $id = null;
     protected $task_id = null;

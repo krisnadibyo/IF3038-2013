@@ -12,7 +12,7 @@ App::loadModel('Comment');
 $db = Db::getInstance();
 /* Clear table contents */
 foreach (array('user', 'category', 'task', 'tag', 'task_tag') as $table) {
-    $db->executeSql('DELETE FROM ' . $table);    
+    $db->executeSql('DELETE FROM tbl_' . $table . '');    
 }
 
 $users = array(
@@ -66,27 +66,27 @@ $misc->save_new();
 $tasks = array(
     'singBringHimHome' => new Task(array(
         'name' => 'Sing Bring Him Home',
-        'attachment' => '',
+        'attachment' => 'none',
         'deadline' => '2013-05-05',
         'user_id' => $users['eponine']->get_id(),
-        'assignee_id' => $users['valjean']->get_id(),
-        'category_id' => $musical->get_id(),
+        'assignee_id' => (int) $users['valjean']->get_id(),
+        'category_id' => (int) $musical->get_id(),
     )),
     'captureValjean' => new Task(array(
         'name' => 'Capture Valjean',
-        'attachment' => '',
+        'attachment' => 'none',
         'deadline' => '2013-12-20',
-        'user_id' => $users['javert']->get_id(),
+        'user_id' => (int) $users['javert']->get_id(),
         'assignee_id' => null,
-        'category_id' => $uncategorized->get_id(),
+        'category_id' => (int) $uncategorized->get_id(),
     )),
     'protectCosette' => new Task(array(
         'name' => 'Protect Cosette',
-        'attachment' => '',
+        'attachment' => 'none',
         'deadline' => '2013-11-01',
-        'user_id' => $users['valjean']->get_id(),
+        'user_id' => (int) $users['valjean']->get_id(),
         'assignee_id' => null,
-        'category_id' => $uncategorized->get_id(),
+        'category_id' => (int) $uncategorized->get_id(),
     )),
 );
 foreach ($tasks as $t) { $t->save_new(); }

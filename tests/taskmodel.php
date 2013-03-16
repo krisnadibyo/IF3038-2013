@@ -16,10 +16,10 @@ foreach ($users as $user) {
     println($str);
 }
 
-echo "\nSearch for one task named 'Day More': \n\n";
+echo "\nSearch for one task named 'One': \n\n";
 
 $task = Task::getOne(array('where' => array(
-    array('name', 'LIKE', '%sing%'),
+    array('name', 'LIKE', '%One Day More%'),
 )));
 
 println('   Task Name  : ' . $task->get_name() . ' (' . $task->get_user()->get_username() . ')');

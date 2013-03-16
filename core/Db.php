@@ -16,6 +16,8 @@ class Db
         $this->dbh = null;
         try {
             $this->dbh = new PDO($this->dsn, $cfg['username'], $cfg['password']);
+            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         } catch (PDOException $e) {
             die($e->getMessage());
             return;

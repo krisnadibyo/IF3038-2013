@@ -1,7 +1,7 @@
 <?php
 class Category extends Model
 {
-    protected static $table = 'category';
+    protected static $table = 'tbl_category';
 
     protected $id = null;
     protected $name = null;

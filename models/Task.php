@@ -1,11 +1,11 @@
 <?php
 class Task extends Model
 {
-    protected static $table = 'task';
+    protected static $table = 'tbl_task';
 
     protected $id = null;
     protected $name = null;
-    protected $attachment = null;
+    protected $attachment = 'none';
     protected $deadline = null;
     protected $status = 0;
 
@@ -17,10 +17,13 @@ class Task extends Model
     public static function getByCategoryName($catName, $returnObjectArray=true)
     {
         return self::getAll(array(
-            'select' => array('task.id', 'task.name', 'task.attachment', 'task.deadline', 'task.user_id', 'task.assignee_id', 'task.category_id'),
-            'from' => 'task LEFT JOIN category ON (task.category_id = category.id)',
+            'select' => array('tbl_task.id', 'tbl_task.name',
+                'tbl_task.attachment', 'tbl_task.deadline',
+                'tbl_task.user_id', 'tbl_task.assignee_id',
+                'tbl_task.category_id'),
+            'from' => 'tbl_task LEFT JOIN tbl_category ON (tbl_task.category_id = tbl_category.id)',
             'where' => array(
-                array('category.name', '=', $catName),
+                array('tbl_category.name', '=', $catName),
             ),
         ), $returnObjectArray);
     }

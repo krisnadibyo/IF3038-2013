@@ -1,7 +1,7 @@
 <?php
 class User extends Model
 {
-    protected static $table = 'user';
+    protected static $table = 'tbl_user';
 
     protected $id = null;
     protected $name = null;
@@ -38,7 +38,7 @@ class User extends Model
         }
 
         // password
-        if (!$this->$password) {
+        if (!$this->password) {
             $error['password'][] = 'Required';
         }
 
