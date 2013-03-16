@@ -54,7 +54,7 @@ class CategoryController extends Controller
     // POST /category/delete/<name>
     public function delete($name='')
     {
-        if (!$this->_isPOST() && !$cat = Category::getOneByName($name)) {
+        if (!$this->_isPOST() || !$cat = Category::getOneByName($name)) {
             return $this->response->nullJson();
         }
 
