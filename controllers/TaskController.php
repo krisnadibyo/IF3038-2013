@@ -87,6 +87,55 @@ class TaskController extends Controller
         return $this->response->renderJson($tasks, true);
     }
 
+    // GET /task/user/<username>/[<complete>]
+    public function user($username='', $complete=false)
+    {
+        $tasks = Task::getByUser($username);
+
+        if ($complete && $tasks != null) {
+            foreach ($tasks as $task) {
+                $task->user = $task->get_user()->get_name();
+                $task->category = $task->get_category()->get_name();
+                $task->tags = $task->get_tags(true);
+            }
+        }
+
+        return $this->response->renderJson($tasks, true);
+    }
+
+    // GET /task/assignee/<assignee>/[<complete>]
+    public function user($assignee='', $complete=false)
+    {
+        $tasks = Task::getByAssignee($assignee);
+
+        if ($complete && $tasks != null) {
+            foreach ($tasks as $task) {
+                $task->user = $task->get_user()->get_name();
+                $task->category = $task->get_category()->get_name();
+                $task->tags = $task->get_tags(true);
+            }
+        }
+
+        return $this->response->renderJson($tasks, true);
+    }
+
+    // GET /task/tag/<tag_name>/[<complete>]
+    public function tag($tagname='', $complete=false)
+    {
+        $tasks = Task::getByTag($tagname);
+
+        if ($complete && $tasks != null) {
+            foreach ($tasks as $task) {
+                $task->user = $task->get_user()->get_name();
+                $task->category = $task->get_category()->get_name();
+                $task->tags = $task->get_tags(true);
+            }
+        }
+
+        return $this->response->renderJson($tasks, true);
+    }
+    
+
     // GET /task/get/<id>/[<complete>]
     public function get($id=0, $complete=false)
     {

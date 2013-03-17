@@ -17,15 +17,48 @@ class Task extends Model
     public static function getByCategoryName($catName, $returnObjectArray=true)
     {
         return self::getAll(array(
-            'select' => array('tbl_task.id', 'tbl_task.name',
-                'tbl_task.attachment', 'tbl_task.deadline',
-                'tbl_task.user_id', 'tbl_task.assignee_id',
-                'tbl_task.category_id'),
-            'from' => 'tbl_task LEFT JOIN tbl_category ON (tbl_task.category_id = tbl_category.id)',
+            'select' => array('task.*'),
+            'from' => 'tbl_task AS task LEFT JOIN tbl_category AS category ON (task.category_id = category.id)',
             'where' => array(
-                array('tbl_category.name', '=', $catName),
+                array('category.name', '=', $catName),
             ),
         ), $returnObjectArray);
+    }
+
+    public static function getByUser($username, $roa=true)
+    {
+        return self::getAll(array(
+            'select' => array('task.*'),
+            'from' => 'tbl_task AS task LEFT JOIN tbl_user AS user ON (task.user_id = user.id)',
+            'where' => array(
+                array('user.username', '=', $username),
+            ),
+        ), $roa);
+    }
+
+    public static function getByAssignee($assignee, $roa=true)
+    {
+        return self::getAll(array(
+            'select' => array('task.*'),
+            'from' => 'tbl_task AS task LEFT JOIN tbl_user AS user ON (task.assignee_id = user.id)',
+            'where' => array(
+                array('user.username', '=', $assignee),
+            ),
+        ), $roa);
+    }    
+
+    public static function getByTag($tagname, $roa=true)
+    {
+        return self::getAll(array(
+            'select' => array('task.*'),
+            'from' =>
+                'tbl_task AS task ' .
+                'LEFT JOIN tbl_task_tag as task_tag ON (task.id = task_tag.task_id) ' .
+                'LEFT JOIN tbl_tag as tag ON (task_tag.tag_id = tag.id)',
+            'where' => array(
+                array('tag.name', '=', $tagname),
+            ),
+        ), $roa);
     }
 
     // Foreign Key objects, getters and setters

@@ -6,6 +6,9 @@ Task:
     GET     /task/search_name/<name>/[<complete>]
     GET     /task/hint/<name>
     GET     /task/category/<category_name>/[<complete>]
+    GET     /task/user/<username>/[<complete>]
+    GET     /task/assignee/<assignee>/[<complete>]
+    GET     /task/tag/<tag_name>/[<complete>]
     GET     /task/get/<id>/[<complete>]
     POST    /task/create + JSON data
     POST    /task/edit/<id> + JSON data
