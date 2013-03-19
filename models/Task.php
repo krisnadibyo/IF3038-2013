@@ -45,7 +45,7 @@ class Task extends Model
                 array('user.username', '=', $assignee),
             ),
         ), $roa);
-    }    
+    }
 
     public static function getByTag($tagname, $roa=true)
     {
@@ -69,7 +69,7 @@ class Task extends Model
 
     public function get_assignee()
     {
-        return User::getOneById($this->assignee_id);
+        return !$this->assignee_id ? null : User::getOneById($this->assignee_id);
     }
 
     public function get_category()
@@ -81,7 +81,7 @@ class Task extends Model
     {
         return Tag::getAllByTaskId($this->id, !$returnArray);
     }
-    
+
     public function get_comments($returnArray=false)
     {
         return Comment::getAllByTaskId($this->id, !$returnArray);

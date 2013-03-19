@@ -21,9 +21,7 @@ class TaskController extends Controller
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
-                $task->user = $task->get_user()->get_name();
-                $task->category = $task->get_category()->get_name();
-                $task->tags = $task->get_tags(true);
+                $this->_complete($task);
             }
         }
 
@@ -35,15 +33,13 @@ class TaskController extends Controller
     {
         $tasks = Task::getAll(array(
             'where' => array(
-                array('name', 'LIKE', '%' . $name . '%'),     
+                array('name', 'LIKE', '%' . $name . '%'),
             ),
         ));
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
-                $task->user = $task->get_user()->get_name();
-                $task->category = $task->get_category()->get_name();
-                $task->tags = $task->get_tags(true);
+                $this->_complete($task);
             }
         }
 
@@ -58,11 +54,11 @@ class TaskController extends Controller
 
         $tasks = Task::getAll(array(
             'where' => array(
-                array('name', 'LIKE', $name . '%'),     
+                array('name', 'LIKE', $name . '%'),
             ),
         ));
 
-        if ($name != '' && $tasks != null) {   
+        if ($name != '' && $tasks != null) {
             foreach($tasks as $task) {
                 $hints[] = $task->get_name();
             }
@@ -78,9 +74,7 @@ class TaskController extends Controller
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
-                $task->user = $task->get_user()->get_name();
-                $task->category = $task->get_category()->get_name();
-                $task->tags = $task->get_tags(true);
+                $this->_complete($task);
             }
         }
 
@@ -94,9 +88,7 @@ class TaskController extends Controller
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
-                $task->user = $task->get_user()->get_name();
-                $task->category = $task->get_category()->get_name();
-                $task->tags = $task->get_tags(true);
+                $this->_complete($task);
             }
         }
 
@@ -104,15 +96,13 @@ class TaskController extends Controller
     }
 
     // GET /task/assignee/<assignee>/[<complete>]
-    public function user($assignee='', $complete=false)
+    public function assignee($assignee='', $complete=false)
     {
         $tasks = Task::getByAssignee($assignee);
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
-                $task->user = $task->get_user()->get_name();
-                $task->category = $task->get_category()->get_name();
-                $task->tags = $task->get_tags(true);
+                $this->_complete($task);
             }
         }
 
@@ -126,15 +116,13 @@ class TaskController extends Controller
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
-                $task->user = $task->get_user()->get_name();
-                $task->category = $task->get_category()->get_name();
-                $task->tags = $task->get_tags(true);
+                $this->_complete($task);
             }
         }
 
         return $this->response->renderJson($tasks, true);
     }
-    
+
 
     // GET /task/get/<id>/[<complete>]
     public function get($id=0, $complete=false)
@@ -144,10 +132,7 @@ class TaskController extends Controller
         }
 
         if ($complete) {
-            $task->user = $task->get_user()->get_name();
-            $task->category = $task->get_category()->get_name();
-            $task->tags = $task->get_tags(true);
-            $task->comments = $task->get_comments(true);
+            $this->_complete($task);
         }
 
         return $this->response->renderJson($task->toArray());
@@ -205,5 +190,17 @@ class TaskController extends Controller
 
         $task->delete();
         return $this->response->renderJson(array('status' => 'success'));
+    }
+
+    // Private functions
+    public function _complete(&$task) {
+            $task->user = $task->get_user()->get_name();
+            $assignee = $task->get_assignee();
+            if ($assignee != null) {
+                $task->assignee = $assignee->get_name();
+            }
+            $task->category = $task->get_category()->get_name();
+            $task->tags = $task->get_tags(true);
+            $task->comments = $task->get_comments(true);
     }
 }
