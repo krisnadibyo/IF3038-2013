@@ -1,6 +1,15 @@
 (function($) {
-    var user = Session.getLoggedUser();
+    UserAPI.get(function(res) {
+        console.log("User loaded");
+        userLoaded(res);
+    });
 
+    var userLoaded = function(user) {
+    // [USER LOADED]
+
+    document.title = 'Dashboard - ' + user['name'];
+
+    // Resize dialog boxes
     var resizeDialogs = function(firstTime) {
         var multiplier = firstTime ? 4 : 1.6;
         var cWidth = document.body.clientWidth;
@@ -16,44 +25,32 @@
         resizeDialogs();
     }
 
-
-    $id('loggedUserText').html(user['username']);
-    document.title = 'Dashboard - ' + user['name'];
-
-    $id('signOutButton').onclick = function(e) {
-        Session.logout();
-        alert("You have been logged out!");
-        $.open($.AppRoot, '_self');
-    }
-
     // Populate tasks
-    var tasks = Tasks.load();
-    var userTasks = Tasks.getOwnerTasks(tasks, user['username']);
-    var userDoneTasks = Tasks.getDoneTasks(userTasks);
+    var userTasks = TaskAPI.getByCategory('Uncategorized', null, false);
+    // var tasks = Tasks.load();
+    // var userTasks = Tasks.getOwnerTasks(tasks, user['username']);
+    // var userDoneTasks = Tasks.getDoneTasks(userTasks);
 
     // Collect categories
-    var categories = [];
-    var collectCategories = function() {
-        for (var i = 0; i < userTasks.length; i++) {
-            if (categories.indexOf(userTasks[i]['category']) === -1) {
-            categories.push(userTasks[i]['category']);
-            }
-        }
-    }
-    collectCategories(categories);
+    var categories = TaskAPI.getCategories(null, false);
 
-    var activeCategory = categories[0];
+    var activeCategory = {
+        id: categories[0]['id'],
+        name: categories[0]['name']
+    };
     var activeCategoryTasks = undefined;
     var activeCategoryLi = undefined;
 
     var showCategories = function() {
-        collectCategories();
         $id('categoryList').html('');
 
         for (var i = 0; i < categories.length; i++) {
-            var li = $e.create('li').html(categories[i]).attr('cat', categories[i]);
+            var li = $e.create('li')
+                .html(categories[i]['name'])
+                .attr('cat', categories[i]['name'])
+                .attr('catId', categories[i]['id']);
 
-            if (categories[i] == activeCategory) {
+            if (categories[i]['name'] == activeCategory['name']) {
                 li.addClass('active');
                 activeCategoryLi = li;
             }
@@ -61,8 +58,11 @@
             li.onclick = function(e) {
                 activeCategoryLi.removeClass('active');
                 this.addClass('active');
-                activeCategory = this.attr('cat');
+
+                activeCategory['name'] = this.attr('cat');
+                activeCategory['id'] = parseInt(this.attr('catId'));
                 activeCategoryLi = this;
+
                 showActiveCategoryTasks();
             }
 
@@ -72,7 +72,9 @@
     showCategories();
 
     var showActiveCategoryTasks = function() {
-        activeCategoryTasks = Tasks.getByCategory(userTasks, activeCategory);
+        activeCategoryTasks = TaskAPI.getByCategory(activeCategory['name'], null, false);
+        console.log(activeCategoryTasks);
+        //Tasks.getByCategory(userTasks, activeCategory);
 
         $id('taskList').html('');600
         for (var i = 0; i < activeCategoryTasks.length; i++) {
@@ -82,11 +84,11 @@
             var html =
             '<ul class="task">' +
                 '<li taskId="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
-                '<li>Deadline: ' + task['deadline'] + '</li>' +
-                '<li>Assignee: ' + (task['assignee'] == '' ? 'None' :  task['assignee']) + '</li>' +
-                '<li>Tags: ' + task.getTags() + '</li>' +
-                '<li>Status: ' + (task['status'] == '' ? 'Not Done' : 'Done!') + '</li>' +
-                '<li>Attachment: ' + (task['attachment'] == '' ? 'None' :  task['attachment']) + '</li>' +
+                '<li>Deadline: <strong>' + task['deadline'] + '</strong></li>' +
+                '<li>Assignee: ' + (task['assignee'] == undefined ? 'None' :  task['assignee']) + '</li>' +
+                '<li>Tags: ' + TaskHelper.getTagsStr(task) + '</li>' +
+                '<li>Status: ' + (task['status'] == '0' ? 'Not Done' : 'Done!') + '</li>' +
+                '<li>Attachment: ' + (task['attachment'] == 'none' ? 'None' :  task['attachment']) + '</li>' +
             '</ul>';
 
             li.html(html);
@@ -161,7 +163,7 @@
         }, 25);
 
         taskInputs['owner'].val(user['username']);
-        taskInputs['category'].val(activeCategory);
+        taskInputs['category'].val(activeCategory['name']);
 
         for (key in taskInputs) {
             var e = taskInputs[key];
@@ -273,13 +275,13 @@
 
         $id('ve_deadline').html('Deadline: <strong>' + task['deadline'] + '</strong>');
         $id('ve_assignee').html('Assignee: <strong>' + (task['assignee'] == '' ? 'None' : task['assignee']) +  '</strong>');
-        $id('ve_tags').html('Tags: <strong>' + task.getTags() + '</strong>');
+        $id('ve_tags').html('Tags: <strong>' + TaskHelper.getTagsStr(task) + '</strong>');
         $id('ve_status').html('Status: <strong>' + (task['status'] == '' ? 'Not Done' : 'Done!') + '</strong>');
 
         $id('taskEditButton').onclick = function(evt) {
             $id('ve_deadline').html('<label>Deadline:</label><input id="ve_deadlineInput" type="date" value="' + task['deadline'] + '" />');
             $id('ve_assignee').html('<label>Assignee:</label><input id="ve_assigneeInput" type="text" value="' + task['assignee'] + '" />');
-            $id('ve_tags').html('<label>Tags:</label><input id="ve_tagsInput" type="text" value="' + task.getTags() + '" />');
+            $id('ve_tags').html('<label>Tags:</label><input id="ve_tagsInput" type="text" value="' + TaskHelper.getTagsStr(task) + '" />');
             $id('taskEditSubmitButton').removeAttr('disabled');
         }
 
@@ -289,4 +291,6 @@
         }
     }
 
+    // [/USER LOADED]
+    }
 })(window);
