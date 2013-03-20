@@ -3,3 +3,4 @@
 *~
 config/config.php
 config/db.php
+static/uploads/*
