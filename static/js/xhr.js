@@ -59,12 +59,19 @@
         // oargs: url, callback, fileobj
         doUpload: function(oargs) {
             var _xhr;
+
+            if (oargs['async'] === false) {
+                async = false;
+            } else {
+                async = true;
+            }
+
             var fd = new FormData();
 
             if (!oargs['textResponse']) {
-                _xhr = XHR.xhrInit(oargs['callback'], false);
+                _xhr = XHR.xhrInit(oargs['callback'], false, async);
             } else {
-                _xhr = XHR.xhrInit(oargs['callback'], true);
+                _xhr = XHR.xhrInit(oargs['callback'], true, async);
             }
 
             _xhr.open('POST', oargs['url'], true);
@@ -91,7 +98,7 @@
             });
         },
 
-        // Quic POST
+        // Quick POST
         qPost: function(url, data, callbackfunc, async) {
             if (async !== false) {
                 async = true;
