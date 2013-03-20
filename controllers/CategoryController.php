@@ -35,6 +35,22 @@ class CategoryController extends Controller
         return $this->response->renderJson($cat);
     }
 
+    // GET /category/user/<username>
+    public function user($username='')
+    {
+        $cats = Category::getAll(array(
+            'select' => array('category.*'),
+            'from' => 'tbl_category AS category' .
+                ' LEFT JOIN tbl_task AS task ON (category.id = task.category_id)' .
+                ' LEFT JOIN tbl_user AS user ON (task.user_id = user.id)',
+            'where' => array(
+                array('user.username', '=', $username),
+            ),
+        ));
+
+        return $this->response->renderJson($cats, true);
+    }
+
     // POST /category/create/<name>
     public function create($name='')
     {
