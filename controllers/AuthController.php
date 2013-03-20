@@ -22,7 +22,7 @@ class AuthController extends Controller
         }
 
         if (md5($data['password']) === $user->get_password()) {
-            Session::login($user->get_username());
+            Session::login($user->get_username(), $user->get_id());
             return $this->response->renderJson(array('status' => 'success'));
         }
 

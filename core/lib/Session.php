@@ -32,10 +32,11 @@ class Session
         return true;
     }
 
-    public static function login($user)
+    public static function login($user, $id)
     {
         self::set('login', true);
         self::set('username', $user);
+        self::set('userid', $id);
     }
 
     public static function logout()
