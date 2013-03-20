@@ -153,6 +153,8 @@
             return;
         }
 
+        $id('signUpButton').attr('disabled', '').html('Loading...');
+
         $ls[signupInputs['avatar'].val()] = $.avatarImg;
         var user = new User(
             0, // id
@@ -179,6 +181,7 @@
                 for (key in res) {
                     addErrorMessage(signupInputs[key], res[key]);
                 }
+                $id('signUpButton').removeAttr('disabled').html('Sign Up');
                 return;
             }
 
