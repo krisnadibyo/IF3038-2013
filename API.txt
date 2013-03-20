@@ -46,10 +46,10 @@ User:
 Auth:
 
     POST    /auth/login + JSON data (username & password)
-    GET     /auth/logout    
+    GET     /auth/logout
 
 Upload:
 
-    ~ POST  /upload/test + multipart data
-    ~ POST  /upload/avatar/<username> + multipart data
-    ~ POST  /upload/attachment/<task_id> + multipart data
+    POST  /upload/test + multipart data
+    POST  /upload/avatar/<username> + multipart data
+    POST  /upload/attachment/<task_id> + multipart data

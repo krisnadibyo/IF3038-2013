@@ -21,7 +21,6 @@ class UploadController extends Controller
             return $this->response->nullJson();
         }
 
-        /* print_r($_FILES); */
         $tmpfile = $_FILES['fileobj']['tmp_name'];
         $destfile = $this->uploadDir . 'test-' . $_FILES['fileobj']['name'];
 
@@ -30,7 +29,10 @@ class UploadController extends Controller
             exit();
         }
 
-        return $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array(
+            'status' => 'success',
+            'files' => $_FILES,
+        ));
     }
 
     // POST /upload/avatar/<username> + multipart data
@@ -41,14 +43,18 @@ class UploadController extends Controller
         }
 
         $tmpfile  = $_FILES['fileobj']['tmp_name'];
-        $destfile = $this->uploadDir . 'avatar/' . $username . preg_replace('/^.+\.(.+)$/', '.$1', $_FILES['fileobj']['name']);
+        $filename = $username . preg_replace('/^.+\.(.+)$/', '.$1', $_FILES['fileobj']['name']);
+        $destfile = $this->uploadDir . 'avatar/' . $username . $filename;
 
         if (!move_uploaded_file($tmpfile, $destfile)) {
             throw new Exception("File upload error", 1);
             exit();
         }
 
-        return $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array(
+            'status' => 'success',
+            'filename' => $filename,
+        ));
     }
 
     // POST /upload/attachment/<task_id> + multipart data
@@ -59,13 +65,17 @@ class UploadController extends Controller
         }
 
         $tmpfile  = $_FILES['fileobj']['tmp_name'];
-        $destfile = $this->uploadDir . 'attachment/' . $task_id . '-' . $_FILES['fileobj']['name'];
+        $filename = $task_id . '-' . $_FILES['fileobj']['name'];
+        $destfile = $this->uploadDir . 'attachment/' . $filename;
 
         if (!move_uploaded_file($tmpfile, $destfile)) {
             throw new Exception("File upload error", 1);
             exit();
         }
 
-        return $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array(
+            'status' => 'success',
+            'filename' => $filename,
+        ));
     }
 }

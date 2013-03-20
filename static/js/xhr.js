@@ -39,6 +39,23 @@
 
             _xhr.send(oargs['data']);
         },
+
+        /* oargs: url, callback, fileobj */
+        doUpload: function(oargs) {
+            var _xhr;
+            var fd = new FormData();
+
+            if (!oargs['textResponse']) {
+                _xhr = XHR.xhrInit(oargs['callback'], false);
+            } else {
+                _xhr = XHR.xhrInit(oargs['callback'], true);
+            }
+
+            _xhr.open('POST', oargs['url'], true);
+            //_xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+            fd.append('fileobj', oargs['fileobj']);
+            _xhr.send(fd);
+        }
     };
 
 })(window);

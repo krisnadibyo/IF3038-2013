@@ -49,11 +49,13 @@ header('Content-Type: text/html');
         <select id="method">
             <option value="POST" selected="">POST</option>
             <option value="GET">GET</option>
+            <option value="POST-X">POST (UPLOAD)</option>
         </select><br />
         <label>REST URL:</label>
         <input id="url" type="text" placeholder="e.g., <?php echo vh_link(''); ?>auth/login"  />
         <label>Data: (POST only, in JSON)</label>
         <textarea id="data">{"username": "valjean", "password": "valjean123"}</textarea><br />
+        <input style="display: none" type="file" id="fileobj" name="fileobj" /><br />
         <button id="sendButton">Send</button>
     </form>
     <div id="responseDiv">
@@ -68,6 +70,16 @@ header('Content-Type: text/html');
 
 <script type="text/javascript">
 (function($) {
+
+    $id('method').onchange = function(e) {
+        if ($id('method').val() == 'POST-X') {
+            $id('fileobj').style.display = 'block';
+            $id('data').style.display = 'none';
+        } else {
+            $id('fileobj').style.display = 'none';
+            $id('data').style.display = 'inline';
+        }
+    }
 
     $id('apiTestForm').onsubmit = function(e) {
         var method = $id('method').val();
@@ -89,6 +101,15 @@ header('Content-Type: text/html');
                 url: url,
                 jsonData: true,
                 data: data,
+                callback: function(res) {
+                    $id('responseBox').html(JSON.stringify(res, null, '  '));
+                }
+            })
+        }
+        else if (method == 'POST-X') {
+            $.XHR.doUpload({
+                url: url,
+                fileobj: $id('fileobj').files[0],
                 callback: function(res) {
                     $id('responseBox').html(JSON.stringify(res, null, '  '));
                 }
