@@ -3,15 +3,22 @@
 (function($) {
     /**
      * User object constructor
-     * 
+     *
+     * @param {Integer} id
      * @param {String} name
      * @param {String} username
      * @param {String} password
      * @param {String} email
-     * @param {Object} birthday
+     * @param {String} birthday
      * @param {String} avatar
+     * @param {String} bio
      */
-    $.User = function(name, username, password, email, birthday, avatar, bio) {
+    $.User = function(id, name, username, password, email, birthday, avatar, bio) {
+        if (!id) {
+            id = 0;
+        }
+
+        this.id = id;
         this.name = name;
         this.username = username;
         this.password = password;
@@ -53,8 +60,9 @@
 
         /**
          * Create birthday object from date string.
-         * 
+         *
          * @param {String} birthdayString
+         * @deprecated
          */
         parseBirthday: function(birthdayString) {
             var bArray = $.UserHelper.rules.birthday.exec(birthdayString).splice(1,3);
@@ -63,8 +71,90 @@
                 month: bArray[1],
                 day: bArray[2]
             }
-        }
+        },
     };
+
+    /* User API */
+    $.UserAPI = {
+        get: function(callbackfunc) {
+            $.XHR.doReq({
+                method: 'GET',
+                url: $.AppRoot + 'user/get',
+                callback: function(res) {
+                    if (callbackfunc !== undefined) {
+                        callbackfunc(res);
+                    }
+                    console.log(res);
+                }
+            });
+        },
+
+        save: function(user, callbackfunc) {
+            var data = {
+                name: user.name,
+                email: user.email,
+                birthday: user.birthday,
+                avatar: user.avatar,
+                bio: user.bio
+            };
+
+            $.XHR.doReq({
+                method: 'POST',
+                url: $.AppRoot + 'user/edit',
+                jsonData: true,
+                data: data,
+                callback: function(res) {
+                    if (callbackfunc !== undefined) {
+                        callbackfunc(res);
+                    }
+                    console.log(res);
+                }
+            });
+        },
+
+        register: function(user, callbackfunc) {
+            var data = {
+                name: user.name,
+                username: user.username,
+                password: user.password,
+                email: user.email,
+                birthday: user.birthday,
+                avatar: user.avatar,
+                bio: user.bio
+            };
+
+            $.XHR.doReq({
+                method: 'POST',
+                url: $.AppRoot + 'user/register',
+                jsonData: true,
+                data: data,
+                callback: function(res) {
+                    if (callbackfunc !== undefined) {
+                        callbackfunc(res);
+                    }
+                    console.log(res);
+                }
+            });
+        },
+
+        uploadAvatar: function(user, fileobj, callbackfunc) {
+            if (!user || !fileobj) {
+                return;
+            }
+
+            var username = user.username;
+            $.XHR.doUpload({
+                url: $.AppRoot + 'upload/avatar/' + username,
+                fileobj: fileobj,
+                callback: function(res) {
+                    if (callbackfunc !== undefined) {
+                        callbackfunc(res);
+                    }
+                    console.log(res);
+                }
+            });
+        }
+    }
 
     /**
      * Users - Handle array of users
@@ -72,7 +162,7 @@
     $.Users = {
         /**
          * Serialize an array of user objects into JSON string format.
-         * 
+         *
          * @param {Array} users
          */
         serialize: function(users) {
@@ -82,7 +172,7 @@
         /**
          * Deserialize a serialized array of JSON string formatted users into
          * array of user objects.
-         * 
+         *
          * @param {String} serializedUsers
          */
         deserialize: function(serializedUsers) {
@@ -108,64 +198,18 @@
             return users;
         },
 
-        /* Local Storage functions */
-        load: function() {
-            return $.Users.deserialize($ls['users']);
+        /* API */
+        loadAll: function() {
+            $.XHR.doReq({
+                method: 'GET',
+                url: $.AppRoot + 'user/all/samantha',
+                textResponse: true,
+                callback: function(res) {
+                    $.users = $.Users.deserialize(res);
+                    alert("Users loaded!");
+                }
+            });
         },
-
-        save: function(users) {
-            $ls['users'] = $.Users.serialize(users);
-        },
-
-        clear: function() {
-            $ls.removeItem('users');
-            return Array();
-        }
     }
 
-    /* Session */
-    $.Session = {
-        login: function(username, password) {
-            var users = $.Users.load();
-
-            var user = undefined;
-            for (var i = 0; i < users.length; i++) {
-                if (users[i]['username'] === username) {
-                    user = users[i];
-                    break;
-                }
-            }
-
-            if (user == undefined) {
-                console.log('SESSION Error: User not found');
-                return false;
-            }
-
-            if (user['password'] == password) {
-                $ls['logged_in'] = 'true';
-                $ls['logged_user'] = JSON.stringify([user]);
-
-                return true;
-            }
-
-            console.log('SESSION Error: Incorrect password');
-            return false;
-        },
-
-        logout: function() {
-            if ($ls['logged_in'] == undefined ||
-                $ls['logged_user'] == undefined) {
-                return false;
-            }
-
-            $ls.removeItem('logged_in');
-            $ls.removeItem('logged_user');
-
-            return true;
-        },
-
-        getLoggedUser: function() {
-            return $.Users.deserialize($ls['logged_user'])[0];
-        }
-    };
 })(window);

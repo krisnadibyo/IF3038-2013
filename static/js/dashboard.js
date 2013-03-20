@@ -1,11 +1,6 @@
 (function($) {
     var user = Session.getLoggedUser();
 
-    if (!user) {
-    alert("You're not signed in! Please sign in first!");
-        $.open($.AppRoot, '_self');
-    }
-
     var resizeDialogs = function(firstTime) {
         var multiplier = firstTime ? 4 : 1.6;
         var cWidth = document.body.clientWidth;
@@ -20,7 +15,7 @@
     $.onresize = function() {
         resizeDialogs();
     }
-    
+
 
     $id('loggedUserText').html(user['username']);
     document.title = 'Dashboard - ' + user['name'];
@@ -57,20 +52,20 @@
 
         for (var i = 0; i < categories.length; i++) {
             var li = $e.create('li').html(categories[i]).attr('cat', categories[i]);
-    
+
             if (categories[i] == activeCategory) {
                 li.addClass('active');
                 activeCategoryLi = li;
             }
-    
+
             li.onclick = function(e) {
                 activeCategoryLi.removeClass('active');
                 this.addClass('active');
                 activeCategory = this.attr('cat');
                 activeCategoryLi = this;
-                showActiveCategoryTasks();    
+                showActiveCategoryTasks();
             }
-    
+
             $id('categoryList').appendChild(li);
         }
     }
@@ -78,12 +73,12 @@
 
     var showActiveCategoryTasks = function() {
         activeCategoryTasks = Tasks.getByCategory(userTasks, activeCategory);
-        
+
         $id('taskList').html('');600
         for (var i = 0; i < activeCategoryTasks.length; i++) {
             var task = activeCategoryTasks[i];
             var li = $e.create('li').attr('acTaskId', i);
-    
+
             var html =
             '<ul class="task">' +
                 '<li taskId="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
@@ -104,7 +99,7 @@
         e = $e(e);
         var tId = e.attr('taskId');
         var task = activeCategoryTasks[tId];
-    
+
         for (var i = 0; i < tasks.length; i++) {
             if (tasks[i]['name'] == task['name']) {
                 tasks.splice(i, 1);
@@ -151,7 +146,7 @@
     for (var i = 0; i < inputs.length; i++) {
         taskInputs[inputs[i]] = $id('ntask_' + inputs[i]);
     }
-    
+
 
     $.newEditTask = function(e, edit) {
         e = $e(e);
@@ -170,7 +165,7 @@
 
         for (key in taskInputs) {
             var e = taskInputs[key];
-    
+
             e.onkeyup = function() {
                 if (this.attr('rule')) {
                     checkTaskInput(this);
@@ -182,7 +177,7 @@
             }
         }
     }
-    
+
     $id('taskSubmitButton').onclick = function(evt) {
         var error = false;
 
@@ -225,7 +220,7 @@
         var dialog = $id(e.attr('dialogId'));
 
         $id('pageBlurrer').doTransition({
-            opacity: '0' 
+            opacity: '0'
         }, 25);
         dialog.doTransition({
             opacity: '0'
@@ -275,19 +270,19 @@
 
         $id('ve_name').html(task['name']);
         $id('ve_attachment').html('Attachment: ' +(task['attachment'] == '' ? 'None' : task['attachment']));
-        
+
         $id('ve_deadline').html('Deadline: <strong>' + task['deadline'] + '</strong>');
         $id('ve_assignee').html('Assignee: <strong>' + (task['assignee'] == '' ? 'None' : task['assignee']) +  '</strong>');
         $id('ve_tags').html('Tags: <strong>' + task.getTags() + '</strong>');
         $id('ve_status').html('Status: <strong>' + (task['status'] == '' ? 'Not Done' : 'Done!') + '</strong>');
-        
+
         $id('taskEditButton').onclick = function(evt) {
             $id('ve_deadline').html('<label>Deadline:</label><input id="ve_deadlineInput" type="date" value="' + task['deadline'] + '" />');
             $id('ve_assignee').html('<label>Assignee:</label><input id="ve_assigneeInput" type="text" value="' + task['assignee'] + '" />');
             $id('ve_tags').html('<label>Tags:</label><input id="ve_tagsInput" type="text" value="' + task.getTags() + '" />');
             $id('taskEditSubmitButton').removeAttr('disabled');
         }
-        
+
         $id('taskEditSubmitButton').onclick = function(evt) {
             alert('Not implemented yet.');
             $.closeDialog($e.create('div').attr('dialogId', 'viewEditTaskForm'));

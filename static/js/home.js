@@ -1,21 +1,15 @@
 (function($) {
-    /** Check session **/
-    if (Session.getLoggedUser()) {
-        $.open($.AppRoot + 'page/dashboard', '_self');
-    }
-
-    /** SIGNUP **/
+    // Initialize
     $.avatarFile = undefined;
     $.avatarImg = undefined;
 
     var inputIds = ['name', 'username', 'password', 'email', 'birthday', 'avatar', 'bio'];
-
     var signupInputs = {};
     for (var i = 0; i < inputIds.length; i++) {
         signupInputs[inputIds[i]] = $id('signup_' + inputIds[i]);
     }
 
-    /* Birthday */
+    // Birthday
     var bday = {
         Y: $id('bdYear'),
         M: $id('bdMonth'),
@@ -30,24 +24,22 @@
             if (i == selectedIndex) {
                 e.attr('selected', true);
             }
-    
+
             selectNode.appendChild(e);
         }
-    }    
+    }
 
     populateOptions(bday.Y, 1955, 2055, 1990);
     populateOptions(bday.M, 1, 12, 1);
     populateOptions(bday.D, 1, 31, 1);
-
     for (key in bday) {
         bday[key].onchange = function(e) {
             $id('signup_birthday').val(bday.Y.val() + '-' + bday.M.val() + '-' + bday.D.val());
         }
     }
-
     $id('signup_birthday').val(bday.Y.val() + '-' + bday.M.val() + '-' + bday.D.val());
 
-    /* Check Rules */
+    // Validation
     var unlockSignup = function() {
         var unlock = true;
 
@@ -64,6 +56,26 @@
         return unlock;
     }
 
+    var addErrorMessage = function(e, message) {
+        if (!e.hasClass('error')) {
+            var errorDiv = $e.create('div')
+                .addClass('errorMessage')
+                .html(message);
+
+            e.addClass('error')
+                .parentNode.insertBefore(errorDiv, e);
+
+            errorDiv.doTransition({ margin: '0 0 0 -40px', opacity: '1.0' }, 25);
+        }
+    }
+
+    var removeErrorMessage = function(e) {
+        if (e.hasClass('error')) {
+            e.removeClass('error')
+                .parentNode.removeChild(e.parentNode.firstChild);
+        }
+    }
+
     var checkSignupInput = function(e) {
         if (unlockSignup()) {
             $id('signUpButton').removeAttr('disabled');
@@ -72,22 +84,10 @@
         }
 
         if(!UserHelper.testRule(e.val(), e.attr('rule'))) {
-            if (!e.hasClass('error')) {
-                var errorDiv = $e.create('div')
-                    .addClass('errorMessage')
-                    .html(UserHelper.errorMessages[e.attr('rule')]);
-
-                e.addClass('error')
-                    .parentNode.insertBefore(errorDiv, e);
-
-                errorDiv.doTransition({ margin: '0 0 0 -40px', opacity: '1.0' }, 25);
-            }
+            addErrorMessage(e, UserHelper.errorMessages[e.attr('rule')]);
             return false;
         } else {
-            if (e.hasClass('error')) {
-                e.removeClass('error')
-                    .parentNode.removeChild(e.parentNode.firstChild);
-            }
+            removeErrorMessage(e);
             return true;
         }
     }
@@ -106,6 +106,39 @@
         }
     }
 
+    // Form open
+    var openForm = function(placeholderEl, formEl) {
+        placeholderEl.onclick = function(e) {
+            placeholderEl.style.display = 'none';
+
+            formEl.style.display = 'block';
+            formEl.doTransition({
+                opacity: '1.0',
+            }, 25);
+        }
+    }
+
+    openForm($id('signUpPlaceholder'), $id('signUpForm'));
+    openForm($id('signInPlaceholder'), $id('signInForm'));
+
+    $id('avatarFile').onchange = function(e) {
+        $.avatarFile = this.files[0];
+        $id('signup_avatar').val(this.val());
+
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+            $.avatarImg = evt.target.result;
+            $id('avatarImg').src = $.avatarImg;
+        }
+
+        $id('uploadAvatarDiv').style.height = '260px';
+        $id('avatarImg').style.display = 'block';
+
+        reader.readAsDataURL($.avatarFile);
+    }
+
+    // Form submit
+    // SIGN UP
     $id('signUpButton').onclick = function(e) {
         var error = false;
 
@@ -120,70 +153,82 @@
             return;
         }
 
-        console.log(signupInputs['avatar'].val());
-
-        // Signup success
         $ls[signupInputs['avatar'].val()] = $.avatarImg;
-
         var user = new User(
+            0, // id
             signupInputs['name'].val(),
             signupInputs['username'].val(),
             signupInputs['password'].val(),
             signupInputs['email'].val(),
-            UserHelper.parseBirthday(signupInputs['birthday'].val()),
+            signupInputs['birthday'].val(),
             signupInputs['avatar'].val(),
             signupInputs['bio'].val()
         );
-   
-        var users = Users.load();
-        users.push(user);
-        Users.save(users);
 
-        Session.login(user['username'], user['password']);
-        $.open($.AppRoot + 'page/dashboard', '_self');
-    }
-
-    var openForm = function(placeholderEl, formEl) {
-        placeholderEl.onclick = function(e) {
-            placeholderEl.style.display = 'none';
-    
-            formEl.style.display = 'block';
-            formEl.doTransition({
-                opacity: '1.0',
-            }, 25);
-        }
-    }
-
-    openForm($id('signUpPlaceholder'), $id('signUpForm'));
-    openForm($id('signInPlaceholder'), $id('signInForm'));
-
-    $id('avatarFile').onchange = function(e) {
-        $.avatarFile = this.files[0];
-        $id('signup_avatar').val('Avatar_' + this.val());
-
-        var reader = new FileReader();
-        reader.onload = function(evt) {
-            $.avatarImg = evt.target.result;
-            $id('avatarImg').src = $.avatarImg;
+        // Check for avatar and parse the extension
+        var ext = /^.*\.(.*)$/.exec(user.avatar);
+        if (!ext) {
+            user.avatar = 'none';
+        } else {
+            user.avatar = user.username + '.' + ext[1];
         }
 
-        $id('uploadAvatarDiv').style.height = '260px';
-        $id('avatarImg').style.display = 'block';
+        console.log(user);
+        UserAPI.register(user, function(res) {
+            if (res['status'] !== 'success') {
+                for (key in res) {
+                    addErrorMessage(signupInputs[key], res[key]);
+                }
+                return;
+            }
 
-        reader.readAsDataURL($.avatarFile);
+            if (user.avatar != 'none') {
+                UserAPI.uploadAvatar(user, $id('avatarFile').files[0], function(res) {
+                    doSignIn(user.username, user.password);
+                });
+            } else {
+                doSignIn(user.username, user.password);
+            }
+        });
     }
 
+    // SIGN IN
     $id('signInButton').onclick = function(e) {
         var username = $id('signin_username').val();
         var password = $id('signin_password').val();
 
-        if (!Session.login(username, password)) {
-            $id('signin_username').addClass('error');
-            $id('signin_password').addClass('error');
-            alert('Incorrect username/password!');
-        } else {
-            $.open($.AppRoot + 'page/dashboard', '_self');
-        }
+        doSignIn(username, password, function(res) {
+            if (res == null) {
+                addErrorMessage($id('signin_username'), "Invalid username or password");
+                $id('signin_password').addClass('error');
+            } else {
+                $.open($.AppRoot + 'page/dashboard', '_self');
+            }
+        });
+
     }
 
+    // functions
+    var doSignIn = function(username, password, callbackfunc) {
+        var data = {
+            username: username,
+            password: password
+        }
+
+        $.XHR.doReq({
+            method: 'POST',
+            url: $.AppRoot + 'auth/login',
+            jsonData: true,
+            data: data,
+            callback: function(res) {
+                if (callbackfunc !== undefined) {
+                    callbackfunc(res);
+                } else {
+                    if (res['status'] === 'success') {
+                        $.open($.AppRoot + 'page/dashboard', '_self');
+                    }
+                }
+            }
+        });
+    }
 })(window);

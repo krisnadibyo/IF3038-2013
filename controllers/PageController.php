@@ -17,6 +17,10 @@ class PageController extends Controller
 
     public function index()
     {
+        if (Session::loggedIn()) {
+            return $this->response->redirect(vh_link('page/dashboard'));
+        }
+
         $data = array(
             'title' => 'Home - MadToDo',
             'isHome' => true,
@@ -40,6 +44,13 @@ class PageController extends Controller
 
     public function dashboard()
     {
+        if (!Session::loggedIn()) {
+            return $this->response->redirect(vh_link(''));
+        }
+
+        App::loadModel('User');
+        $user = User::getOneByUsername(Session::get('username'));
+
         $data = array(
             'title' => 'Dashboard - MadToDo',
             'isDashboard' => true,
@@ -52,6 +63,7 @@ class PageController extends Controller
             'footerScripts' => array(
                 'js/dashboard.js',
             ),
+            'user' => $user->toArray(),
         );
 
         return $this->response->renderView('pages.dashboard', $data);
@@ -59,6 +71,10 @@ class PageController extends Controller
 
     public function profile()
     {
+        if (!Session::loggedIn()) {
+            return $this->response->redirect(vh_link(''));
+        }
+
         $data = array(
             'title' => 'Profile - MadToDo',
             'isProfile' => true,
@@ -79,7 +95,7 @@ class PageController extends Controller
     /* temporary: */
     public function install()
     {
-        return $this->response->redirect(vh_slink('install.html'));        
+        return $this->response->redirect(vh_slink('install.html'));
     }
 
     public function test()
@@ -88,20 +104,9 @@ class PageController extends Controller
             . urlencode('The quick<br/>brown fox<br/>jumps over<br/>the lazy<br/>dog')));
     }
 
-    public function magiclogin()
-    {
-        App::loadModel('User');
-
-        $user = User::getAll();
-        $user = $user[0];
-        Session::login($user->get_username());
-
-        return $this->response->write("Logged in!");
-    }
-
     public function logout()
     {
         Session::logout();
-        return $this->response->write("Logged out!");
+        return $this->response->redirect(vh_link(''));
     }
 }
