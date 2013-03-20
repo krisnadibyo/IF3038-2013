@@ -1,12 +1,6 @@
 (function($) {
-    UserAPI.get(function(res) {
-        console.log("User loaded");
-        userLoaded(res);
-    });
 
-    var userLoaded = function(user) {
-    // [USER LOADED]
-
+    var user = UserAPI.get(null, false);
     document.title = 'Dashboard - ' + user['name'];
 
     // Resize dialog boxes
@@ -73,34 +67,41 @@
 
     var showActiveCategoryTasks = function() {
         activeCategoryTasks = TaskAPI.getByCategory(activeCategory['name'], null, false);
-        console.log(activeCategoryTasks);
-        //Tasks.getByCategory(userTasks, activeCategory);
+        if (activeCategoryTasks == null) {
+            activeCategoryTasks = new Array();
+        }
 
-        $id('taskList').html('');600
-        for (var i = 0; i < activeCategoryTasks.length; i++) {
-            var task = activeCategoryTasks[i];
-            var li = $e.create('li').attr('acTaskId', i);
-
-            var html =
-            '<ul class="task">' +
-                '<li taskId="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
-                '<li>Deadline: <strong>' + task['deadline'] + '</strong></li>' +
-                '<li>Assignee: ' + (task['assignee'] == undefined ? 'None' :  task['assignee']) + '</li>' +
-                '<li>Tags: ' + TaskHelper.getTagsStr(task) + '</li>' +
-                '<li>Status: ' + (task['status'] == '0' ? 'Not Done' : 'Done!') + '</li>' +
-                '<li>Attachment: ' + (task['attachment'] == 'none' ? 'None' :  task['attachment']) + '</li>' +
-            '</ul>';
-
-            li.html(html);
+        $id('taskList').html('');
+        if (activeCategoryTasks.length == 0) {
+            var li = $e.create('li');
+            li.html("<h2>You don't have any task in this category</h2>");
             $id('taskList').appendChild(li);
+        } else {
+            for (var i = 0; i < activeCategoryTasks.length; i++) {
+                var task = activeCategoryTasks[i];
+                var li = $e.create('li').attr('acTaskNumber', i);
+
+                var html =
+                '<ul class="task">' +
+                    '<li taskId="' + task['id'] + '" taskNumber="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
+                    '<li>Deadline: <strong>' + task['deadline'] + '</strong></li>' +
+                    '<li>Assignee: ' + (task['assignee'] == undefined ? 'None' :  task['assignee']) + '</li>' +
+                    '<li>Tags: ' + TaskHelper.getTagsStr(task) + '</li>' +
+                    '<li>Status: ' + (task['status'] == '0' ? 'Not Done' : 'Done!') + '</li>' +
+                    '<li>Attachment: ' + (task['attachment'] == 'none' ? 'None' :  task['attachment']) + '</li>' +
+                '</ul>';
+
+                li.html(html);
+                $id('taskList').appendChild(li);
+            }
         }
     }
     showActiveCategoryTasks();
 
     $.deleteTask = function(e) {
         e = $e(e);
-        var tId = e.attr('taskId');
-        var task = activeCategoryTasks[tId];
+        var tNum = e.attr('taskNumber');
+        var task = activeCategoryTasks[tNum];
 
         for (var i = 0; i < tasks.length; i++) {
             if (tasks[i]['name'] == task['name']) {
@@ -117,7 +118,6 @@
             }
         }
     }
-
 
     // New Task
     var checkTaskInput = function(e) {
@@ -148,7 +148,6 @@
     for (var i = 0; i < inputs.length; i++) {
         taskInputs[inputs[i]] = $id('ntask_' + inputs[i]);
     }
-
 
     $.newEditTask = function(e, edit) {
         e = $e(e);
@@ -267,8 +266,8 @@
 
         $id('taskEditSubmitButton').attr('disabled', 'true');
 
-        var cTId = e.attr('taskId');
-        var task = activeCategoryTasks[cTId];
+        var tNum = e.attr('taskNumber');
+        var task = activeCategoryTasks[tNum];
 
         $id('ve_name').html(task['name']);
         $id('ve_attachment').html('Attachment: ' +(task['attachment'] == '' ? 'None' : task['attachment']));
@@ -291,6 +290,4 @@
         }
     }
 
-    // [/USER LOADED]
-    }
 })(window);

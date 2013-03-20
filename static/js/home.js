@@ -154,18 +154,18 @@
         }
 
         $id('signUpButton').attr('disabled', '').html('Loading...');
-
         $ls[signupInputs['avatar'].val()] = $.avatarImg;
-        var user = new User(
-            0, // id
-            signupInputs['name'].val(),
-            signupInputs['username'].val(),
-            signupInputs['password'].val(),
-            signupInputs['email'].val(),
-            signupInputs['birthday'].val(),
-            signupInputs['avatar'].val(),
-            signupInputs['bio'].val()
-        );
+
+        var user = {
+            id:         0,
+            name:       signupInputs['name'].val(),
+            username:   signupInputs['username'].val(),
+            password:   signupInputs['password'].val(),
+            email:      signupInputs['email'].val(),
+            birthday:   signupInputs['birthday'].val(),
+            avatar:     signupInputs['avatar'].val(),
+            bio:        signupInputs['bio'].val()
+        };
 
         // Check for avatar and parse the extension
         var ext = /^.*\.(.*)$/.exec(user.avatar);
@@ -185,11 +185,13 @@
                 return;
             }
 
-            if (user.avatar != 'none') {
+            if (user.avatar !== 'none') {
                 UserAPI.uploadAvatar(user, $id('avatarFile').files[0], function(res) {
                     doSignIn(user.username, user.password);
+                    alert("HOLA!");
                 });
             } else {
+                alert("!ALOH");
                 doSignIn(user.username, user.password);
             }
         });
@@ -218,20 +220,14 @@
             password: password
         }
 
-        $.XHR.doReq({
-            method: 'POST',
-            url: $.AppRoot + 'auth/login',
-            jsonData: true,
-            data: data,
-            callback: function(res) {
-                if (callbackfunc !== undefined) {
-                    callbackfunc(res);
-                } else {
-                    if (res['status'] === 'success') {
-                        $.open($.AppRoot + 'page/dashboard', '_self');
-                    }
+        XHR.qPost('auth/login', data, function(res) {
+            if (callbackfunc !== undefined) {
+                callbackfunc(res);
+            } else {
+                if (res !== null) {
+                    $.open($.AppRoot + 'page/dashboard', '_self');
                 }
             }
-        });
+        }, true);
     }
 })(window);

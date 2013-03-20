@@ -2,33 +2,6 @@
 /* requires: madtodo.js */
 (function($) {
     /**
-     * User object constructor
-     *
-     * @param {Integer} id
-     * @param {String} name
-     * @param {String} username
-     * @param {String} password
-     * @param {String} email
-     * @param {String} birthday
-     * @param {String} avatar
-     * @param {String} bio
-     */
-    $.User = function(id, name, username, password, email, birthday, avatar, bio) {
-        if (!id) {
-            id = 0;
-        }
-
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.birthday = birthday;
-        this.avatar = avatar;
-        this.bio = bio;
-    }
-
-    /**
      * Helper for User object.
      */
     $.UserHelper = {
@@ -76,65 +49,34 @@
 
     /* User API */
     $.UserAPI = {
-        get: function(callbackfunc) {
-            $.XHR.doReq({
-                method: 'GET',
-                url: $.AppRoot + 'user/get',
-                callback: function(res) {
-                    if (callbackfunc !== undefined) {
-                        callbackfunc(res);
-                    }
-                    console.log(res);
-                }
-            });
+        get: function(callbackfunc, async) {
+            return XHR.qGet('user/get', callbackfunc, async)
         },
 
-        save: function(user, callbackfunc) {
+        save: function(user, callbackfunc, async) {
             var data = {
-                name: user.name,
-                email: user.email,
-                birthday: user.birthday,
-                avatar: user.avatar,
-                bio: user.bio
+                name: user['name'],
+                email: user['email'],
+                birthday: user['birthday'],
+                avatar: user['avatar'],
+                bio: user['bio']
             };
 
-            $.XHR.doReq({
-                method: 'POST',
-                url: $.AppRoot + 'user/edit',
-                jsonData: true,
-                data: data,
-                callback: function(res) {
-                    if (callbackfunc !== undefined) {
-                        callbackfunc(res);
-                    }
-                    console.log(res);
-                }
-            });
+            return XHR.qPost('user/edit', data, callbackfunc, async);
         },
 
-        register: function(user, callbackfunc) {
+        register: function(user, callbackfunc, async) {
             var data = {
-                name: user.name,
-                username: user.username,
-                password: user.password,
-                email: user.email,
-                birthday: user.birthday,
-                avatar: user.avatar,
-                bio: user.bio
+                name: user['name'],
+                username: user['username'],
+                password: user['password'],
+                email: user['email'],
+                birthday: user['birthday'],
+                avatar: user['avatar'],
+                bio: user['bio']
             };
 
-            $.XHR.doReq({
-                method: 'POST',
-                url: $.AppRoot + 'user/register',
-                jsonData: true,
-                data: data,
-                callback: function(res) {
-                    if (callbackfunc !== undefined) {
-                        callbackfunc(res);
-                    }
-                    console.log(res);
-                }
-            });
+            return XHR.qPost('user/register', data, callbackfunc, async);
         },
 
         uploadAvatar: function(user, fileobj, callbackfunc) {
@@ -142,7 +84,7 @@
                 return;
             }
 
-            var username = user.username;
+            var username = user['username'];
             $.XHR.doUpload({
                 url: $.AppRoot + 'upload/avatar/' + username,
                 fileobj: fileobj,
@@ -154,62 +96,6 @@
                 }
             });
         }
-    }
-
-    /**
-     * Users - Handle array of users
-     */
-    $.Users = {
-        /**
-         * Serialize an array of user objects into JSON string format.
-         *
-         * @param {Array} users
-         */
-        serialize: function(users) {
-            return JSON.stringify(users);
-        },
-
-        /**
-         * Deserialize a serialized array of JSON string formatted users into
-         * array of user objects.
-         *
-         * @param {String} serializedUsers
-         */
-        deserialize: function(serializedUsers) {
-            if (serializedUsers === undefined || serializedUsers === '') {
-                return Array();
-            }
-
-            var dsz = JSON.parse(serializedUsers);
-            var users = [];
-
-            for (var i = 0; i < dsz.length; i++) {
-                users.push(new User(
-                    dsz[i].name,
-                    dsz[i].username,
-                    dsz[i].password,
-                    dsz[i].email,
-                    dsz[i].birthday,
-                    dsz[i].avatar,
-                    dsz[i].bio)
-                );
-            };
-
-            return users;
-        },
-
-        /* API */
-        loadAll: function() {
-            $.XHR.doReq({
-                method: 'GET',
-                url: $.AppRoot + 'user/all/samantha',
-                textResponse: true,
-                callback: function(res) {
-                    $.users = $.Users.deserialize(res);
-                    alert("Users loaded!");
-                }
-            });
-        },
     }
 
 })(window);

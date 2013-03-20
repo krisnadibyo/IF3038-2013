@@ -44,7 +44,7 @@
     $.TaskAPI = {
         // GETTERS
         getCategories: function(callbackfunc, async) {
-            return XHR.qGet('category/user', callbackfunc, async);
+            return XHR.qGet('category/all', callbackfunc, async);
         },
         getUserTasks: function(callbackfunc, async) {
             return XHR.qGet('task/user', callbackfunc, async);
