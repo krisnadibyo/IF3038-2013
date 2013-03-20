@@ -21,7 +21,7 @@ class User extends Model
         ));
     }
 
-    public function validate($boolReturn=false)
+    public function validate($boolReturn=false, $editUser=false)
     {
         $error = array();
 
@@ -33,7 +33,7 @@ class User extends Model
         // username
         if (!$this->username) {
             $error['username'][] = 'Required';
-        } else if (User::getOneByUsername($this->username) != null) {
+        } else if (!$editUser && User::getOneByUsername($this->username) != null) {
             $error['username'][] = 'Already taken';
         }
 
@@ -45,7 +45,7 @@ class User extends Model
         // email
         if (!$this->email) {
             $error['email'][] = 'Required';
-        } else if (User::getOne(array('where' => array(array('email', '=', $this->email)))) != null) {
+        } else if (!$editUser && User::getOne(array('where' => array(array('email', '=', $this->email)))) != null) {
             $error['email'][] = 'Already exist';
         }
 

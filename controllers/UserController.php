@@ -14,7 +14,7 @@ class UserController extends Controller
             exit();
         }
 
-        // Magicauth        
+        // Magicauth
         if ($this->request->getParam('magicauth')) {
             if ($u = $this->request->getParam('username')) {
                 if (!User::getOneByUsername($u)) {
@@ -53,7 +53,7 @@ class UserController extends Controller
             $user->set($col, $val);
         }
 
-        $validation = $user->validate();
+        $validation = $user->validate(false, true);
         if ($validation !== array()) {
             return $this->response->renderJson($validation);
         }
