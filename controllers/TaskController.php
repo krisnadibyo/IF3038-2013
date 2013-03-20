@@ -8,10 +8,12 @@ class TaskController extends Controller
         }
 
         Session::init();
-        if (!Session::loggedIn() && !$this->request->getParam('magicauth')) {
+        if (!Session::loggedIn()) {
             $this->response->renderJson('Not Authenticated!');
             exit();
         }
+
+        $this->userId = Session::get('userid');
     }
 
     // GET /task/all/[<complete>]
@@ -34,6 +36,11 @@ class TaskController extends Controller
         $tasks = Task::getAll(array(
             'where' => array(
                 array('name', 'LIKE', '%' . $name . '%'),
+                'AND (',
+                array('user_id', '=', $this->userId),
+                'OR',
+                array('assignee_id', '=', $this->userId),
+                ')',
             ),
         ));
 
@@ -55,6 +62,11 @@ class TaskController extends Controller
         $tasks = Task::getAll(array(
             'where' => array(
                 array('name', 'LIKE', $name . '%'),
+                'AND (',
+                array('user_id', '=', $this->userId),
+                'OR',
+                array('assignee_id', '=', $this->userId),
+                ')',
             ),
         ));
 
@@ -70,7 +82,7 @@ class TaskController extends Controller
     // GET /task/category/<category_name>/[<complete>]
     public function category($category='Uncategorized', $complete=false)
     {
-        $tasks = Task::getByCategoryName($category);
+        $tasks = Task::getByCategoryName($category, $this->userId);
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
@@ -84,6 +96,11 @@ class TaskController extends Controller
     // GET /task/user/<username>/[<complete>]
     public function user($username='', $complete=false)
     {
+        if ($username === '') {
+            $username = Session::get('username');
+            $complete = true;
+        }
+
         $tasks = Task::getByUser($username);
 
         if ($complete && $tasks != null) {
@@ -98,6 +115,10 @@ class TaskController extends Controller
     // GET /task/assignee/<assignee>/[<complete>]
     public function assignee($assignee='', $complete=false)
     {
+        if ($assignee === '') {
+            $assignee = Session::get('username');
+            $complete = true;
+        }
         $tasks = Task::getByAssignee($assignee);
 
         if ($complete && $tasks != null) {
@@ -112,7 +133,7 @@ class TaskController extends Controller
     // GET /task/tag/<tag_name>/[<complete>]
     public function tag($tagname='', $complete=false)
     {
-        $tasks = Task::getByTag($tagname);
+        $tasks = Task::getByTag($tagname, $this->userId);
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {

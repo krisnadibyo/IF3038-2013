@@ -14,13 +14,15 @@ class Task extends Model
     protected $assignee_id = null;
     protected $category_id = null;
 
-    public static function getByCategoryName($catName, $returnObjectArray=true)
+    public static function getByCategoryName($catName, $userId, $returnObjectArray=true)
     {
         return self::getAll(array(
             'select' => array('task.*'),
             'from' => 'tbl_task AS task LEFT JOIN tbl_category AS category ON (task.category_id = category.id)',
             'where' => array(
                 array('category.name', '=', $catName),
+                'AND',
+                array('task.user_id', '=', $userId),
             ),
         ), $returnObjectArray);
     }
@@ -47,7 +49,7 @@ class Task extends Model
         ), $roa);
     }
 
-    public static function getByTag($tagname, $roa=true)
+    public static function getByTag($tagname, $userId, $roa=true)
     {
         return self::getAll(array(
             'select' => array('task.*'),
@@ -57,6 +59,8 @@ class Task extends Model
                 'LEFT JOIN tbl_tag as tag ON (task_tag.tag_id = tag.id)',
             'where' => array(
                 array('tag.name', '=', $tagname),
+                'AND',
+                array('task.user_id', '=', $userId),
             ),
         ), $roa);
     }
