@@ -9,7 +9,7 @@ class UserController extends Controller
         App::loadModel('Task');
 
         Session::init();
-        if (!Session::loggedIn() && !$this->request->getParam('magicauth')) {
+        if (!Session::loggedIn() && !$this->request->getParam('magicauth') && Router::getAction() !== 'register') {
             $this->response->renderJson('Not Authenticated!');
             exit();
         }
@@ -70,7 +70,9 @@ class UserController extends Controller
             return $this->response->nullJson();
         }
 
+        $data['password'] = md5($data['password']);
         $user = new User($data);
+
         $validation = $user->validate();
         if ($validation !== array()) {
             return $this->response->renderJson($validation);
@@ -109,8 +111,13 @@ class UserController extends Controller
     // POST /user/delete/<username>/<magic_password>
     public function delete($username=null, $magicpass=null)
     {
-        if (!$this->_isPOST() || !$username || $magicpass != $this->magicpass) {
+        if (!$this->_isPOST() || !$username ||
+            $magicpass != $this->magicpass ||
+            !$user = User::getOneByUsername($username)) {
             return $this->response->nullJson();
         }
+
+        $user->delete();
+        return $this->response->renderJson(array('status' => 'success'));
     }
 }

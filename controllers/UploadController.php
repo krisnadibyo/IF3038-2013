@@ -8,7 +8,7 @@ class UploadController extends Controller
         $this->uploadDir = dirname(__FILE__) . '/../static/uploads/';
         Session::init();
 
-        if (!Session::loggedIn() && !$this->request->getParam('magicauth')) {
+        if (!Session::loggedIn() && !$this->request->getParam('magicauth') && Router::getAction() !== 'avatar') {
             $this->response->renderJson('Not Authenticated!');
             exit();
         }
@@ -43,8 +43,8 @@ class UploadController extends Controller
         }
 
         $tmpfile  = $_FILES['fileobj']['tmp_name'];
-        $filename = $username . preg_replace('/^.+\.(.+)$/', '.$1', $_FILES['fileobj']['name']);
-        $destfile = $this->uploadDir . 'avatar/' . $username . $filename;
+        $filename = $username . preg_replace('/^.*\.(.*)$/', '.$1', $_FILES['fileobj']['name']);
+        $destfile = $this->uploadDir . 'avatar/' . $filename;
 
         if (!move_uploaded_file($tmpfile, $destfile)) {
             throw new Exception("File upload error", 1);
