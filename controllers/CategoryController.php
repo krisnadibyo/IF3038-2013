@@ -6,7 +6,7 @@ class CategoryController extends Controller
         App::loadModel('Category');
 
         Session::init();
-        if (!Session::loggedIn() && !$this->request->getParam('magicauth')) {
+        if (!Session::loggedIn()) {
             $this->response->renderJson('Not Authenticated!');
             exit();
         }
@@ -38,6 +38,9 @@ class CategoryController extends Controller
     // GET /category/user/<username>
     public function user($username='')
     {
+        if ($username === '') {
+            $username = Session::get('username');
+        }
         $cats = Category::getAll(array(
             'select' => array('category.*'),
             'from' => 'tbl_category AS category' .
