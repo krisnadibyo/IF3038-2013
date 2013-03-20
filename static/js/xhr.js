@@ -1,30 +1,39 @@
 (function($) {
 
     $.XHR =  {
-        xhrInit: function(doneCallback, isTextResponse) {
+        xhrInit: function(doneCallback, isTextResponse, async) {
             var _xhr = new XMLHttpRequest();
-            _xhr.onreadystatechange = function() {
-                if (_xhr.readyState === 4) {
-                    var response = _xhr.responseText;
-                    if (!isTextResponse) {
-                        response = JSON.parse(response);
+            if (async) {
+                _xhr.onreadystatechange = function() {
+                    if (_xhr.readyState === 4) {
+                        var response = _xhr.responseText;
+                        if (!isTextResponse) {
+                            response = JSON.parse(response);
+                        }
+                        doneCallback(response, _xhr);
                     }
-                    doneCallback(response, _xhr);
-                }
-            };
+                };
+            }
             return _xhr;
         },
 
-        /* oargs: method, url, callback, [data, [jsonData]], [textResponse] */
+        // oargs: method, url, callback, [data, [jsonData]], [textResponse]
         doReq: function(oargs) {
             var _xhr;
-            if (!oargs['textResponse']) {
-                _xhr = XHR.xhrInit(oargs['callback'], false);
+
+            if (oargs['async'] === false) {
+                async = false;
             } else {
-                _xhr = XHR.xhrInit(oargs['callback'], true);
+                async = true;
             }
 
-            _xhr.open(oargs['method'], oargs['url'], true);
+            if (!oargs['textResponse']) {
+                _xhr = XHR.xhrInit(oargs['callback'], false, async);
+            } else {
+                _xhr = XHR.xhrInit(oargs['callback'], true, async);
+            }
+
+            _xhr.open(oargs['method'], oargs['url'], async);
 
             if (!oargs['data']) {
                 oargs['data'] = null;
@@ -38,9 +47,16 @@
             }
 
             _xhr.send(oargs['data']);
+            if (!async) {
+                if (!oargs['textResponse']) {
+                    return JSON.parse(_xhr.responseText);
+                } else {
+                    return _xhr.responseText;
+                }
+            }
         },
 
-        /* oargs: url, callback, fileobj */
+        // oargs: url, callback, fileobj
         doUpload: function(oargs) {
             var _xhr;
             var fd = new FormData();
@@ -55,6 +71,44 @@
             //_xhr.setRequestHeader('Content-Type', 'multipart/form-data');
             fd.append('fileobj', oargs['fileobj']);
             _xhr.send(fd);
+        },
+
+        // Quick GET
+        qGet: function(url, callbackfunc, async) {
+            if (async !== false) {
+                async = true;
+            }
+
+            return XHR.doReq({
+                async: async,
+                method: 'GET',
+                url: AppRoot + url,
+                callback: function(res) {
+                    if (callbackfunc !== null && callbackfunc !== undefined) {
+                        callbackfunc(res);
+                    }
+                }
+            });
+        },
+
+        // Quic POST
+        qPost: function(url, data, callbackfunc, async) {
+            if (async !== false) {
+                async = true;
+            }
+
+            return XHR.doReq({
+                async: async,
+                method: 'POST',
+                url: AppRoot + url,
+                jsonData: true,
+                data: data,
+                callback: function(res) {
+                    if (callbackfunc !== null && callbackfunc !== undefined) {
+                        callbackfunc(res);
+                    }
+                }
+            });
         }
     };
 
