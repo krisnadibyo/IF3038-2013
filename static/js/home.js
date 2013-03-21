@@ -154,7 +154,6 @@
         }
 
         $id('signUpButton').attr('disabled', '').html('Loading...');
-        $ls[signupInputs['avatar'].val()] = $.avatarImg;
 
         var user = {
             id:         0,
@@ -188,10 +187,8 @@
             if (user.avatar !== 'none') {
                 UserAPI.uploadAvatar(user, $id('avatarFile').files[0], function(res) {
                     doSignIn(user.username, user.password);
-                    alert("HOLA!");
                 });
             } else {
-                alert("!ALOH");
                 doSignIn(user.username, user.password);
             }
         });
