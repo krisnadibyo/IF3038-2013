@@ -1,6 +1,8 @@
 <div id="footer"></div>
 
-<?php if (isset($isDashboard)) { vh_render('pages.dialog'); } ?>
+<?php if (isset($isDashboard)) { vh_render('pages.dashboard_dialog'); } ?>
+<?php if (isset($isProfile)) { vh_render('pages.profile_dialog'); } ?>
+<?php if (isset($user)) { vh_render('pages.search_dialog'); } ?>
 
 <?php foreach($footerScripts as $script): ?>
 <script type="text/javascript" src="<?php echo vh_slink($script); ?>"></script>

@@ -4,21 +4,10 @@
     document.title = 'Dashboard - ' + user['name'];
 
     // Resize body and dialog boxes
-    var resizeDialogs = function(firstTime) {
-        var multiplier = firstTime ? 4 : 1.6;
-        var cWidth = document.body.clientWidth;
-        var cHeight = document.body.clientHeight;
-
-        document.body.style.height = window.screen.availHeight + 'px';
-        $id('newCategoryForm').style.left = (cWidth / 2) - (446 / 2) + 'px';
-        $id('newTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
-        $id('viewEditTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
-    }
-    resizeDialogs(true);
-
-    $.onresize = function() {
-        resizeDialogs();
-    }
+    $.dialogs = new Array;
+    $.dialogs.push($id('newCategoryForm'));
+    $.dialogs.push($id('newTaskForm'));
+    $.dialogs.push($id('viewEditTaskForm'))
 
     // Populate tasks and categories (Synchronously)
     var userTasks = TaskAPI.getByCategory('Uncategorized', null, false);
@@ -211,24 +200,6 @@
         tasks.push(t);
         Tasks.save(tasks);
         $.open($.AppRoot + 'page/dashboard', '_self');
-    }
-
-    // Dialogs
-    $.closeDialog = function(e) {
-        e = $e(e);
-        var dialog = $id(e.attr('dialogId'));
-
-        $id('pageBlurrer').doTransition({
-            opacity: '0'
-        }, 25);
-        dialog.doTransition({
-            opacity: '0'
-        }, 25);
-
-        setTimeout(function() {
-            $id('pageBlurrer').style.display = 'none';
-            dialog.style.display = 'none';
-        }, 250);
     }
 
     // New Category

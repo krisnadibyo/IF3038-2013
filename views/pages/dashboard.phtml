@@ -1,10 +1,6 @@
 <?php vh_render('pages.header', $data); ?>
 
 <div id="dashboardContainer">
-    <div id="welcomeMessage">
-        Welcome to your Dashboard! You're logged in as <strong id="loggedUserText"><?php echo $user['name']; ?></strong>
-        <form method="GET" action="<?php echo vh_link('page/logout'); ?>"><button type="submit" id="signOutButton">Sign Out</button></form>
-    </div>
 
     <div id="twoColumns">
     <!-- BEGIN TWOCOLUMNS -->
@@ -33,6 +29,7 @@
 
     <!-- END TWOCOLUMNS -->
     </div>
+
 </div>
 
 <?php vh_render('pages.footer', $data); ?>

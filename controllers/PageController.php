@@ -62,6 +62,7 @@ class PageController extends Controller
             ),
             'footerScripts' => array(
                 'js/dashboard.js',
+                'js/dialog.js',
             ),
             'user' => $user->toArray(),
         );
@@ -75,6 +76,9 @@ class PageController extends Controller
             return $this->response->redirect(vh_link(''));
         }
 
+        App::loadModel('User');
+        $user = User::getOneByUsername(Session::get('username'));
+
         $data = array(
             'title' => 'Profile - MadToDo',
             'isProfile' => true,
@@ -86,7 +90,9 @@ class PageController extends Controller
             ),
             'footerScripts' => array(
                 'js/profile.js',
+                'js/dialog.js',
             ),
+            'user' => $user->toArray(),
         );
 
         return $this->response->renderView('pages.profile', $data);

@@ -29,3 +29,29 @@
         <div class="clear"></div>
     </div>
 </div>
+
+<?php if (isset($user)): ?>
+<div id="extraHeader">
+    <form id="searchBar">
+        <input id="searchInput" type="text" placeholder="Search..." />
+        <select id="searchFilter">
+            <option value="all">Filter: All</option>
+            <option value="username">Filter: Username</option>
+            <option value="category">Filter: Category</option>
+            <option value="task">Filter: Task</option>
+        </select>
+    </form>
+
+    <div id="miniUserInfo">
+        <strong id="loggedUserText">
+            <?php echo $user['name']; ?>
+        </strong>
+        <img id="miniAvatar" alt="" width="36px" height="36px" src="<?php echo vh_slink('uploads/avatar/' . $user['avatar']); ?>" />
+        <form id="signOutButton" method="GET" action="<?php echo vh_link('page/logout'); ?>">
+            <button type="submit">Sign Out</button>
+        </form>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+<?php endif; ?>
