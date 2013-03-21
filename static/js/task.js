@@ -66,9 +66,12 @@
         },
         hint: function(name, callbackfunc, async) {
             return XHR.qGet('task/hint/' + name, callbackfunc, async);
-        }
+        },
 
         // SETTERS
+        createCategory: function(name, callbackfunc, async) {
+            return XHR.qPost('category/create/' + name, null, callbackfunc, async);
+        }
         // TODO
     }
 })(window);

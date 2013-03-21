@@ -216,8 +216,13 @@
     }
 
     $.newCategorySubmitted = function(e) {
-        alert('Not implemented yet. You can create new category when you create new task');
-        $.closeDialog(e);
+        TaskAPI.createCategory($id('newCategoryName').val(), function(res) {
+            console.log(res);
+            categories = TaskAPI.getCategories(null, false);
+            showCategories();
+
+            $.closeDialog(e);
+        }, true);
     }
 
     // View/Edit Task
