@@ -1,14 +1,15 @@
 (function($) {
 
-    var user = UserAPI.get(null, false);
+    var user = UserAPI.get(null, false); // Synchronously
     document.title = 'Dashboard - ' + user['name'];
 
-    // Resize dialog boxes
+    // Resize body and dialog boxes
     var resizeDialogs = function(firstTime) {
         var multiplier = firstTime ? 4 : 1.6;
         var cWidth = document.body.clientWidth;
         var cHeight = document.body.clientHeight;
 
+        document.body.style.height = window.screen.availHeight + 'px';
         $id('newCategoryForm').style.left = (cWidth / 2) - (446 / 2) + 'px';
         $id('newTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
         $id('viewEditTaskForm').style.left = (cWidth / 2) - (486 / 2) + 'px';
@@ -19,13 +20,8 @@
         resizeDialogs();
     }
 
-    // Populate tasks
+    // Populate tasks and categories (Synchronously)
     var userTasks = TaskAPI.getByCategory('Uncategorized', null, false);
-    // var tasks = Tasks.load();
-    // var userTasks = Tasks.getOwnerTasks(tasks, user['username']);
-    // var userDoneTasks = Tasks.getDoneTasks(userTasks);
-
-    // Collect categories
     var categories = TaskAPI.getCategories(null, false);
 
     var activeCategory = {
@@ -35,6 +31,7 @@
     var activeCategoryTasks = undefined;
     var activeCategoryLi = undefined;
 
+    // Show categories and active category tasks
     var showCategories = function() {
         $id('categoryList').html('');
 
@@ -87,7 +84,7 @@
                     '<li>Deadline: <strong>' + task['deadline'] + '</strong></li>' +
                     '<li>Assignee: ' + (task['assignee'] == undefined ? 'None' :  task['assignee']) + '</li>' +
                     '<li>Tags: ' + TaskHelper.getTagsStr(task) + '</li>' +
-                    '<li>Status: ' + (task['status'] == '0' ? 'Not Done' : 'Done!') + '</li>' +
+                    '<li>Status: ' + (task['status'] == '0' ? 'Unfinished' : 'Done') + '</li>' +
                     '<li>Attachment: ' + (task['attachment'] == 'none' ? 'None' :  task['attachment']) + '</li>' +
                 '</ul>';
 
@@ -98,6 +95,7 @@
     }
     showActiveCategoryTasks();
 
+    // Functions
     $.deleteTask = function(e) {
         e = $e(e);
         var tNum = e.attr('taskNumber');
@@ -275,7 +273,7 @@
         $id('ve_deadline').html('Deadline: <strong>' + task['deadline'] + '</strong>');
         $id('ve_assignee').html('Assignee: <strong>' + (task['assignee'] == '' ? 'None' : task['assignee']) +  '</strong>');
         $id('ve_tags').html('Tags: <strong>' + TaskHelper.getTagsStr(task) + '</strong>');
-        $id('ve_status').html('Status: <strong>' + (task['status'] == '' ? 'Not Done' : 'Done!') + '</strong>');
+        $id('ve_status').html('Status: <strong>' + (task['status'] == '' ? 'Unfinished' : 'Done') + '</strong>');
 
         $id('taskEditButton').onclick = function(evt) {
             $id('ve_deadline').html('<label>Deadline:</label><input id="ve_deadlineInput" type="date" value="' + task['deadline'] + '" />');

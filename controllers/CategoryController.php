@@ -10,6 +10,9 @@ class CategoryController extends Controller
             $this->response->renderJson('Not Authenticated!');
             exit();
         }
+
+        $this->username = Session::get('username');
+        $this->userId   = Session::get('userid');
     }
 
     // GET /category/all
@@ -30,7 +33,7 @@ class CategoryController extends Controller
     // GET /category/name/<name>
     public function name($name='')
     {
-        $cat = Category::getOneByName($name);
+        $cat = Category::getOneByName($name, $this->userId);
         $cat = !$cat ? null : $cat->toArray();
         return $this->response->renderJson($cat);
     }
@@ -39,13 +42,15 @@ class CategoryController extends Controller
     public function user($username='')
     {
         if ($username === '') {
-            $username = Session::get('username');
+            $username = $this->username;
+        } else {
+            $username = $username;
         }
+
         $cats = Category::getAll(array(
             'select' => array('category.*'),
             'from' => 'tbl_category AS category' .
-                ' LEFT JOIN tbl_task AS task ON (category.id = task.category_id)' .
-                ' LEFT JOIN tbl_user AS user ON (task.user_id = user.id)',
+                ' LEFT JOIN tbl_user AS user ON (category.user_id = user.id)',
             'where' => array(
                 array('user.username', '=', $username),
             ),
@@ -61,7 +66,7 @@ class CategoryController extends Controller
             return $this->response->nullJson();
         }
 
-        $cat = new Category(array('name' => $name));
+        $cat = new Category(array('name' => $name, 'user_id' => $this->userId));
         if (($validation = $cat->validate()) !== array()) {
             return $this->response->renderJson($validation);
         }
@@ -73,7 +78,7 @@ class CategoryController extends Controller
     // POST /category/delete/<name>
     public function delete($name='')
     {
-        if (!$this->_isPOST() || !$cat = Category::getOneByName($name)) {
+        if (!$this->_isPOST() || !$cat = Category::getOneByName($name, $this->userId)) {
             return $this->response->nullJson();
         }
 

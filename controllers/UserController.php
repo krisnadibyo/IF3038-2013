@@ -77,8 +77,22 @@ class UserController extends Controller
         if ($validation !== array()) {
             return $this->response->renderJson($validation);
         }
-
         $user->save_new(false);
+
+        App::loadModel('Category');
+        $uncat = new Category(array('name' => 'Uncategorized', 'user_id' => $user->get_id()));
+        $uncat->save_new();
+
+        $task = new Task(array(
+            'name' => 'Sample Task',
+            'attachment' => 'none',
+            'deadline' => '2014-01-01',
+            'user_id' => $user->get_id(),
+            'assignee_id' => null,
+            'category_id' => $uncat->get_id(),
+        ));
+        $task->save_new();
+
         return $this->response->renderJson(array('status' => 'success'));
     }
 

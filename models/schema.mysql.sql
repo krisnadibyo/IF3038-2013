@@ -3,8 +3,8 @@
 DROP TABLE IF EXISTS `tbl_task_tag`;
 DROP TABLE IF EXISTS `tbl_comment`;
 DROP TABLE IF EXISTS `tbl_task`;
-DROP TABLE IF EXISTS `tbl_user`;
 DROP TABLE IF EXISTS `tbl_category`;
+DROP TABLE IF EXISTS `tbl_user`;
 DROP TABLE IF EXISTS `tbl_tag`;
 DROP TABLE IF EXISTS `tbl_hello`;
 
@@ -25,7 +25,11 @@ CREATE INDEX `user_name_idx` ON `tbl_user` (`name`) USING BTREE;
 
 CREATE TABLE `tbl_category`(
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name` VARCHAR(32) NOT NULL UNIQUE
+    `name` VARCHAR(32) NOT NULL,
+    `user_id` INTEGER NOT NULL,
+    CONSTRAINT `fk_category_user_id` FOREIGN KEY (`user_id`)
+        REFERENCES `tbl_user` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    UNIQUE KEY `name_user_id` (`name`, `user_id`)
 );
 
 CREATE INDEX `category_name_idx` ON `tbl_category` (`name`) USING BTREE;
