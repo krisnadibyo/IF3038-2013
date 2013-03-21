@@ -7,7 +7,8 @@
     $.dialogs = new Array();
     $.dialogs.push($id('newCategoryForm'));
     $.dialogs.push($id('newTaskForm'));
-    $.dialogs.push($id('viewEditTaskForm'))
+    $.dialogs.push($id('viewEditTaskForm'));
+    $.dialogs.push($id('deleteCategoryForm'));
 
     // Populate tasks and categories (Synchronously)
     var userTasks = TaskAPI.getByCategory('Uncategorized', null, false);
@@ -217,6 +218,36 @@
 
     $.newCategorySubmitted = function(e) {
         TaskAPI.createCategory($id('newCategoryName').val(), function(res) {
+            console.log(res);
+            categories = TaskAPI.getCategories(null, false);
+            showCategories();
+
+            $.closeDialog(e);
+        }, true);
+    }
+
+    // Delete Category
+    $.deleteCategory = function(e) {
+        $id('deleteCategoryForm').style.display = 'block';
+        $id('pageBlurrer').style.display = 'block';
+
+        $id('deleteCategoryName').html('');
+        for (var i = 0; i < categories.length; i++) {
+            var option = $e.create('option').attr('value', categories[i]['name']);
+            option.html(categories[i]['name']);
+            $id('deleteCategoryName').appendChild(option);
+        }
+
+        $id('deleteCategoryForm').doTransition({
+            'opacity': '1.0'
+        }, 25);
+        $id('pageBlurrer').doTransition({
+            'opacity': '0.4'
+        }, 25);
+    }
+
+    $.deleteCategorySubmitted = function(e) {
+        TaskAPI.deleteCategory($id('deleteCategoryName').val(), function(res) {
             console.log(res);
             categories = TaskAPI.getCategories(null, false);
             showCategories();

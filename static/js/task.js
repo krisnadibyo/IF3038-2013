@@ -71,6 +71,9 @@
         // SETTERS
         createCategory: function(name, callbackfunc, async) {
             return XHR.qPost('category/create/' + name, null, callbackfunc, async);
+        },
+        deleteCategory: function(name, callbackfunc, async) {
+            return XHR.qPost('category/delete/' + name, null, callbackfunc, async);
         }
         // TODO
     }

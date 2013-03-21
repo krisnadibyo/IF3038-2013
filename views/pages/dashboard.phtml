@@ -11,12 +11,13 @@
         </ul>
 
         <a id="newCategory" onclick="newCategory(this)" href="javascript:;">[+] New Category</a>
+        <a id="newCategory" onclick="deleteCategory(this)" href="javascript:;">[+] Delete Category</a>
         <a id="newTask" onclick="newEditTask(this, false)" href="javascript:;">[+] New Task</a>
     </div>
 
     <div id="tasksDiv">
         <div id="taskListHeader">
-        <strong>Task List</strong><button onclick="newEditTask(this, false)" id="newTask">New Task</button>
+            <strong>Task List</strong><button onclick="newEditTask(this, false)" id="newTask">New Task</button>
         </div>
 
         <ul id="taskList">

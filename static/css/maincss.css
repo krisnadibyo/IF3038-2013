@@ -520,7 +520,7 @@ div#signInPlaceholder:hover  {
     z-index: 3;
 }
 
-#newCategoryForm {
+#newCategoryForm, #deleteCategoryForm {
     width: 440px;
     min-height: 200px;
 
