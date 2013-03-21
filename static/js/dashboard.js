@@ -4,7 +4,7 @@
     document.title = 'Dashboard - ' + user['name'];
 
     // Resize body and dialog boxes
-    $.dialogs = new Array;
+    $.dialogs = new Array();
     $.dialogs.push($id('newCategoryForm'));
     $.dialogs.push($id('newTaskForm'));
     $.dialogs.push($id('viewEditTaskForm'))

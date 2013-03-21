@@ -574,8 +574,9 @@ div#signInPlaceholder:hover  {
 }
 
 #profileContainer h1 {
+    border-top: 4px solid #676767;
     margin: 0 0 10px 0;
-    padding: 20px 0 0 0;
+    padding: 10px 0 0 0;
 }
 
 #profileContainer p {
