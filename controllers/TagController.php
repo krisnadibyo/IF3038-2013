@@ -7,7 +7,7 @@ class TagController extends Controller
         App::loadModel('Task');
 
         Session::init();
-        if (!Session::loggedIn() && !$this->request->getParam('magicauth')) {
+        if (!Session::loggedIn()) {
             $this->response->renderJson('Not Authenticated!');
             exit();
         }

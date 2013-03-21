@@ -8,7 +8,7 @@ class UploadController extends Controller
         $this->uploadDir = dirname(__FILE__) . '/../static/uploads/';
         Session::init();
 
-        if (!Session::loggedIn() && !$this->request->getParam('magicauth') && Router::getAction() !== 'avatar') {
+        if (!Session::loggedIn() && Router::getAction() !== 'avatar') {
             $this->response->renderJson('Not Authenticated!');
             exit();
         }
