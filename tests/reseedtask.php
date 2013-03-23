@@ -24,7 +24,7 @@ $users = array(
         'email' => 'jeanvaljean@lemiz.com',
         'birthday' => '1980-10-10',
         'avatar' => 'valjean.jpg',
-        'bio' => 'Cossete\'s stepfather'
+        'bio' => 'Cosette\'s stepfather'
     )),
     'javert' => new User(array(
         'name' => 'Inspector Javert',
@@ -173,9 +173,6 @@ foreach ($tags as $tag) {
 
 $tasks['singBringHimHome']->set_name('Sing One Day More');
 $tasks['singBringHimHome']->save();
-
-$tasks['protectCosette']->set_category($e_uncategorized->get_id());
-$tasks['protectCosette']->save();
 
 header('Content-Type: text/plain');
 echo 'Reseed complete!';

@@ -241,13 +241,13 @@ ul#topNav > li > a.current {
 
 #searchBar {
     float: left;
-    width: 300px;
+    width: 500px;
 }
 
 #searchInput {
     margin: 0;
     padding: 10px;
-    width: 64px;
+    width: 200px;
 }
 
 #searchFilter {

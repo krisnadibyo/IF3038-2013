@@ -78,8 +78,15 @@ class CategoryController extends Controller
     // POST /category/delete/<name>
     public function delete($name='')
     {
+        App::loadModel('Task');
         if (!$this->_isPOST() || !$cat = Category::getOneByName($name, $this->userId)) {
             return $this->response->nullJson();
+        }
+
+        if (!$tasks = Task::getByCategoryName($name, $this->userId)) {
+            foreach ($tasks as $task) {
+                $task->delete();
+            }
         }
 
         $cat->delete();
