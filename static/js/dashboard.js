@@ -432,7 +432,8 @@
         var task = activeCategoryTasks[tNum];
 
         $id('ve_name').html(task['name']);
-        $id('ve_attachment').html('Attachment: ' +(task['attachment'] == '' ? 'None' : task['attachment']));
+        $id('ve_attachment').html('Attachment: ' + (task['attachment'] == 'none' ? 'None' :
+            '<a href="/static/uploads/attachment/' + task['attachment'] + '" target="_blank">' + task['attachment'] + '</a>'));
 
         $id('ve_deadline').html('Deadline: <strong>' + task['deadline'] + '</strong>');
         $id('ve_assignee').html('Assignee: <strong>' + (task['assignee'] == '' ? 'None' : task['assignee']) +  '</strong>');
