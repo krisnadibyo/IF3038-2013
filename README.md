@@ -3,28 +3,10 @@ Tugas Besar (2) IF3038
 
 Hello!
 
-Here is [Nessun Dorma](https://www.youtube.com/watch?v=O0Sx5lbVlQA) lyric:
+--------------------------------------------------------------------------------
 
-    Nessun dorma! Nessun dorma!
-    Tu pure, o, Principessa,
-    nella tua fredda stanza,
-    guardi le stelle
-    che tremano d'amore
-    e di speranza.
-    
-    Ma il mio mistero e chiuso in me,
-    il nome mio nessun saprá!
-    No, no, sulla tua bocca lo diró
-    quando la luce splenderá!
-    
-    Ed il mio bacio sciogliera il silenzio
-    che ti fa mia!
-    
-    (Il nome suo nessun saprá!...
-    e noi dovrem, ahimé, morir!)
-    
-    Dilegua, o notte!
-    Tramontate, stelle!
-    Tramontate, stelle!
-    All'alba vinceró!
-    vinceró, vinceró!
+Deployment: [http://madtodo.aws.af.cm/](http://madtodo.aws.af.cm/)
+
+Validation:
+[Validate HTML5](http://validator.w3.org/check?uri=http://madtodo.aws.af.cm/) |
+[Validate CSS3](http://jigsaw.w3.org/css-validator/validator?uri=http://madtodo.aws.af.cm/)
