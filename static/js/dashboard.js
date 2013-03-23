@@ -4,11 +4,12 @@
     document.title = 'Dashboard - ' + user['name'];
 
     // Resize body and dialog boxes
-    $.dialogs = new Array();
-    $.dialogs.push($id('newCategoryForm'));
-    $.dialogs.push($id('newTaskForm'));
-    $.dialogs.push($id('viewEditTaskForm'));
-    $.dialogs.push($id('deleteCategoryForm'));
+    $.dialogs = new Array(
+        $id('newCategoryForm'),
+        $id('newTaskForm'),
+        $id('viewEditTaskForm'),
+        $id('deleteCategoryForm')
+    );
 
     // Populate tasks and categories (Synchronously)
     var userTasks = TaskAPI.getByCategory('Uncategorized', null, false);
@@ -109,11 +110,11 @@
 
     // New Task
     var checkTaskInput = function(e) {
-        if(!TaskHelper.testRule(e.val(), e.attr('rule'))) {
+        if(!TaskHelper.testRule(e.val(), e.attr('data-rule'))) {
             if (!e.hasClass('error')) {
                 var errorDiv = $e.create('div')
                     .addClass('errorMessage')
-                    .html(TaskHelper.errorMessages[e.attr('rule')]);
+                    .html(TaskHelper.errorMessages[e.attr('data-rule')]);
 
                 e.addClass('error')
                     .parentNode.insertBefore(errorDiv, e);
@@ -156,12 +157,12 @@
             var e = taskInputs[key];
 
             e.onkeyup = function() {
-                if (this.attr('rule')) {
+                if (this.attr('data-rule')) {
                     checkTaskInput(this);
                 }
             }
 
-            if (e.attr('rule') && e.val() !== '') {
+            if (e.attr('data-rule') && e.val() !== '') {
                 checkTaskInput(e);
             }
         }
@@ -172,7 +173,7 @@
 
         for (var key in taskInputs) {
             var e = taskInputs[key];
-            if (e.attr('rule') && !checkTaskInput(e)) {
+            if (e.attr('data-rule') && !checkTaskInput(e)) {
                 error = true;
             }
         }
@@ -251,6 +252,7 @@
             console.log(res);
             categories = TaskAPI.getCategories(null, false);
             showCategories();
+            showActiveCategoryTasks();
 
             $.closeDialog(e);
         }, true);

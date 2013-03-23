@@ -9,14 +9,14 @@
         </div>
 
         <form id="signUpForm" class="signXForm" action="javascript:;">
-            <div><input id="signup_name" rule="name" type="text" placeholder="Name *" /></div>
-            <div><input id="signup_username" rule="username" type="text" placeholder="Username *" /></div>
-            <div><input id="signup_password" rule="password" type="password" placeholder="Password *" /></div>
-            <div><input id="signup_email" rule="email" type="text" placeholder="Email *" /></div>
+            <div><input id="signup_name" data-rule="name" type="text" placeholder="Name *" /></div>
+            <div><input id="signup_username" data-rule="username" type="text" placeholder="Username *" /></div>
+            <div><input id="signup_password" data-rule="password" type="password" placeholder="Password *" /></div>
+            <div><input id="signup_email" data-rule="email" type="text" placeholder="Email *" /></div>
             <div>
                 <label>Birthday:</label>
                 <select name="" id="bdYear"></select>-<select id="bdMonth"></select>-<select id="bdDay"></select>
-                <input id="signup_birthday" rule="birthday" type="hidden" placeholder="Birthday *" /></div>
+                <input id="signup_birthday" data-rule="birthday" type="hidden" placeholder="Birthday *" /></div>
             <div id="uploadAvatarDiv">
                 <input id="signup_avatar" type="text" placeholder="Avatar Image (Browse...)" disabled="true" />
                 <input id="avatarFile" type="file" />

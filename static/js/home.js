@@ -46,8 +46,8 @@
         for (key in signupInputs) {
             var e = signupInputs[key];
 
-            if (e.attr('rule') && unlock) {
-                unlock = UserHelper.testRule(e.val(), e.attr('rule'));
+            if (e.attr('data-rule') && unlock) {
+                unlock = UserHelper.testRule(e.val(), e.attr('data-rule'));
             } else {
                 break;
             }
@@ -83,8 +83,8 @@
             $id('signUpButton').attr('disabled', 'true');
         }
 
-        if(!UserHelper.testRule(e.val(), e.attr('rule'))) {
-            addErrorMessage(e, UserHelper.errorMessages[e.attr('rule')]);
+        if(!UserHelper.testRule(e.val(), e.attr('data-rule'))) {
+            addErrorMessage(e, UserHelper.errorMessages[e.attr('data-rule')]);
             return false;
         } else {
             removeErrorMessage(e);
@@ -96,12 +96,12 @@
         var e = signupInputs[key];
 
         e.onkeyup = function() {
-            if (this.attr('rule')) {
+            if (this.attr('data-rule')) {
                 checkSignupInput(this);
             }
         }
 
-        if (e.attr('rule') && e.val() !== '') {
+        if (e.attr('data-rule') && e.val() !== '') {
             checkSignupInput(e);
         }
     }
@@ -144,7 +144,7 @@
 
         for (var key in signupInputs) {
             var e = signupInputs[key];
-            if (e.attr('rule') && !checkSignupInput(e)) {
+            if (e.attr('data-rule') && !checkSignupInput(e)) {
                 error = true;
             }
         }
