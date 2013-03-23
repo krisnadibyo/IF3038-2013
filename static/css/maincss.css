@@ -340,13 +340,19 @@ div#signInPlaceholder:hover  {
     transition: all 1.75s;
 }
 
-#uploadAvatarDiv {
+#uploadAvatarDiv,
+#uploadAttachmentDiv {
     position: relative;
     height: 45px;
     max-width: 100px;
 }
 
-#avatarFile {
+#uploadAttachmentDiv {
+    height: 50px;
+}
+
+#avatarFile,
+#attachmentFile {
     position: absolute;
     opacity: 0;
     font-size: 1.5em;
@@ -586,5 +592,27 @@ div#signInPlaceholder:hover  {
 
 #profileContainer ol {
     margin: 0 0 0 20px;
+    padding: 0;
+}
+
+/** Suggestion box */
+
+.relative {
+    position: relative;
+}
+
+.suggestionBox {
+    position: absolute;
+    top: 42px;
+    left: 4px;
+    width: 200px;
+    display: none;
+    padding: 4px;
+    background: #fff;
+    border: 1px #444 solid;
+}
+
+.suggestionBox > ul {
+    margin: 0 0 0 16px;
     padding: 0;
 }

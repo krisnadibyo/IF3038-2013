@@ -90,6 +90,37 @@
         },
         deleteTask: function(taskId, callbackfunc, async) {
             return XHR.qPost('task/delete/' + taskId, null, callbackfunc, async);
+        },
+        uploadAttachment: function(fileobj, callbackfunc, async) {
+            if (!fileobj) {
+                return;
+            }
+
+            XHR.doUpload({
+                url: $.AppRoot + 'upload/attachment',
+                fileobj: fileobj,
+                callback: function(res) {
+                    if (callbackfunc !== undefined) {
+                        callbackfunc(res);
+                    }
+                    console.log(res);
+                }
+            });
+        },
+        createTask: function(taskData, callbackfunc, async) {
+            return XHR.qPost('task/create', taskData, callbackfunc, async);
+        },
+        setTags: function(taskId, tagStr, callbackfunc, async) {
+            var tagData = new Array();
+
+            tagStr = tagStr.replace(/,\s+/g, ',');
+            tagStr.split(',').forEach(function(tag) {
+                if (tagData.indexOf(tag) === -1 && tag !== '') {
+                    tagData.push(tag);
+                }
+            });
+
+            return XHR.qPost('tag/reassign/' + taskId, tagData, callbackfunc, async);
         }
         // TODO
     }

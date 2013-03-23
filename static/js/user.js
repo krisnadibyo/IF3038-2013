@@ -85,7 +85,7 @@
             }
 
             var username = user['username'];
-            $.XHR.doUpload({
+            XHR.doUpload({
                 url: $.AppRoot + 'upload/avatar/' + username,
                 fileobj: fileobj,
                 callback: function(res) {
@@ -95,6 +95,14 @@
                     console.log(res);
                 }
             });
+        },
+
+        // Misc getters
+        hint: function(username, callbackfunc, async) {
+            return XHR.qGet('user/hint/' + username, callbackfunc, async);
+        },
+        getUserId: function(username, callbackfunc, async) {
+            return XHR.qGet('user/getid/' + username, callbackfunc, async);
         }
     }
 

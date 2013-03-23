@@ -200,7 +200,7 @@ class TaskController extends Controller
         }
 
         $task->save_new(false);
-        return $this->response->renderJson(array('status' => 'success'));
+        return $this->response->renderJson(array('status' => 'success', 'id' => $task->get_id()));
     }
 
     // POST /task/edit/<id> + JSON data

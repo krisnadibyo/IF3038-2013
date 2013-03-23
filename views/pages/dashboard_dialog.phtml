@@ -5,13 +5,26 @@
         <form dialogId="newTaskForm" action="javascript:;">
             <h2>New Task</h2>
             <div><input type="text" id="ntask_owner" data-rule="owner" placeholder="Owner *" disabled="true"/></div>
-            <div><input type="text" id="ntask_category" data-rule="category" placeholder="Category" /></div>
+            <div>
+                <select id="ntask_category" placeholder="Category">
+
+                </select>
+            </div>
             <div><input type="text" id="ntask_name" data-rule="name" placeholder="Name *" /></div>
-            <div><input type="text" id="ntask_attachment" placeholder="Attachment" /></div>
+            <div id="uploadAttachmentDiv">
+                <input id="ntask_attachment" type="text" placeholder="Attachment (Browse...)" disabled />
+                <input id="attachmentFile" type="file" />
+            </div>
             <div><input type="date" id="ntask_deadline" data-rule="date" placeholder="Deadline (in YYYY-MM-DD) *" /></div>
-            <div><input type="text" id="ntask_assignee" placeholder="Assignee" /></div>
+            <div class="relative">
+                <input type="text" id="ntask_assignee" placeholder="Assignee" autocomplete="off" />
+                <div id="assigneeLoadingBox" class="suggestionBox"></div>
+            </div>
             <div><input type="text" id="ntask_tags" placeholder="Tags" /></div>
             <div><button type="submit" id="taskSubmitButton">Create</button></div>
+
+            <input id="ntask_user_id" type="hidden" />
+            <input id="ntask_assignee_id" type="hidden" />
         </form>
     </div>
 </div>

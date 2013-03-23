@@ -22,7 +22,9 @@
     var activeCategoryTasks = undefined;
     var activeCategoryLi = undefined;
 
+    ///////////////////////////////////////////////////////////////////////////
     // Show categories and active category tasks
+    ///////////////////////////////////////////////////////////////////////////
     var showCategories = function() {
         $id('categoryList').html('');
 
@@ -53,7 +55,7 @@
     }
     showCategories();
 
-    var showActiveCategoryTasks = function() {
+    $.showActiveCategoryTasks = function() {
         activeCategoryTasks = TaskAPI.getByCategory(activeCategory['name'], null, false);
         if (activeCategoryTasks == null) {
             activeCategoryTasks = new Array();
@@ -92,7 +94,9 @@
     }
     showActiveCategoryTasks();
 
+    ////////////////////////////////////////////////////////////////////////////
     // Show assigned tasks and categories
+    ////////////////////////////////////////////////////////////////////////////
     var assignedTasks = undefined;
     var assignedCategories = undefined;
 
@@ -165,8 +169,9 @@
     }
     showAssignedCategory();
 
-
-    // Functions
+    ////////////////////////////////////////////////////////////////////////////
+    // Task Functions
+    ////////////////////////////////////////////////////////////////////////////
     $.doneTask = function(taskId) {
         TaskAPI.doneTask(taskId, function(res) {
             showActiveCategoryTasks();
@@ -188,7 +193,9 @@
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////
     // New Task
+    ////////////////////////////////////////////////////////////////////////////
     var checkTaskInput = function(e) {
         if(!TaskHelper.testRule(e.val(), e.attr('data-rule'))) {
             if (!e.hasClass('error')) {
@@ -211,7 +218,7 @@
         }
     }
 
-    var inputs = ['owner', 'category', 'name', 'attachment', 'deadline', 'assignee', 'tags'];
+    var inputs = ['owner', 'user_id', 'category', 'name', 'attachment', 'deadline', 'assignee', 'assignee_id', 'tags'];
     var taskInputs = {};
 
     for (var i = 0; i < inputs.length; i++) {
@@ -231,14 +238,26 @@
         }, 25);
 
         taskInputs['owner'].val(user['username']);
-        taskInputs['category'].val(activeCategory['name']);
+        taskInputs['user_id'].val(user['id']);
+
+        // Populate category
+        taskInputs['category'].html('');
+        for (var i = 0; i < categories.length; i++) {
+            var option = $e.create('option').val(categories[i]['id']).html(categories[i]['name']);
+            if (categories[i]['id'] == activeCategory['id']) {
+                option.attr('selected', '');
+            }
+            taskInputs['category'].appendChild(option);
+        }
 
         for (key in taskInputs) {
             var e = taskInputs[key];
 
-            e.onkeyup = function() {
-                if (this.attr('data-rule')) {
-                    checkTaskInput(this);
+            if (e.attr('data-rule')) {
+                e.onkeyup = function() {
+                    if (this.attr('data-rule')) {
+                        checkTaskInput(this);
+                    }
                 }
             }
 
@@ -246,6 +265,44 @@
                 checkTaskInput(e);
             }
         }
+    }
+
+    $id('attachmentFile').onchange = function(e) {
+        taskInputs['attachment'].val(this.val());
+    }
+
+    taskInputs['assignee'].onkeyup = function(e) {
+        if (taskInputs['assignee'].val() == '') {
+            return;
+        }
+
+        $id('assigneeLoadingBox').html('Loading...').style.display = 'block';
+
+        clearTimeout($.asuggest);
+        $.asuggest = setTimeout(function() {
+            UserAPI.hint(taskInputs['assignee'].val(), function(res) {
+                if (res.length > 0) {
+                    taskInputs['assignee'].val(res[0]);
+                    $id('assigneeLoadingBox').style.display = 'none';
+                    UserAPI.getUserId(res[0], function(res) {
+                        taskInputs['assignee_id'].val(res);
+                    }, true);
+                } else {
+                    $id('assigneeLoadingBox').html('Assignee not found!');
+                }
+            }, true);
+        }, 1000);
+    }
+
+    taskInputs['assignee'].onblur = function(e) {
+        $id('assigneeLoadingBox').style.display = 'none';
+    }
+
+    $.assignAssignee = function(e) {
+        var val = $e(e).html();
+        alert(val);
+        taskInputs['assignee'].val(val);
+        $id('assigneeSuggestion').style.display = 'none';
     }
 
     $id('taskSubmitButton').onclick = function(evt) {
@@ -262,29 +319,41 @@
             return;
         }
 
-        var t = new Task();
-        t.setTags(taskInputs['tags'].value);
-        t.status = '';
-
-        for (var key in taskInputs) {
-            if (key !== 'tags') {
-                t[key] = taskInputs[key].value;
-            }
-            if (key !== 'owner') {
-                taskInputs[key].value = '';
-            }
+        var attachmentFilename = taskInputs['attachment'].val() !== '' ? taskInputs['attachment'].val() : 'none';
+        var task = {
+            name: taskInputs['name'].val(),
+            user_id: taskInputs['user_id'].val(),
+            attachment: attachmentFilename,
+            category_id: taskInputs['category'].val(),
+            assignee_id: taskInputs['assignee_id'].val(),
+            deadline: taskInputs['deadline'].val(),
         }
 
-        if (t.category === '') {
-            t.category = 'Uncategorized';
-        }
+        TaskAPI.createTask(task, function(res) {
+            if (res['status'] == 'success') {
+                var id = res['id'];
+                if (taskInputs['tags'] != '') {
+                    TaskAPI.setTags(id, taskInputs['tags'].val(), function(res) {
+                        console.log('set tags success');
+                        console.log(res);
+                    }, true);
+                }
+                if (taskInputs['attachment'] != '') {
+                    TaskAPI.uploadAttachment($id('attachmentFile').files[0], function(res) {
+                        console.log('upload attachment success');
+                        console.log(res);
+                    });
+                }
+                showActiveCategoryTasks();
+            }
+        }, true);
 
-        tasks.push(t);
-        Tasks.save(tasks);
-        $.open($.AppRoot + 'page/dashboard', '_self');
+        closeDialogEx($id('newTaskForm'));
     }
 
+    ////////////////////////////////////////////////////////////////////////////
     // New Category
+    ////////////////////////////////////////////////////////////////////////////
     $.newCategory = function(e) {
         $id('newCategoryForm').style.display = 'block';
         $id('pageBlurrer').style.display = 'block';
@@ -308,7 +377,9 @@
         }, true);
     }
 
+    ////////////////////////////////////////////////////////////////////////////
     // Delete Category
+    ////////////////////////////////////////////////////////////////////////////
     $.deleteCategory = function(e) {
         $id('deleteCategoryForm').style.display = 'block';
         $id('pageBlurrer').style.display = 'block';
@@ -340,7 +411,9 @@
         }, true);
     }
 
+    ////////////////////////////////////////////////////////////////////////////
     // View/Edit Task
+    ////////////////////////////////////////////////////////////////////////////
     $.viewTask = function(e) {
         e = $e(e);
         $id('viewEditTaskForm').style.display = 'block';

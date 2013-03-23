@@ -58,14 +58,14 @@ class UploadController extends Controller
     }
 
     // POST /upload/attachment/<task_id> + multipart data
-    public function attachment($task_id=null)
+    public function attachment()
     {
-        if (!$this->_isPOST() || !$task_id || !isset($_FILES['fileobj'])) {
+        if (!$this->_isPOST() ||  !isset($_FILES['fileobj'])) {
             return $this->response->nullJson();
         }
 
         $tmpfile  = $_FILES['fileobj']['tmp_name'];
-        $filename = $task_id . '-' . $_FILES['fileobj']['name'];
+        $filename = $_FILES['fileobj']['name'];
         $destfile = $this->uploadDir . 'attachment/' . $filename;
 
         if (!move_uploaded_file($tmpfile, $destfile)) {

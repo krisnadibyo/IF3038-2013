@@ -14,6 +14,22 @@
         resizeDialogs();
     }
 
+    $.closeDialogEx = function(dlg) {
+        var dialog = dlg;
+
+        $id('pageBlurrer').doTransition({
+            opacity: '0'
+        }, 25);
+        dialog.doTransition({
+            opacity: '0'
+        }, 25);
+
+        setTimeout(function() {
+            $id('pageBlurrer').style.display = 'none';
+            dialog.style.display = 'none';
+        }, 250);
+    }
+
     $.closeDialog = function(e) {
         e = $e(e);
         var dialog = $id(e.attr('dialogId'));

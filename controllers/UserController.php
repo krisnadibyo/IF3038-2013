@@ -40,6 +40,35 @@ class UserController extends Controller
         return $this->response->renderJson($user);
     }
 
+    // GET /user/hint
+    public function hint($username='')
+    {
+        $hints = array();
+        $users = User::getAll(array(
+            'where' => array(
+                array('username', 'LIKE', $username . '%'),
+            ),
+        ));
+
+        if ($users !== null && $username != '') {
+            foreach ($users as $user) {
+                $hints[] = $user->get_username();
+            }
+        }
+
+        return $this->response->renderJson($hints);
+    }
+
+    // GET /user/getid/<username>
+    public function getid($username='')
+    {
+        if ($username == '' || !$user = User::getOneByUsername($username)) {
+            return $this->response->nullJson();
+        }
+
+        return $this->response->renderJson($user->get_id());
+    }
+
     // POST /user/edit (logged user edit)
     public function edit()
     {
