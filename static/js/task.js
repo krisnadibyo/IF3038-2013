@@ -43,9 +43,13 @@
 
     $.TaskAPI = {
         // GETTERS
+
+        // - Category
         getCategories: function(callbackfunc, async) {
             return XHR.qGet('category/user', callbackfunc, async);
         },
+
+        // - Task
         getUserTasks: function(callbackfunc, async) {
             return XHR.qGet('task/user', callbackfunc, async);
         },
@@ -69,11 +73,23 @@
         },
 
         // SETTERS
+        // - Category
         createCategory: function(name, callbackfunc, async) {
             return XHR.qPost('category/create/' + name, null, callbackfunc, async);
         },
         deleteCategory: function(name, callbackfunc, async) {
             return XHR.qPost('category/delete/' + name, null, callbackfunc, async);
+        },
+
+        // - Task
+        doneTask: function(taskId, callbackfunc, async) {
+            return XHR.qPost('task/done/' + taskId, null, callbackfunc, async);
+        },
+        undoneTask: function(taskId, callbackfunc, async) {
+            return XHR.qPost('task/undone/' + taskId, null, callbackfunc, async);
+        },
+        deleteTask: function(taskId, callbackfunc, async) {
+            return XHR.qPost('task/delete/' + taskId, null, callbackfunc, async);
         }
         // TODO
     }

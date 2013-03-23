@@ -159,6 +159,31 @@ class TaskController extends Controller
         return $this->response->renderJson($task->toArray());
     }
 
+    // POST /task/done/<task_id>
+    public function done($id=0)
+    {
+        if (!$this->_isPOST() || !$task = Task::getOneById($id)) {
+            return $this->response->nullJson();
+        }
+
+        $task->set_status(1);
+        $task->save();
+        return $this->response->renderJson(array('status' => 'success'));
+    }
+
+    // POST /task/done/<task_id>
+    public function undone($id=0)
+    {
+        if (!$this->_isPOST() || !$task = Task::getOneById($id)) {
+            return $this->response->nullJson();
+        }
+
+        $task->set_status(0);
+        $task->save();
+        return $this->response->renderJson(array('status' => 'success'));
+    }
+
+
     // POST /task/create + JSON data
     public function create()
     {

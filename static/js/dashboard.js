@@ -77,6 +77,12 @@
                     '<li>Tags: ' + TaskHelper.getTagsStr(task) + '</li>' +
                     '<li>Status: ' + (task['status'] == '0' ? 'Unfinished' : 'Done') + '</li>' +
                     '<li>Attachment: ' + (task['attachment'] == 'none' ? 'None' :  task['attachment']) + '</li>' +
+                    '<li>' +
+                        '<button onclick="deleteTask(' + task['id'] + ')">Delete Task</button>' +
+                        ((task['status'] == '0')
+                        ? '<button onclick="doneTask(' + task['id'] + ')">Mark as Done</button></li>'
+                        : '<button onclick="undoneTask(' + task['id'] + ')">Mark as Unfinished</button></li>') +
+                    '</li>'
                 '</ul>';
 
                 li.html(html);
@@ -86,25 +92,99 @@
     }
     showActiveCategoryTasks();
 
-    // Functions
-    $.deleteTask = function(e) {
-        e = $e(e);
-        var tNum = e.attr('taskNumber');
-        var task = activeCategoryTasks[tNum];
+    // Show assigned tasks and categories
+    var assignedTasks = undefined;
+    var assignedCategories = undefined;
 
-        for (var i = 0; i < tasks.length; i++) {
-            if (tasks[i]['name'] == task['name']) {
-                tasks.splice(i, 1);
-                Tasks.save(tasks);
+    var getAssignedTasks = function() {
+        assignedTasks = TaskAPI.getAssignedTasks(null, false);
+    }
+    getAssignedTasks();
 
-                tasks = Tasks.load();
-                userTasks = Tasks.getOwnerTasks(tasks, user['username']);
-                showActiveCategoryTasks();
+    var showAssignedTasks = function() {
+        activeCategoryTasks = TaskAPI.getAssignedTasks(null, false);
+        if (activeCategoryTasks == null) {
+            activeCategoryTasks = new Array();
+        }
 
-                alert('Task "' + task['name'] + '" has been deleted!');
+        $id('taskList').html('');
+        if (activeCategoryTasks.length == 0) {
+            var li = $e.create('li');
+            li.html("<h2>You don't have any task in this category</h2>");
+            $id('taskList').appendChild(li);
+        } else {
+            for (var i = 0; i < activeCategoryTasks.length; i++) {
+                var task = activeCategoryTasks[i];
+                var li = $e.create('li').attr('acTaskNumber', i);
 
-                break;
+                var html =
+                '<ul class="task">' +
+                    '<li taskId="' + task['id'] + '" taskNumber="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
+                    '<li>Deadline: <strong>' + task['deadline'] + '</strong></li>' +
+                    '<li>User: ' + task['user'] + '</li>' +
+                    '<li>Assignee: ' + (task['assignee'] == undefined ? 'None' :  task['assignee']) + '</li>' +
+                    '<li>Tags: ' + TaskHelper.getTagsStr(task) + '</li>' +
+                    '<li>Category: <strong>' + task['category'] + '</strong></li>' +
+                    '<li>Status: ' + (task['status'] == '0' ? 'Unfinished' : 'Done') + '</li>' +
+                    '<li>Attachment: ' + (task['attachment'] == 'none' ? 'None' :  task['attachment']) + '</li>' +
+                '</ul>';
+
+                li.html(html);
+                $id('taskList').appendChild(li);
             }
+        }
+    }
+
+    var showAssignedCategory = function() {
+        getAssignedTasks();
+
+        if (assignedTasks && assignedTasks.length > 0) {
+            var li = $e.create('li')
+                .html('Assigned')
+                .attr('cat', 'Assigned')
+                .attr('catId', '-1');
+
+            if ('Assigned' == activeCategory['name']) {
+                li.addClass('active');
+                activeCategoryLi = li;
+            }
+
+            li.onclick = function(e) {
+                activeCategoryLi.removeClass('active');
+                this.addClass('active');
+
+                activeCategory['name'] = 'Assigned';
+                activeCategory['id'] = '-1';
+                activeCategoryLi = this;
+
+                showAssignedTasks();
+            }
+
+            $id('categoryList').appendChild(li);
+        }
+    }
+    showAssignedCategory();
+
+
+    // Functions
+    $.doneTask = function(taskId) {
+        TaskAPI.doneTask(taskId, function(res) {
+            showActiveCategoryTasks();
+        }, true);
+    }
+
+    $.undoneTask = function(taskId) {
+        TaskAPI.undoneTask(taskId, function(res) {
+            showActiveCategoryTasks();
+        }, true);
+    }
+
+    $.deleteTask = function(taskId) {
+        var ok = window.confirm("Are you sure do you want to delete this task?");
+        if (ok) {
+            TaskAPI.deleteTask(taskId, function(res) {
+                showActiveCategoryTasks();
+            }, true);
         }
     }
 
@@ -222,6 +302,7 @@
             console.log(res);
             categories = TaskAPI.getCategories(null, false);
             showCategories();
+            showAssignedCategory();
 
             $.closeDialog(e);
         }, true);
@@ -252,6 +333,7 @@
             console.log(res);
             categories = TaskAPI.getCategories(null, false);
             showCategories();
+            showAssignedCategory();
             showActiveCategoryTasks();
 
             $.closeDialog(e);

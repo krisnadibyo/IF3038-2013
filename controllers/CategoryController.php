@@ -54,6 +54,7 @@ class CategoryController extends Controller
             'where' => array(
                 array('user.username', '=', $username),
             ),
+            'orderBy' => 'name',
         ));
 
         return $this->response->renderJson($cats, true);
@@ -102,12 +103,13 @@ class CategoryController extends Controller
     // POST /category/delete/<name>
     public function delete($name='')
     {
+        $name = urldecode($name);
         App::loadModel('Task');
         if (!$this->_isPOST() || !$cat = Category::getOneByName($name, $this->userId)) {
             return $this->response->nullJson();
         }
 
-        if (!$tasks = Task::getByCategoryName($name, $this->userId)) {
+        if (($tasks = Task::getByCategoryName($name, $this->userId)) !== null) {
             foreach ($tasks as $task) {
                 $task->delete();
             }
