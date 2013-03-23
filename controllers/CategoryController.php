@@ -59,6 +59,29 @@ class CategoryController extends Controller
         return $this->response->renderJson($cats, true);
     }
 
+    // GET /category/hint/<name>
+    public function hint($name='')
+    {
+        $name = urldecode($name);
+
+        $hints = array();
+        $cats = Category::getAll(array(
+            'where' => array(
+                array('name', 'LIKE', $name . '%'),
+                'AND',
+                array('user_id', '=', $this->userId),
+            ),
+        ));
+
+        if ($cats != null && $name != '') {
+            foreach ($cats as $cat) {
+                $hints[] = $cat->get_name();
+            }
+        }
+
+        return $this->response->renderJson($hints);
+    }
+
     // POST /category/create/<name>
     public function create($name='')
     {
