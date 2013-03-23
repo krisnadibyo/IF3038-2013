@@ -66,6 +66,7 @@ class CategoryController extends Controller
             return $this->response->nullJson();
         }
 
+        $name = urldecode($name);
         $cat = new Category(array('name' => $name, 'user_id' => $this->userId));
         if (($validation = $cat->validate()) !== array()) {
             return $this->response->renderJson($validation);
