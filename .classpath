@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="lib/jetty/jsp/javax.servlet.jsp.jstl-1.2.0.v201105211821.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/jsp/org.apache.jasper.glassfish-2.2.2.v201112011158.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/jsp/org.apache.taglibs.standard.glassfish-1.2.0.v201112081803.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jsp/org.eclipse.jdt.core-3.7.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
