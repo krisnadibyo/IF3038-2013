@@ -58,7 +58,8 @@
                 name: user['name'],
                 email: user['email'],
                 birthday: user['birthday'],
-                avatar: user['avatar'],
+                avatar: user['avatar'], // opt remain
+                password: user['password'], // opt remain
                 bio: user['bio']
             };
 

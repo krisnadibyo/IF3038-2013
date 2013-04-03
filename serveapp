@@ -1,0 +1,17 @@
+#!/bin/bash
+PORT=18181
+if [ $1 ]; then
+    PORT=$1
+fi
+
+ROUTERPHP=`cat <<PHP
+<?php
+    if (isset($_SERVER['SCRIPT_FILENAME'])) {
+        return false;
+    } else {
+        require 'index.php';
+    }
+PHP
+`
+
+echo $ROUTERPHP | php -S 0.0.0.0:$PORT

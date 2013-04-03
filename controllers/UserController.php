@@ -79,6 +79,17 @@ class UserController extends Controller
 
         $user = User::getOneByUsername($this->username);
         foreach ($data as $col => $val) {
+            // opt remain on avatar & password
+            if ($col == 'avatar' && $val == 'none') {
+                continue;
+            }
+
+            if ($col == 'password' && $val == '') {
+                continue;
+            } else if ($col == 'password' && $val != '') {
+                $val = md5($val);
+            }
+
             $user->set($col, $val);
         }
 
