@@ -616,3 +616,9 @@ div#signInPlaceholder:hover  {
     margin: 0 0 0 16px;
     padding: 0;
 }
+
+/****----------------------- SEARCH ONLY -----------------------****/
+#searchContainer {
+    width: 960px;
+    margin: auto;
+}

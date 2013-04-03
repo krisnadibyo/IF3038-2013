@@ -1,0 +1,111 @@
+<?php vh_render('pages.header', $data); ?>
+
+<div id="searchContainer">
+    <h1>Search Result for '<?php echo $keyword; ?>'</h1>
+    <h3>Filter: <strong><?php echo $filter; ?></strong></h3>
+
+    <?php if ($filter == 'all'): ?>
+        <h2>Users</h2>
+        <?php $i = 0; foreach ($users as $user): ?>
+        <div>
+            <div><strong><?php echo ++$i; ?>.
+                <a href="<?php echo vh_link('page/profile'); ?>"><?php echo $user['username']; ?></a>
+            </strong></div>
+            <div>Name: <?php echo $user['name']; ?></div>
+            <div>Email: <?php echo $user['email']; ?></div>
+            <br />
+        </div>
+        <?php endforeach; ?>
+
+        <h2>Categories</h2>
+        <?php $i = 0; foreach ($categories as $cat): ?>
+        <div>
+            <div><strong><?php echo ++$i; ?>.
+                <a href="<?php echo vh_link('page/dashboard'); ?>"><?php echo $cat['name']; ?></a>
+            </strong></div>
+        </div>
+        <?php endforeach; ?>
+
+        <h2>Tasks:</h2>
+        <?php $i = 0; foreach ($tasks as $task): ?>
+        <ul class="task">
+            <li taskId="<?php echo $task->get_id(); ?>" taskNumber="<?php echo $i++; ?>" class="taskName" onclick="viewTask(this)">
+                <strong><?php echo $i; ?>. <?php echo $task->get_name(); ?></strong>
+            </li>
+            <li>Deadline: <strong><?php echo $task->get_deadline(); ?></strong></li>
+            <li>User: <strong><?php if ($a = $task->get_user()) { echo $a->get_name(); } else { echo "None"; } ?></strong></li>
+            <li>Assignee: <?php if ($a = $task->get_assignee()) { echo $a->get_name(); } else { echo "None"; } ?></li>
+            <li>Tags:
+            <?php
+                if ($tags = $task->get_tags()) {
+                    $printComma = false;
+                    foreach ($tags as $tag) {
+                        if ($printComma) {
+                            echo ', ';
+                        } else {
+                            $printComma = true;
+                        }
+                        echo $tag->get_name();
+                    }
+                }
+            ?></li>
+            <li>Status: <?php echo ($task->get_status() == 0 ? 'Unfinished' : 'Done'); ?></li>
+            <li>Attachment: <?php echo ($task->get_attachment() == 'none' ? 'None' :  $task->get_attachment()); ?></li>
+        </ul>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if ($filter == 'username'): ?>
+        <?php $i = 0; foreach ($users as $user): ?>
+        <div>
+            <div><strong><?php echo ++$i; ?>.
+                <a href="<?php echo vh_link('page/profile'); ?>"><?php echo $user['username']; ?></a>
+            </strong></div>
+            <div>Name: <?php echo $user['name']; ?></div>
+            <div>Email: <?php echo $user['email']; ?></div>
+            <br />
+        </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if ($filter == 'category'): ?>
+        <?php $i = 0; foreach ($categories as $cat): ?>
+        <div>
+            <div><strong><?php echo ++$i; ?>.
+                <a href="<?php echo vh_link('page/dashboard'); ?>"><?php echo $cat['name']; ?></a>
+            </strong></div>
+        </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if ($filter == 'task'): ?>
+        <?php $i = 0; foreach ($tasks as $task): ?>
+        <ul class="task">
+            <li taskId="<?php echo $task->get_id(); ?>" taskNumber="<?php echo $i++; ?>" class="taskName" onclick="viewTask(this)">
+                <strong><?php echo $i; ?>. <?php echo $task->get_name(); ?></strong>
+            </li>
+            <li>Deadline: <strong><?php echo $task->get_deadline(); ?></strong></li>
+            <li>User: <strong><?php if ($a = $task->get_user()) { echo $a->get_name(); } else { echo "None"; } ?></strong></li>
+            <li>Assignee: <?php if ($a = $task->get_assignee()) { echo $a->get_name(); } else { echo "None"; } ?></li>
+            <li>Tags:
+            <?php
+                if ($tags = $task->get_tags()) {
+                    $printComma = false;
+                    foreach ($tags as $tag) {
+                        if ($printComma) {
+                            echo ', ';
+                        } else {
+                            $printComma = true;
+                        }
+                        echo $tag->get_name();
+                    }
+                }
+            ?></li>
+            <li>Status: <?php echo ($task->get_status() == 0 ? 'Unfinished' : 'Done'); ?></li>
+            <li>Attachment: <?php echo ($task->get_attachment() == 'none' ? 'None' :  $task->get_attachment()); ?></li>
+        </ul>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+
+<?php vh_render('pages.footer', $data); ?>

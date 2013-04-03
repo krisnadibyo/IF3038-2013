@@ -40,6 +40,12 @@
             <option value="category">Filter: Category</option>
             <option value="task">Filter: Task</option>
         </select>
+        <script type="text/javascript">
+            $id('searchBar').onsubmit = function(evt) {
+                evt.preventDefault();
+                window.open(AppRoot + "page/search/" + $id('searchFilter').val() + "/" + $id('searchInput').val(), "_self");
+            }
+        </script>
     </form>
 
     <div id="miniUserInfo">

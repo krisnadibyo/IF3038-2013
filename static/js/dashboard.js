@@ -436,13 +436,13 @@
             '<a href="/static/uploads/attachment/' + task['attachment'] + '" target="_blank">' + task['attachment'] + '</a>'));
 
         $id('ve_deadline').html('Deadline: <strong>' + task['deadline'] + '</strong>');
-        $id('ve_assignee').html('Assignee: <strong>' + (task['assignee'] == '' ? 'None' : task['assignee']) +  '</strong>');
+        $id('ve_assignee').html('Assignee: <strong>' + (task['assignee'] == undefined ? 'None' :  task['assignee']) +  '</strong>');
         $id('ve_tags').html('Tags: <strong>' + TaskHelper.getTagsStr(task) + '</strong>');
         $id('ve_status').html('Status: <strong>' + (task['status'] == '' ? 'Unfinished' : 'Done') + '</strong>');
 
         $id('taskEditButton').onclick = function(evt) {
             $id('ve_deadline').html('<label>Deadline:</label><input id="ve_deadlineInput" type="date" value="' + task['deadline'] + '" />');
-            $id('ve_assignee').html('<label>Assignee:</label><input id="ve_assigneeInput" type="text" value="' + task['assignee'] + '" />');
+            $id('ve_assignee').html('<label>Assignee:</label><input id="ve_assigneeInput" type="text" value="' + (task['assignee'] == undefined ? '' :  task['assignee']) + '" />');
             $id('ve_tags').html('<label>Tags:</label><input id="ve_tagsInput" type="text" value="' + TaskHelper.getTagsStr(task) + '" />');
             $id('taskEditSubmitButton').removeAttr('disabled');
         }
