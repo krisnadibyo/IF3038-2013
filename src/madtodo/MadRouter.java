@@ -1,5 +1,7 @@
 package madtodo;
 
+import static madtodo.MadController.controllerlify;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,9 +16,7 @@ public class MadRouter {
         List<String> splittedUri = Arrays.asList(uri.substring(1).split("/"));
         if (splittedUri.size() >= 1 && splittedUri.get(0).length() > 0) {
             this.controller = splittedUri.get(0);
-            this.controllerClassName = Character.toUpperCase(
-                    this.controller.charAt(0)) +
-                    this.controller.substring(1) + "Controller";
+            this.controllerClassName = controllerlify(this.controller);
         }
 
         if (splittedUri.size() >= 2) {

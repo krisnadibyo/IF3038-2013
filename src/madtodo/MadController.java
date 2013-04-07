@@ -75,4 +75,10 @@ public class MadController {
 
         response.getWriter().write(html);
     }
+
+    public static String controllerlify(String ctrlName) {
+        return Character.toUpperCase(
+                ctrlName.charAt(0)) +
+                ctrlName.substring(1) + "Controller";
+    }
 }

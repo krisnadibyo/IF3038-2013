@@ -1,6 +1,7 @@
 package madtodo;
 
 import static madtodo.Configuration.getConfig;
+import static madtodo.MadController.controllerlify;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -69,13 +70,12 @@ public class MadFilter implements Filter {
         try {
             String className = router.getControllerClassName();
             if (className == null) {
-                String ctrl = getConfig().getAppDefaultController();
-                className = Character.toUpperCase(ctrl.charAt(0)) + ctrl.substring(1) + "Controller";
+                className = controllerlify(getConfig().getAppDefaultController());
             }
 
             ctrlCls = Class.forName("madtodo.controllers." + className);
         } catch (ClassNotFoundException e) {
-            sendErrorMessage(req, res, e);
+            send404JsonMessage(req, res, e);
             return;
         }
 
@@ -88,10 +88,10 @@ public class MadFilter implements Filter {
             ctrlObj.setResponse(res);
             ctrlObj.setParams(router.getParams());
         } catch (InstantiationException e) {
-            sendErrorMessage(req, res, e);
+            send404JsonMessage(req, res, e);
             return;
         } catch (IllegalAccessException e) {
-            sendErrorMessage(req, res, e);
+            send404JsonMessage(req, res, e);
             return;
         }
 
@@ -105,10 +105,10 @@ public class MadFilter implements Filter {
 
             actionMethod = ctrlCls.getMethod(actionName);
         } catch (NoSuchMethodException e) {
-            sendErrorMessage(req, res, e);
+            send404JsonMessage(req, res, e);
             return;
         } catch (SecurityException e) {
-            sendErrorMessage(req, res, e);
+            send404JsonMessage(req, res, e);
             return;
         }
 
@@ -116,18 +116,18 @@ public class MadFilter implements Filter {
         try {
             actionMethod.invoke(ctrlObj);
         } catch (IllegalAccessException e) {
-            sendErrorMessage(req, res, e);
+            send404JsonMessage(req, res, e);
             return;
         } catch (IllegalArgumentException e) {
-            sendErrorMessage(req, res, e);
+            send404JsonMessage(req, res, e);
             return;
         } catch (InvocationTargetException e) {
-            sendErrorMessage(req, res, e);
+            send404JsonMessage(req, res, e);
             return;
         }
     }
 
-    public void sendErrorMessage(HttpServletRequest req, HttpServletResponse res, Exception e)
+    public void send404JsonMessage(HttpServletRequest req, HttpServletResponse res, Exception e)
             throws IOException {
         // e.printStackTrace();
 
