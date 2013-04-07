@@ -62,7 +62,7 @@ public class MadRunner {
         try {
             server.join();
         } catch (InterruptedException e) {
-            System.out.println("Server intterupted!");
+            System.out.println("Server interrupted!");
         }
     }
 
