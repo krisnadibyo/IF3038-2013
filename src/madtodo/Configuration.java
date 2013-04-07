@@ -2,6 +2,10 @@ package madtodo;
 
 import static madtodo.MadFile.readFileToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -16,6 +20,10 @@ public class Configuration {
     private String mysqlPassword;
     private String mysqlDatabase;
 
+    private String appDefaultController;
+    private String appDefaultAction;
+    private List<String> appServletUriException;
+
     public static Configuration getConfig() {
         return config;
     }
@@ -25,6 +33,7 @@ public class Configuration {
 
         JSONObject cfg = new JSONObject(new JSONTokener(readFileToString(jsonFile)));
         JSONObject mysqlCfg = cfg.getJSONObject("mysql");
+        JSONObject appCfg = cfg.getJSONObject("app");
 
         config.setBindAddress(cfg.getString("bind"));
         config.setPort(cfg.getInt("port"));
@@ -33,6 +42,18 @@ public class Configuration {
         config.setMysqlUsername(mysqlCfg.getString("username"));
         config.setMysqlPassword(mysqlCfg.getString("password"));
         config.setMysqlDatabase(mysqlCfg.getString("database"));
+
+        config.setAppDefaultController(appCfg.getString("default-controller"));
+        config.setAppDefaultAction(appCfg.getString("default-action"));
+
+        List<String> servletUriException = new ArrayList<String>();
+        JSONArray tmp = appCfg.getJSONArray("servlet-uri-exception");
+        if (tmp != null) {
+            for (int i = 0; i < tmp.length(); i++) {
+                servletUriException.add(tmp.getString(i));
+            }
+        }
+        config.setAppServletUriException(servletUriException);
 
         return config;
     }
@@ -63,6 +84,30 @@ public class Configuration {
 
     public String getMysqlDatabase() {
         return mysqlDatabase;
+    }
+
+    public String getAppDefaultController() {
+        return appDefaultController;
+    }
+
+    public String getAppDefaultAction() {
+        return appDefaultAction;
+    }
+
+    public List<String> getAppServletUriException() {
+        return appServletUriException;
+    }
+
+    public void setAppDefaultController(String appDefaultController) {
+        this.appDefaultController = appDefaultController;
+    }
+
+    public void setAppDefaultAction(String appDefaultAction) {
+        this.appDefaultAction = appDefaultAction;
+    }
+
+    public void setAppServletUriException(List<String> appServletUriException) {
+        this.appServletUriException = appServletUriException;
     }
 
     public void setBindAddress(String bindAddress) {

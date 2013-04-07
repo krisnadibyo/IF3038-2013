@@ -8,4 +8,12 @@
         "password": "",
         "database": "madtodo"
     }
+
+    "app": {
+        "default-controller": "page",
+        "default-action": "index",
+        "servlet-uri-exception": [
+            "/foo"
+        ]
+    }
 }

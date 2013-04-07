@@ -24,7 +24,6 @@ public class FooServlet extends HttpServlet {
      */
     public FooServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -58,7 +57,7 @@ public class FooServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        doGet(request, response);
     }
 
 }

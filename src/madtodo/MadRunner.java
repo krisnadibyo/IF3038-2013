@@ -9,7 +9,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class MadRunner {
-    protected String getResource(String path) {
+    protected String getResource(final String path) {
         return this.getClass().getClassLoader().getResource(path).toExternalForm();
     }
 
@@ -26,7 +26,7 @@ public class MadRunner {
         return hCtx;
     }
 
-    private MadRunner(String args[]) {
+    private MadRunner(final String[] args) {
         Configuration config = null;
 
         try {
@@ -62,11 +62,20 @@ public class MadRunner {
         try {
             server.join();
         } catch (InterruptedException e) {
+            e.printStackTrace();
             System.out.println("Server interrupted!");
         }
     }
 
-    public static void main(String args[]) {
-        new MadRunner(args);
+    public static void main(final String[] args)
+            throws InterruptedException {
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                new MadRunner(args);
+            }
+        });
+
+        t.start();
+        t.join();
     }
 }

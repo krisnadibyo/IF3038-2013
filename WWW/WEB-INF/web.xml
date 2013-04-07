@@ -9,6 +9,7 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
   <servlet>
     <description></description>
     <display-name>FooServlet</display-name>
@@ -17,6 +18,16 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>FooServlet</servlet-name>
-    <url-pattern>/foo</url-pattern>
+    <url-pattern>/foo/*</url-pattern>
   </servlet-mapping>
+  
+  <filter>
+    <display-name>MadFilter</display-name>
+    <filter-name>MadFilter</filter-name>
+    <filter-class>madtodo.MadFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>MadFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>
