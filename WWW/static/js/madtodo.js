@@ -7,7 +7,7 @@
 
     /**
      * Enrich the element object.
-     * 
+     *
      * @param {Object} e
      */
     $.$e = function(e) {
@@ -18,13 +18,13 @@
             }
 
             return this.getAttribute(attr);
-        }
+        };
 
         e.removeAttr = function(attr) {
             this.removeAttribute(attr);
 
             return e;
-        }
+        };
 
         e.addClass = function(c) {
             var classes = this.className.split(' ');
@@ -37,13 +37,13 @@
             } else {
                 this.className += ' ' + c;
             }
-        
+
             return e;
-        }
+        };
 
         e.removeClass = function(c) {
             var classes = this.className.split(' ');
-            var index = classes.indexOf(c)
+            var index = classes.indexOf(c);
 
             if (index !== -1) {
                 classes.splice(index, 1);
@@ -51,12 +51,12 @@
             }
 
             return e;
-        }
+        };
 
         e.hasClass = function(c) {
             var classes = this.className.split(' ');
             return (classes.indexOf(c) !== -1);
-        }
+        };
 
         e.html = function(h) {
             if (h !== undefined) {
@@ -65,8 +65,8 @@
             }
 
             return this.innerHTML;
-        }
-        
+        };
+
         e.val = function(v) {
             if (this.val === undefined) {
                 return e;
@@ -78,7 +78,7 @@
             }
 
             return this.value;
-        }
+        };
 
         e.doTransition = function(styles, delay) {
             if (delay !== undefined) {
@@ -90,19 +90,19 @@
                 this.style[key] = styles[key];
             }
 
-            return e;            
-        }
+            return e;
+        };
 
         return e;
-    }
+    };
 
     $.$e.create = function(type) {
         return $.$e(document.createElement(type));
-    }
+    };
 
     /**
      * Shortcut of document.getElementById() with enriched element object.
-     * 
+     *
      * @param {String} id
      */
     $.$id = function(id) {

@@ -28,7 +28,7 @@
 
         /* Check username, password, and email */
         checkUPE: function(username, password, email) {
-            return (username !== password && email !== password)
+            return (username !== password && email !== password);
         },
 
         /**
@@ -43,14 +43,14 @@
                 year: bArray[0],
                 month: bArray[1],
                 day: bArray[2]
-            }
+            };
         },
     };
 
     /* User API */
     $.UserAPI = {
         get: function(callbackfunc, async) {
-            return XHR.qGet('user/get', callbackfunc, async)
+            return XHR.qGet('user/get', callbackfunc, async);
         },
 
         save: function(user, callbackfunc, async) {
@@ -105,6 +105,6 @@
         getUserId: function(username, callbackfunc, async) {
             return XHR.qGet('user/getid/' + username, callbackfunc, async);
         }
-    }
+    };
 
 })(window);

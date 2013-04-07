@@ -123,5 +123,5 @@
             return XHR.qPost('tag/reassign/' + taskId, tagData, callbackfunc, async);
         }
         // TODO
-    }
+    };
 })(window);

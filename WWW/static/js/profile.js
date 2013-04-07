@@ -50,13 +50,13 @@
         reader.onload = function(evt) {
             $.avatarImg = evt.target.result;
             $id('avatarImg').src = $.avatarImg;
-        }
+        };
 
         $id('uploadAvatarDiv').style.height = '260px';
         $id('avatarImg').style.display = 'block';
 
         reader.readAsDataURL($.avatarFile);
-    }
+    };
 
     // Validation
     var unlockEdit = function() {
@@ -73,7 +73,7 @@
         }
 
         return unlock;
-    }
+    };
 
     var addErrorMessage = function(e, message) {
         if (!e.hasClass('error')) {
@@ -86,14 +86,14 @@
 
             errorDiv.doTransition({ margin: '0 0 0 -40px', opacity: '1.0' }, 25);
         }
-    }
+    };
 
     var removeErrorMessage = function(e) {
         if (e.hasClass('error')) {
             e.removeClass('error')
                 .parentNode.removeChild(e.parentNode.children[1]);
         }
-    }
+    };
 
     var checkEditInput = function(e) {
         if (unlockEdit()) {
@@ -109,7 +109,7 @@
             removeErrorMessage(e);
             return true;
         }
-    }
+    };
 
     for (key in editInputs) {
         var e = editInputs[key];
@@ -123,7 +123,7 @@
                     checkEditInput(this);
                 }
             }
-        }
+        };
 
         if (e.attr('data-rule') && e.val() !== '') {
             checkEditInput(e);
@@ -145,7 +145,7 @@
         editInputs['email'].val(user['email']);
         editInputs['birthday'].val(user['birthday']);
         editInputs['bio'].html(user['bio']);
-    }
+    };
 
     // Form submit
     // Edit
@@ -208,6 +208,6 @@
                 window.open(AppRoot + "page/profile", "_self");
             }
         });
-    }
+    };
 
 })(window);

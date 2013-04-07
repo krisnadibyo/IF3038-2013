@@ -48,11 +48,11 @@
                 activeCategoryLi = this;
 
                 showActiveCategoryTasks();
-            }
+            };
 
             $id('categoryList').appendChild(li);
         }
-    }
+    };
     showCategories();
 
     $.showActiveCategoryTasks = function() {
@@ -84,14 +84,14 @@
                         ((task['status'] == '0')
                         ? '<button onclick="doneTask(' + task['id'] + ')">Mark as Done</button></li>'
                         : '<button onclick="undoneTask(' + task['id'] + ')">Mark as Unfinished</button></li>') +
-                    '</li>'
+                    '</li>' +
                 '</ul>';
 
                 li.html(html);
                 $id('taskList').appendChild(li);
             }
         }
-    }
+    };
     showActiveCategoryTasks();
 
     ////////////////////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@
 
     var getAssignedTasks = function() {
         assignedTasks = TaskAPI.getAssignedTasks(null, false);
-    }
+    };
     getAssignedTasks();
 
     var showAssignedTasks = function() {
@@ -137,7 +137,7 @@
                 $id('taskList').appendChild(li);
             }
         }
-    }
+    };
 
     var showAssignedCategory = function() {
         getAssignedTasks();
@@ -162,11 +162,11 @@
                 activeCategoryLi = this;
 
                 showAssignedTasks();
-            }
+            };
 
             $id('categoryList').appendChild(li);
         }
-    }
+    };
     showAssignedCategory();
 
     ////////////////////////////////////////////////////////////////////////////
@@ -176,13 +176,13 @@
         TaskAPI.doneTask(taskId, function(res) {
             showActiveCategoryTasks();
         }, true);
-    }
+    };
 
     $.undoneTask = function(taskId) {
         TaskAPI.undoneTask(taskId, function(res) {
             showActiveCategoryTasks();
         }, true);
-    }
+    };
 
     $.deleteTask = function(taskId) {
         var ok = window.confirm("Are you sure do you want to delete this task?");
@@ -191,7 +191,7 @@
                 showActiveCategoryTasks();
             }, true);
         }
-    }
+    };
 
     ////////////////////////////////////////////////////////////////////////////
     // New Task
@@ -216,7 +216,7 @@
             }
             return true;
         }
-    }
+    };
 
     var inputs = ['owner', 'user_id', 'category', 'name', 'attachment', 'deadline', 'assignee', 'assignee_id', 'tags'];
     var taskInputs = {};
@@ -258,18 +258,18 @@
                     if (this.attr('data-rule')) {
                         checkTaskInput(this);
                     }
-                }
+                };
             }
 
             if (e.attr('data-rule') && e.val() !== '') {
                 checkTaskInput(e);
             }
         }
-    }
+    };
 
     $id('attachmentFile').onchange = function(e) {
         taskInputs['attachment'].val(this.val());
-    }
+    };
 
     taskInputs['assignee'].onkeyup = function(e) {
         if (taskInputs['assignee'].val() == '') {
@@ -292,18 +292,18 @@
                 }
             }, true);
         }, 1000);
-    }
+    };
 
     taskInputs['assignee'].onblur = function(e) {
         $id('assigneeLoadingBox').style.display = 'none';
-    }
+    };
 
     $.assignAssignee = function(e) {
         var val = $e(e).html();
         alert(val);
         taskInputs['assignee'].val(val);
         $id('assigneeSuggestion').style.display = 'none';
-    }
+    };
 
     $id('taskSubmitButton').onclick = function(evt) {
         var error = false;
@@ -327,7 +327,7 @@
             category_id: taskInputs['category'].val(),
             assignee_id: taskInputs['assignee_id'].val(),
             deadline: taskInputs['deadline'].val(),
-        }
+        };
 
         TaskAPI.createTask(task, function(res) {
             if (res['status'] == 'success') {
@@ -349,7 +349,7 @@
         }, true);
 
         closeDialogEx($id('newTaskForm'));
-    }
+    };
 
     ////////////////////////////////////////////////////////////////////////////
     // New Category
@@ -364,7 +364,7 @@
         $id('pageBlurrer').doTransition({
             'opacity': '0.4'
         }, 25);
-    }
+    };
 
     $.newCategorySubmitted = function(e) {
         TaskAPI.createCategory($id('newCategoryName').val(), function(res) {
@@ -375,7 +375,7 @@
 
             $.closeDialog(e);
         }, true);
-    }
+    };
 
     ////////////////////////////////////////////////////////////////////////////
     // Delete Category
@@ -397,7 +397,7 @@
         $id('pageBlurrer').doTransition({
             'opacity': '0.4'
         }, 25);
-    }
+    };
 
     $.deleteCategorySubmitted = function(e) {
         TaskAPI.deleteCategory($id('deleteCategoryName').val(), function(res) {
@@ -409,7 +409,7 @@
 
             $.closeDialog(e);
         }, true);
-    }
+    };
 
     ////////////////////////////////////////////////////////////////////////////
     // View/Edit Task
@@ -445,12 +445,12 @@
             $id('ve_assignee').html('<label>Assignee:</label><input id="ve_assigneeInput" type="text" value="' + (task['assignee'] == undefined ? '' :  task['assignee']) + '" />');
             $id('ve_tags').html('<label>Tags:</label><input id="ve_tagsInput" type="text" value="' + TaskHelper.getTagsStr(task) + '" />');
             $id('taskEditSubmitButton').removeAttr('disabled');
-        }
+        };
 
         $id('taskEditSubmitButton').onclick = function(evt) {
             alert('Not implemented yet.');
             $.closeDialog($e.create('div').attr('dialogId', 'viewEditTaskForm'));
-        }
-    }
+        };
+    };
 
 })(window);

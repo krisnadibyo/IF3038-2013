@@ -27,7 +27,7 @@
 
             selectNode.appendChild(e);
         }
-    }
+    };
 
     populateOptions(bday.Y, 1955, 2055, 1990);
     populateOptions(bday.M, 1, 12, 1);
@@ -35,7 +35,7 @@
     for (key in bday) {
         bday[key].onchange = function(e) {
             $id('signup_birthday').val(bday.Y.val() + '-' + bday.M.val() + '-' + bday.D.val());
-        }
+        };
     }
     $id('signup_birthday').val(bday.Y.val() + '-' + bday.M.val() + '-' + bday.D.val());
 
@@ -54,7 +54,7 @@
         }
 
         return unlock;
-    }
+    };
 
     var addErrorMessage = function(e, message) {
         if (!e.hasClass('error')) {
@@ -67,14 +67,14 @@
 
             errorDiv.doTransition({ margin: '0 0 0 -40px', opacity: '1.0' }, 25);
         }
-    }
+    };
 
     var removeErrorMessage = function(e) {
         if (e.hasClass('error')) {
             e.removeClass('error')
                 .parentNode.removeChild(e.parentNode.firstChild);
         }
-    }
+    };
 
     var checkSignupInput = function(e) {
         if (unlockSignup()) {
@@ -90,7 +90,7 @@
             removeErrorMessage(e);
             return true;
         }
-    }
+    };
 
     for (key in signupInputs) {
         var e = signupInputs[key];
@@ -99,7 +99,7 @@
             if (this.attr('data-rule')) {
                 checkSignupInput(this);
             }
-        }
+        };
 
         if (e.attr('data-rule') && e.val() !== '') {
             checkSignupInput(e);
@@ -115,8 +115,8 @@
             formEl.doTransition({
                 opacity: '1.0',
             }, 25);
-        }
-    }
+        };
+    };
 
     openForm($id('signUpPlaceholder'), $id('signUpForm'));
     openForm($id('signInPlaceholder'), $id('signInForm'));
@@ -129,13 +129,13 @@
         reader.onload = function(evt) {
             $.avatarImg = evt.target.result;
             $id('avatarImg').src = $.avatarImg;
-        }
+        };
 
         $id('uploadAvatarDiv').style.height = '260px';
         $id('avatarImg').style.display = 'block';
 
         reader.readAsDataURL($.avatarFile);
-    }
+    };
 
     // Form submit
     // SIGN UP
@@ -192,7 +192,7 @@
                 doSignIn(user.username, user.password);
             }
         });
-    }
+    };
 
     // SIGN IN
     $id('signInButton').onclick = function(e) {
@@ -208,14 +208,14 @@
             }
         });
 
-    }
+    };
 
     // functions
     var doSignIn = function(username, password, callbackfunc) {
         var data = {
             username: username,
             password: password
-        }
+        };
 
         XHR.qPost('auth/login', data, function(res) {
             if (callbackfunc !== undefined) {
@@ -226,5 +226,5 @@
                 }
             }
         }, true);
-    }
+    };
 })(window);
