@@ -1,4 +1,6 @@
-package jj.webrunner;
+package madtodo;
+
+import java.net.InetSocketAddress;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -6,7 +8,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-public class WebRunner {
+public class MadRunner {
     protected String getResource(String path) {
         return this.getClass().getClassLoader().getResource(path).toExternalForm();
     }
@@ -24,14 +26,18 @@ public class WebRunner {
         return hCtx;
     }
 
-    private WebRunner(String args[]) {
-        int port = 8088;
+    private MadRunner(String args[]) {
+        Configuration config = null;
 
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
+        try {
+            config = Configuration.loadConfiguration("config.json");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error reading file (config.json), or maybe file not found!");
+            System.exit(1);
         }
 
-        Server server = new Server(port);
+        Server server = new Server(new InetSocketAddress(config.getBindAddress(), config.getPort()));
 
         WebAppContext hWebApp = new WebAppContext();
         hWebApp.setContextPath("/");
@@ -49,7 +55,9 @@ public class WebRunner {
             System.out.println("Couldn't start server!");
         }
 
-        System.out.format("---- Server started! http://127.0.0.1:%d/\n", port);
+        System.out.format("Server started! [http://%s:%d/ or http://127.0.0.1:%d/]\n",
+                config.getBindAddress(), config.getPort(), config.getPort());
+        System.out.format("Hit Ctrl-C to stop server.\n");
 
         try {
             server.join();
@@ -59,6 +67,6 @@ public class WebRunner {
     }
 
     public static void main(String args[]) {
-        new WebRunner(args);
+        new MadRunner(args);
     }
 }
