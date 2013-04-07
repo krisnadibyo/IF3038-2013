@@ -2,7 +2,7 @@
 /* requires: A web browser */
 (function($) {
     if (!$.AppRoot) {
-        $.AppRoot = './';
+        $.AppRoot = '/';
     }
 
     /**
