@@ -25,35 +25,42 @@ public class Configuration {
     private List<String> appServletUriException;
 
     public static Configuration getConfig() {
+        if (config == null) {
+            System.err.println("Warning! Configuration is not loaded!");
+        }
         return config;
     }
 
-    public static Configuration loadConfiguration(String jsonFile) throws Exception {
+    public static Configuration loadConfiguration(String jsonFile) {
         config = new Configuration();
 
-        JSONObject cfg = new JSONObject(new JSONTokener(readFileToString(jsonFile)));
-        JSONObject mysqlCfg = cfg.getJSONObject("mysql");
-        JSONObject appCfg = cfg.getJSONObject("app");
+        try {
+            JSONObject cfg = new JSONObject(new JSONTokener(readFileToString(jsonFile)));
+            JSONObject mysqlCfg = cfg.getJSONObject("mysql");
+            JSONObject appCfg = cfg.getJSONObject("app");
 
-        config.setBindAddress(cfg.getString("bind"));
-        config.setPort(cfg.getInt("port"));
+            config.setBindAddress(cfg.getString("bind"));
+            config.setPort(cfg.getInt("port"));
 
-        config.setMysqlHostname(mysqlCfg.getString("hostname"));
-        config.setMysqlUsername(mysqlCfg.getString("username"));
-        config.setMysqlPassword(mysqlCfg.getString("password"));
-        config.setMysqlDatabase(mysqlCfg.getString("database"));
+            config.setMysqlHostname(mysqlCfg.getString("hostname"));
+            config.setMysqlUsername(mysqlCfg.getString("username"));
+            config.setMysqlPassword(mysqlCfg.getString("password"));
+            config.setMysqlDatabase(mysqlCfg.getString("database"));
 
-        config.setAppDefaultController(appCfg.getString("default-controller"));
-        config.setAppDefaultAction(appCfg.getString("default-action"));
+            config.setAppDefaultController(appCfg.getString("default-controller"));
+            config.setAppDefaultAction(appCfg.getString("default-action"));
 
-        List<String> servletUriException = new ArrayList<String>();
-        JSONArray tmp = appCfg.getJSONArray("servlet-uri-exception");
-        if (tmp != null) {
-            for (int i = 0; i < tmp.length(); i++) {
-                servletUriException.add(tmp.getString(i));
+            List<String> servletUriException = new ArrayList<String>();
+            JSONArray tmp = appCfg.getJSONArray("servlet-uri-exception");
+            if (tmp != null) {
+                for (int i = 0; i < tmp.length(); i++) {
+                    servletUriException.add(tmp.getString(i));
+                }
             }
+            config.setAppServletUriException(servletUriException);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        config.setAppServletUriException(servletUriException);
 
         return config;
     }
