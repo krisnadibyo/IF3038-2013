@@ -7,7 +7,7 @@
         "username": "root",
         "password": "",
         "database": "madtodo"
-    }
+    },
 
     "app": {
         "default-controller": "page",
