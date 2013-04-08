@@ -8,29 +8,29 @@ import org.json.JSONObject;
 
 public class BarController extends MadController {
     public void hello() throws IOException {
-        int paramCount = getParamCount();
         String firstParam = getParam(0);
         String secondParam = getParam(1);
+        int paramCount = getParamCount();
 
-        response.setContentType("application/json");
+        if (paramCount > 2) {
+            print404JSON();
+        } else {
+            JSONObject json = new JSONObject()
+            .put("msg", "HelloWorld!")
+            .put("params", getParams())
 
-        JSONObject json = new JSONObject();
-        json.put("msg", "HelloWorld!");
-        json.put("params", getParams());
+            .put("param-count", paramCount)
+            .put("first-param", firstParam)
+            .put("second-param", secondParam);
 
-        json.put("param-count", paramCount);
-        json.put("first-param", firstParam);
-        json.put("second-param", secondParam);
-
-        response.getWriter().write(json.toString());
+            printJSON(json);
+        }
     }
 
     public void method() throws IOException {
-        response.setContentType("application/json");
+        JSONObject json = new JSONObject()
+        .put("method", request.getMethod());
 
-        JSONObject json = new JSONObject();
-        json.put("method", request.getMethod());
-
-        response.getWriter().write(json.toString());
+        printJSON(json);
     }
 }

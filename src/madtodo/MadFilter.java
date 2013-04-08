@@ -30,6 +30,28 @@ public class MadFilter implements Filter {
 
     }
 
+    /**
+     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+     */
+    public void doFilter(ServletRequest request, ServletResponse response,
+            FilterChain chain)
+                    throws IOException, ServletException {
+        HttpServletRequest xrequest = (HttpServletRequest) request;
+        HttpServletResponse xresponse = (HttpServletResponse) response;
+
+        String uri = xrequest.getRequestURI();
+
+        // jsp files, servlets, /tests/, /static/, go ahead
+        if (uri.endsWith(".jsp")
+                || uri.startsWith("/tests/")
+                || uri.startsWith("/static/")
+                || isServlet(uri)) {
+            chain.doFilter(request, response);
+        } else {
+            route(uri, xrequest, xresponse, chain);
+        }
+    }
+
     private boolean isServlet(String uri) {
         for (String servletUri : getConfig().getAppServletUriException()) {
             if (uri.startsWith(servletUri)) {
@@ -40,29 +62,24 @@ public class MadFilter implements Filter {
         return false;
     }
 
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
+    private void print404JSON(HttpServletRequest request,
+            HttpServletResponse response, Exception e)
+                    throws IOException {
+        // e.printStackTrace();
 
-        String uri = req.getRequestURI();
+        JSONObject json = new JSONObject()
+        .put("error", 404)
+        .put("message", "404 Not Found");
 
-        // jsp files, servlets, /tests/, /static/, go ahead
-        if (uri.endsWith(".jsp")
-                || uri.startsWith("/tests/")
-                || uri.startsWith("/static/")
-                || isServlet(uri)) {
-            chain.doFilter(request, response);
-        } else {
-            doRoute(uri, req, res, chain);
-        }
+        response.setStatus(404);
+        response.setContentType("application/json");
+        response.getWriter().write(json.toString());
     }
 
-    public void doRoute(String uri, HttpServletRequest req, HttpServletResponse res, FilterChain chain)
-            throws IOException {
+
+    private void route(String uri, HttpServletRequest request,
+            HttpServletResponse response, FilterChain chain)
+                    throws IOException {
         MadRouter router = new MadRouter(uri);
 
         // Get controller, controller class
@@ -75,7 +92,7 @@ public class MadFilter implements Filter {
 
             ctrlCls = Class.forName("madtodo.controllers." + className);
         } catch (ClassNotFoundException e) {
-            send404JsonMessage(req, res, e);
+            print404JSON(request, response, e);
             return;
         }
 
@@ -83,15 +100,12 @@ public class MadFilter implements Filter {
         MadController ctrlObj;
         try {
             ctrlObj = (MadController) ctrlCls.newInstance();
-
-            ctrlObj.setRequest(req);
-            ctrlObj.setResponse(res);
-            ctrlObj.setParams(router.getParams());
+            ctrlObj.init(request, response, router.getParams());
         } catch (InstantiationException e) {
-            send404JsonMessage(req, res, e);
+            print404JSON(request, response, e);
             return;
         } catch (IllegalAccessException e) {
-            send404JsonMessage(req, res, e);
+            print404JSON(request, response, e);
             return;
         }
 
@@ -105,10 +119,10 @@ public class MadFilter implements Filter {
 
             actionMethod = ctrlCls.getMethod(actionName);
         } catch (NoSuchMethodException e) {
-            send404JsonMessage(req, res, e);
+            print404JSON(request, response, e);
             return;
         } catch (SecurityException e) {
-            send404JsonMessage(req, res, e);
+            print404JSON(request, response, e);
             return;
         }
 
@@ -116,29 +130,15 @@ public class MadFilter implements Filter {
         try {
             actionMethod.invoke(ctrlObj);
         } catch (IllegalAccessException e) {
-            send404JsonMessage(req, res, e);
+            print404JSON(request, response, e);
             return;
         } catch (IllegalArgumentException e) {
-            send404JsonMessage(req, res, e);
+            print404JSON(request, response, e);
             return;
         } catch (InvocationTargetException e) {
-            send404JsonMessage(req, res, e);
+            print404JSON(request, response, e);
             return;
         }
-    }
-
-    public void send404JsonMessage(HttpServletRequest req, HttpServletResponse res, Exception e)
-            throws IOException {
-        // e.printStackTrace();
-
-        res.setStatus(404);
-        res.setContentType("application/json");
-
-        JSONObject json = new JSONObject();
-        json.put("error", 404);
-        json.put("message", "404 Not Found");
-
-        res.getWriter().write(json.toString());
     }
 
     /**

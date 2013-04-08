@@ -1,5 +1,6 @@
 package madtodo.servlets;
 
+import static madtodo.MadConstant._16k;
 import static madtodo.MadFile.readFileToString;
 
 import java.io.IOException;
@@ -30,25 +31,24 @@ public class FooServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/plain");
-
-        // response string builder (64k)
-        StringBuilder ressb = new StringBuilder(1024 << 6);
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         // [Test] Create a JSON Object
-        JSONObject json = new JSONObject();
-        json.put("Foo", "Bar");
-        json.put("Qux", new JSONArray(new int[] { 1, 2, 3, 4, 5 }));
+        JSONObject json = new JSONObject()
+        .put("Foo", "Bar")
+        .put("Qux", new JSONArray(new int[] { 1, 2, 3, 4, 5 }));
 
         // [Test] Parse config.json
-        JSONTokener t = new JSONTokener(readFileToString("config.json"));
-        JSONObject jsonx = new JSONObject(t);
+        JSONObject json2 = new JSONObject(new JSONTokener(readFileToString("config.json")));
 
-        ressb.append("Foo Bar Qux - From FooServlet\n");
-        ressb.append("JSON: " + json.toString() + "\n");
-        ressb.append("JSON['mysql']['username']: " + (String) jsonx.getJSONObject("mysql").get("username") + "\n");
+        // response string builder (16k)
+        StringBuilder ressb = new StringBuilder(_16k)
+        .append("Foo Bar Qux - From FooServlet\n")
+        .append("JSON: " + json.toString() + "\n")
+        .append("JSON['mysql']: " + json2.getJSONObject("mysql").toString() + "\n")
+        .append("JSON['mysql']['username']: " + (String) json2.getJSONObject("mysql").get("username") + "\n");
 
+        response.setContentType("text/plain");
         response.getWriter().write(ressb.toString());
     }
 
@@ -56,7 +56,8 @@ public class FooServlet extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         doGet(request, response);
     }
 
