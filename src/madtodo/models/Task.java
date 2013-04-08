@@ -121,7 +121,7 @@ public class Task extends MadModel {
     public static List<Task> findAllByUserCategory(final String category, final String username) {
         String sql = "SELECT task.* FROM " + table +
                 " LEFT JOIN " + Category.table + " ON (task.category_id = category.id)" +
-                " LEFT JOIN " + User.table + " ON (category.user_id = task.user_id)" +
+                " LEFT JOIN " + User.table + " ON (category.user_id = user.id)" +
                 " WHERE category.name = ? AND user.username = ?";
         return findAll(sql, new PrepareFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {

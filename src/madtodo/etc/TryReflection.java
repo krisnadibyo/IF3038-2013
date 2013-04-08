@@ -7,7 +7,7 @@ interface A {
     public int getId();
 }
 
-class A1 implements A{
+class A1 implements A {
     public String getFoo() {
         return "This is A1";
     }
