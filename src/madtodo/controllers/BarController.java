@@ -1,19 +1,17 @@
 package madtodo.controllers;
 
-import java.io.IOException;
-
 import madtodo.MadController;
 
 import org.json.JSONObject;
 
 public class BarController extends MadController {
-    public void hello() throws IOException {
+    public void hello() {
         String firstParam = getParam(0);
         String secondParam = getParam(1);
         int paramCount = getParamCount();
 
         if (paramCount > 2) {
-            print404JSON();
+            print404();
         } else {
             JSONObject json = new JSONObject()
             .put("msg", "HelloWorld!")
@@ -27,7 +25,7 @@ public class BarController extends MadController {
         }
     }
 
-    public void method() throws IOException {
+    public void method() {
         JSONObject json = new JSONObject()
         .put("method", request.getMethod());
 

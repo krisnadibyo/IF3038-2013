@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-public class MadController {
+public abstract class MadController {
     private List<String> params;
 
     protected HttpServletRequest request;
@@ -28,10 +28,11 @@ public class MadController {
     }
 
     public void init(HttpServletRequest request, HttpServletResponse response, List<String> params) {
-        this.request = request;
-        this.response = response;
-        this.session = request.getSession();
+        setRequest(request);
+        setResponse(response);
         setParams(params);
+
+        this.session = request.getSession();
 
         try {
             this.reqReader = request.getReader();
@@ -59,13 +60,9 @@ public class MadController {
         printStringResponse("text/plain", text);
     }
 
-    public void print404JSON() {
-        JSONObject json = new JSONObject();
-        json.put("error", 404);
-        json.put("message", "404 Not Found");
-
+    public void print404() {
         response.setStatus(404);
-        printJSON(json);
+        printPlainText("\"404 Not Found\"");
     }
 
     // Getters & setters
@@ -108,6 +105,10 @@ public class MadController {
 
     protected int getParamCount() {
         return params.size();
+    }
+
+    protected String getQueryParam(String qParamName) {
+        return request.getParameter(qParamName);
     }
 
     // Default action
