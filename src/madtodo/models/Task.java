@@ -4,11 +4,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import madtodo.MadDB.PrepareFunction;
-import madtodo.MadDB.ResultSetFunction;
 import madtodo.MadModel;
 
 public class Task extends MadModel {
@@ -23,14 +21,8 @@ public class Task extends MadModel {
     private int userId;
     private int assigneeId;
 
-    public Task() {
-        super();
-    }
-
-    public Task(int id, String name, String attachment, Date deadline,
+    public void init(int id, String name, String attachment, Date deadline,
             int status, int categoryId, int userId, int assigneeId) {
-        super();
-
         this.id = id;
         this.name = name;
         this.attachment = attachment;
@@ -41,8 +33,9 @@ public class Task extends MadModel {
         this.assigneeId = assigneeId;
     }
 
-    public Task(ResultSet rs) throws SQLException {
-        this(rs.getInt("id"),
+    @Override
+    public void init(ResultSet rs) throws SQLException {
+        init(rs.getInt("id"),
                 rs.getString("name"),
                 rs.getString("attachment"),
                 rs.getDate("deadline"),
@@ -52,55 +45,18 @@ public class Task extends MadModel {
                 rs.getInt("assignee_id"));
     }
 
-    //// <<<<--
-    public static Task findOne(String sql, final PrepareFunction func) {
-        final List<Task> list = new ArrayList<Task>();
-        db.executeQuery(sql, new ResultSetFunction() {
-            public void prepare(PreparedStatement stmt) throws SQLException {
-                if (func != null) { func.prepare(stmt); }
-            }
-
-            public void withResultSet(ResultSet rs, Object... obj) throws SQLException {
-                if (rs.next()) { list.add(new Task(rs)); }
-            }
-        });
-
-        if (list.size() > 0) {
-            return list.get(0);
-        } else {
-            return null;
-        }
-    }
-
-    public static List<Task> findAll(String sql, final PrepareFunction func) {
-        final List<Task> list = new ArrayList<Task>();
-        db.executeQuery(sql, new ResultSetFunction() {
-            public void prepare(PreparedStatement stmt) throws SQLException {
-                if (func != null) { func.prepare(stmt); }
-            }
-
-            public void withResultSet(ResultSet rs, Object... obj) throws SQLException {
-                while(rs.next()) {
-                    Task task = new Task(rs);
-                    list.add(task);
-                }
-            }
-        });
-
-        return list;
-    }
-    //// -->>>>
-
     public static List<Task> findAll() {
         String sql = "SELECT task.* FROM " + table;
-        return findAll(sql, null);
+
+        return findAll(sql, Task.class, null);
     }
 
     public static List<Task> findAllByUsername(final String username) {
         String sql = "SELECT task.* FROM " + table +
                 " LEFT JOIN " + User.table + " ON (task.user_id = user.id)" +
                 " WHERE user.username = ?";
-        return findAll(sql, new PrepareFunction() {
+
+        return findAll(sql, Task.class, new PrepareFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {
                 stmt.setString(1, username);
             }
@@ -111,7 +67,8 @@ public class Task extends MadModel {
         String sql = "SELECT task.* FROM " + table +
                 " LEFT JOIN " + User.table + " ON (task.assignee_id = user.id)" +
                 " WHERE user.username = ?";
-        return findAll(sql, new PrepareFunction() {
+
+        return findAll(sql, Task.class, new PrepareFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {
                 stmt.setString(1, assignee);
             }
@@ -123,7 +80,8 @@ public class Task extends MadModel {
                 " LEFT JOIN " + Category.table + " ON (task.category_id = category.id)" +
                 " LEFT JOIN " + User.table + " ON (category.user_id = user.id)" +
                 " WHERE category.name = ? AND user.username = ?";
-        return findAll(sql, new PrepareFunction() {
+
+        return findAll(sql, Task.class, new PrepareFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {
                 stmt.setString(1, category);
                 stmt.setString(2, username);
@@ -133,7 +91,8 @@ public class Task extends MadModel {
 
     public static Task findById(final int id) {
         String sql = "SELECT task.* FROM " + table + " WHERE task.id = ? LIMIT 1";
-        return findOne(sql, new PrepareFunction() {
+
+        return findOne(sql, Task.class, new PrepareFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {
                 stmt.setInt(1, id);
             }
@@ -162,6 +121,7 @@ public class Task extends MadModel {
     }
 
     // Getters & setters
+    //// {[
     public int getId() {
         return id;
     }
@@ -225,4 +185,5 @@ public class Task extends MadModel {
     public void setAssigneeId(int assigneeId) {
         this.assigneeId = assigneeId;
     }
+    //// ]}
 }
