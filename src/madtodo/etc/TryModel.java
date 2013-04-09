@@ -23,7 +23,7 @@ public class TryModel {
 
         System.out.println("\nValjean's Misc tasks:");
         for (Task task : Task.findAllByUserCategory("Misc", "valjean")) {
-            System.out.println(task.getName() + " - " + task.getDeadline().toString());
+            System.out.println(task.getName() + " - " + task.getDeadline().toString() + " | " + task.getCategory());
         }
     }
 }

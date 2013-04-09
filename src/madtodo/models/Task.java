@@ -101,8 +101,7 @@ public class Task extends MadModel {
 
     // Extra getters
     public String getCategory() {
-        // TODO
-        return null;
+        return Category.findById(getCategoryId()).getName();
     }
 
     public String getUsername() {
@@ -120,7 +119,6 @@ public class Task extends MadModel {
         return null;
     }
 
-    // Getters & setters
     //// {[
     public int getId() {
         return id;
