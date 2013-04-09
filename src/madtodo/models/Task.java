@@ -99,19 +99,20 @@ public class Task extends MadModel {
         });
     }
 
+    // TODO:
+    //  searchByName()
+
     // Extra getters
     public String getCategory() {
         return Category.findById(getCategoryId()).getName();
     }
 
     public String getUsername() {
-        // TODO
-        return null;
+        return User.findById(getUserId()).getUsername();
     }
 
     public String getAssignee() {
-        // TODO
-        return null;
+        return User.findById(getAssigneeId()).getUsername();
     }
 
     public String getTags() {

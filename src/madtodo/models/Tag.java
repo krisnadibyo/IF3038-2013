@@ -13,6 +13,8 @@ public class Tag extends MadModel {
         public void init(ResultSet rs) throws SQLException {
             // TODO Auto-generated method stub
         }
+
+        // TODO
     }
 
     public static final String table = "tbl_tag AS tag";

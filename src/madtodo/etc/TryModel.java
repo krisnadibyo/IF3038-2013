@@ -18,7 +18,7 @@ public class TryModel {
 
         System.out.println("\nValjean as assignee:");
         for (Task task : Task.findAllByAssignee("valjean")) {
-            System.out.println(task.getName() + " - " + task.getDeadline().toString());
+            System.out.println(task.getName() + " - " + task.getDeadline().toString()  + ", owner: " + task.getUsername());
         }
 
         System.out.println("\nValjean's Misc tasks:");
