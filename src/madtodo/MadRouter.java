@@ -81,7 +81,7 @@ public class MadRouter {
             print404(request, response, e);
             return;
         } catch (IllegalAccessException e) {
-            print404(request, response, e);
+            print500(request, response, e);
             return;
         }
 
@@ -98,7 +98,7 @@ public class MadRouter {
             print404(request, response, e);
             return;
         } catch (SecurityException e) {
-            print404(request, response, e);
+            print500(request, response, e);
             return;
         }
 
@@ -106,13 +106,13 @@ public class MadRouter {
         try {
             actionMethod.invoke(ctrlObj);
         } catch (IllegalAccessException e) {
-            print404(request, response, e);
+            print500(request, response, e);
             return;
         } catch (IllegalArgumentException e) {
             print404(request, response, e);
             return;
         } catch (InvocationTargetException e) {
-            print404(request, response, e);
+            print500(request, response, e);
             return;
         }
     }
@@ -120,10 +120,20 @@ public class MadRouter {
     private static void print404(HttpServletRequest request,
             HttpServletResponse response, Exception e)
                     throws IOException {
-        // e.printStackTrace();
+        /* e.printStackTrace(); */
 
         response.setStatus(404);
         response.setContentType("text/plain");
         response.getWriter().write("\"404 Not Found\"");
+    }
+
+    private static void print500(HttpServletRequest request,
+            HttpServletResponse response, Exception e)
+                    throws IOException {
+        e.printStackTrace();
+
+        response.setStatus(500);
+        response.setContentType("text/plain");
+        response.getWriter().write("\"500 Internal Server Error\"");
     }
 }

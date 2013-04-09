@@ -12,7 +12,7 @@
     );
 
     // Populate tasks and categories (Synchronously)
-    var userTasks = TaskAPI.getByCategory('Uncategorized', null, false);
+    // var userTasks = TaskAPI.getByCategory('Uncategorized', null, false);
     var categories = TaskAPI.getCategories(null, false);
 
     var activeCategory = {
@@ -98,7 +98,7 @@
     // Show assigned tasks and categories
     ////////////////////////////////////////////////////////////////////////////
     var assignedTasks = undefined;
-    var assignedCategories = undefined;
+    // var assignedCategories = undefined;
 
     var getAssignedTasks = function() {
         assignedTasks = TaskAPI.getAssignedTasks(null, false);
