@@ -13,7 +13,7 @@
         "default-controller": "page",
         "default-action": "index",
         "servlet-uri-exception": [
-            "/foo"
+            "/old-servlets/"
         ]
     }
 }
