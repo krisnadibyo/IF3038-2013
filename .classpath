@@ -9,38 +9,38 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-annotations-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-client-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-continuation-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-deploy-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-http-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-io-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-jaas-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-jmx-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-jndi-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-plus-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-proxy-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-rewrite-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-security-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-server-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-servlet-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-servlets-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-util-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-webapp-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jetty-xml-9.0.0.M5.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/servlet-api-3.0.jar">
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/com.sun.el-2.2.0.v201108011116.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/javax.el-2.2.0.v201108011116.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/javax.servlet.jsp-2.2.0.v201112011158.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/javax.servlet.jsp.jstl-1.2.0.v201105211821.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-annotations-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-client-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-continuation-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-deploy-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-http-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-io-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-jaas-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-jmx-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-jndi-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-plus-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-proxy-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-rewrite-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-security-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-server-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-servlet-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-servlets-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-util-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-webapp-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/jetty-xml-9.0.0.M5.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/json.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/mysql-connector-java-5.1.24-bin.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/org.apache.jasper.glassfish-2.2.2.v201112011158.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/org.apache.taglibs.standard.glassfish-1.2.0.v201112081803.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/org.eclipse.jdt.core-3.7.1.jar"/>
+	<classpathentry kind="lib" path="WWW/WEB-INF/lib/servlet-api-3.0.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="http://docs.local/javaee-6-apidocs/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jetty/jsp/com.sun.el-2.2.0.v201108011116.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jsp/javax.el-2.2.0.v201108011116.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jsp/javax.servlet.jsp-2.2.0.v201112011158.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jsp/javax.servlet.jsp.jstl-1.2.0.v201105211821.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jsp/org.apache.jasper.glassfish-2.2.2.v201112011158.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jsp/org.apache.taglibs.standard.glassfish-1.2.0.v201112081803.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/jsp/org.eclipse.jdt.core-3.7.1.jar"/>
-	<classpathentry kind="lib" path="lib/jetty/json.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.24-bin.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
