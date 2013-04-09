@@ -16,7 +16,7 @@ public abstract class MadModel {
     abstract public void init(ResultSet rs) throws SQLException;
 
     // Generic base findAll() and findOne();
-    public static<T extends MadModel> List<T> findAll(String sql, final Class<T> c, final PrepareFunction pf) {
+    protected static<T extends MadModel> List<T> findAll(String sql, final Class<T> c, final PrepareFunction pf) {
         final List<T> list = new ArrayList<T>();
 
         db.executeQuery(sql, new ResultSetFunction() {
@@ -46,7 +46,7 @@ public abstract class MadModel {
         }
     }
 
-    public static<T extends MadModel> T findOne(String sql, final Class<T> c, final PrepareFunction pf) {
+    protected static<T extends MadModel> T findOne(String sql, final Class<T> c, final PrepareFunction pf) {
         final List<T> list = new ArrayList<T>();
 
         db.executeQuery(sql, new ResultSetFunction() {
