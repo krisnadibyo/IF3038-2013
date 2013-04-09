@@ -90,7 +90,8 @@ public class Task extends MadModel {
     }
 
     public static Task findById(final int id) {
-        String sql = "SELECT task.* FROM " + table + " WHERE task.id = ? LIMIT 1";
+        String sql = "SELECT task.* FROM " + table +
+                " WHERE task.id = ? LIMIT 1";
 
         return findOne(sql, Task.class, new PrepareFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {
@@ -99,10 +100,18 @@ public class Task extends MadModel {
         });
     }
 
-    // TODO:
-    //  searchByName()
+    public static List<Task> searchByName(final String name) {
+        String sql = "SELECT task.* FROM " + table +
+                " WHERE task.name LIKE ?";
 
-    // Extra getters
+        return findAll(sql, Task.class, new PrepareFunction() {
+            public void prepare(PreparedStatement stmt) throws SQLException {
+                stmt.setString(1, "%" + name + "%");
+            }
+        });
+    }
+
+    // Foreign object getters
     public String getCategory() {
         return Category.findById(getCategoryId()).getName();
     }
@@ -115,9 +124,25 @@ public class Task extends MadModel {
         return User.findById(getAssigneeId()).getUsername();
     }
 
-    public String getTags() {
-        // TODO
-        return null;
+    public List<Tag> getTags() {
+        return Tag.findByTaskId(getId());
+    }
+
+    public String getTagsAsString() {
+        int i = 0;
+        StringBuilder sb = new StringBuilder();
+
+        List<Tag> tags = getTags();
+        if (tags != null) {
+            for (Tag tag : getTags()) {
+                if (i++ != 0) {
+                    sb.append(", ");
+                }
+                sb.append(tag.getName());
+            }
+        }
+
+        return sb.toString();
     }
 
     //// {[

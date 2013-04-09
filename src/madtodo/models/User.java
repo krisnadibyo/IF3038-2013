@@ -73,6 +73,17 @@ public class User extends MadModel {
         });
     }
 
+    public static List<User> searchByUsername(final String username) {
+        String sql = "SEELECT user.* FROM " + table +
+                " WHERE user.username LIKE ?";
+
+        return findAll(sql, User.class, new PrepareFunction() {
+            public void prepare(PreparedStatement stmt) throws SQLException {
+                stmt.setString(1, "%" + username + "%");
+            }
+        });
+    }
+
     //// {[
     public int getId() {
         return id;
