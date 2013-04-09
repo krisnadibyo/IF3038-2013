@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
@@ -16,7 +15,7 @@ public abstract class MadController {
 
     protected HttpServletRequest request;
     protected HttpServletResponse response;
-    protected HttpSession session;
+    protected MadSession session;
 
     protected BufferedReader reqReader;
     protected PrintWriter resWriter;
@@ -30,7 +29,8 @@ public abstract class MadController {
         setResponse(response);
         setParams(params);
 
-        this.session = request.getSession();
+        this.session = new MadSession();
+        this.session.init(request.getSession());
 
         try {
             this.reqReader = request.getReader();
@@ -69,6 +69,14 @@ public abstract class MadController {
         } catch (Exception e) {
             response.setStatus(500);
             e.printStackTrace(resWriter);
+            e.printStackTrace();
+        }
+    }
+
+    public void sendRedirect(String url) {
+        try {
+            response.sendRedirect(url);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
