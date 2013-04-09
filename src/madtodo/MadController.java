@@ -1,7 +1,5 @@
 package madtodo;
 
-import static madtodo.MadConstant._2k;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -65,7 +63,18 @@ public abstract class MadController {
         printPlainText("\"404 Not Found\"");
     }
 
+    public void renderJSP(String uri) {
+        try {
+            request.getRequestDispatcher(uri).forward(request, response);
+        } catch (Exception e) {
+            response.setStatus(500);
+            e.printStackTrace(resWriter);
+            e.printStackTrace();
+        }
+    }
+
     // Getters & setters
+    //// {[
     public HttpServletRequest getRequest() {
         return request;
     }
@@ -89,6 +98,7 @@ public abstract class MadController {
     public void setParams(List<String> params) {
         this.params = params;
     }
+    //// ]}
 
     // Param getters
     protected String getParam(int index, String defaultValue) {
@@ -111,21 +121,20 @@ public abstract class MadController {
         return request.getParameter(qParamName);
     }
 
+    // Request attribute shortcuts
+    public MadController setAttr(String key, Object val) {
+        request.setAttribute(key, val);
+        return this;
+    }
+
+    public Object getAttr(String key) {
+        return request.getAttribute(key);
+    }
+
     // Default action
     public void index() throws IOException {
-        StringBuilder html = new StringBuilder(_2k)
-        .append("<!DOCTYPE html>\n")
-        .append("<html>\n")
-        .append("    <head>\n")
-        .append("        <meta charset=\"utf-8\" />\n")
-        .append("        <title>" + this.getClass().getSimpleName() + "</title>\n")
-        .append("    </head>\n")
-        .append("    <body>\n")
-        .append("        <h1>Index of " + this.getClass().getSimpleName() + "</h1>\n")
-        .append("    </body>\n")
-        .append("</html>\n");
-
-        printHTML(html.toString());
+        setAttr("ctrlClassName", this.getClass().getSimpleName());
+        renderJSP("/default.jsp");
     }
 
     // Static functions
