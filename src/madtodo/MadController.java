@@ -1,6 +1,5 @@
 package madtodo;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.util.security.Credential.MD5;
 import org.json.JSONObject;
 
 public abstract class MadController {
@@ -17,7 +17,6 @@ public abstract class MadController {
     protected HttpServletResponse response;
     protected MadSession session;
 
-    protected BufferedReader reqReader;
     protected PrintWriter resWriter;
 
     public MadController() {
@@ -33,7 +32,6 @@ public abstract class MadController {
         this.session.init(request.getSession());
 
         try {
-            this.reqReader = request.getReader();
             this.resWriter = response.getWriter();
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,6 +56,14 @@ public abstract class MadController {
         printStringResponse("text/plain", text);
     }
 
+    public void printSuccess() {
+        printStringResponse("application/json", "\"success\"");
+    }
+
+    public void printFailed() {
+        printStringResponse("application/json", "\"failed\"");
+    }
+
     public void print404() {
         response.setStatus(404);
         printPlainText("\"404 Not Found\"");
@@ -79,6 +85,11 @@ public abstract class MadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Helper
+    public String md5sum(String str) {
+        return MD5.digest(str).substring(4);
     }
 
     // Getters & setters
