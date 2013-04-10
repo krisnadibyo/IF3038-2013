@@ -1,8 +1,16 @@
 package madtodo;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.InetSocketAddress;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -11,7 +19,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class MadRunner {
-    protected String getResource(final String path) {
+    protected final String getResource(final String path) {
         return this.getClass().getClassLoader().getResource(path).toExternalForm();
     }
 
@@ -62,24 +70,9 @@ public class MadRunner {
 
         System.out.format("Server started! [http://%s:%d/ or http://127.0.0.1:%d/]\n",
                 config.getBindAddress(), config.getPort(), config.getPort());
+        System.out.format("Hit Ctrl-C to stop server.\n");
 
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    while (true) {
-                        System.out.format("Type 'stop' to stop server and quit: ");
-                        String input = new BufferedReader(new InputStreamReader(System.in)).readLine();
-                        if (input.equals("stop")) {
-                            break;
-                        }
-                    }
-
-                    server.stop();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        RunnerGUI.run(server);
 
         try {
             server.join();
@@ -99,5 +92,61 @@ public class MadRunner {
 
         t.start();
         t.join();
+    }
+
+    //// Runner GUI
+    private static class RunnerGUI extends JFrame {
+        private static final long serialVersionUID = 1L;
+
+        private static final void quit(final Server server) {
+            try {
+                server.stop();
+                System.exit(0);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        public RunnerGUI(final Server server) {
+            super("MadRunner");
+            Configuration config = Configuration.getConfig();
+
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    quit(server);
+                }
+            });
+
+            JLabel infoLabel = new JLabel();
+            infoLabel.setText(String.format("Server is running... http://%s:%s/",
+                    config.getBindAddress(), config.getPort()));
+
+            JButton stopButton = new JButton("Stop Server");
+            stopButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    quit(server);
+                }
+            });
+
+            JPanel mainPanel = new JPanel();
+            mainPanel.add(infoLabel);
+            mainPanel.add(stopButton);
+
+            setContentPane(mainPanel);
+            setPreferredSize(new Dimension(300, 100));
+
+            pack();
+            setLocationRelativeTo(null);
+            setVisible(true);
+        }
+
+        public static final void run(final Server server) {
+            new Thread(new Runnable() {
+                public void run() {
+                    new RunnerGUI(server);
+                }
+            }).start();
+        }
     }
 }
