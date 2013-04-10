@@ -4,7 +4,7 @@ import madtodo.MadController;
 
 import org.json.JSONObject;
 
-public class BarController extends MadController {
+public class FooController extends MadController {
     public void hello() {
         String firstParam = getParam(0);
         String secondParam = getParam(1);
