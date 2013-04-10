@@ -1,5 +1,7 @@
 package madtodo;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 
 import org.eclipse.jetty.server.Server;
@@ -37,7 +39,7 @@ public class MadRunner {
             System.exit(1);
         }
 
-        Server server = new Server(new InetSocketAddress(config.getBindAddress(), config.getPort()));
+        final Server server = new Server(new InetSocketAddress(config.getBindAddress(), config.getPort()));
 
         WebAppContext hWebApp = new WebAppContext();
         hWebApp.setContextPath("/");
@@ -60,7 +62,24 @@ public class MadRunner {
 
         System.out.format("Server started! [http://%s:%d/ or http://127.0.0.1:%d/]\n",
                 config.getBindAddress(), config.getPort(), config.getPort());
-        System.out.format("Hit Ctrl-C to stop server.\n");
+
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    while (true) {
+                        System.out.format("Type 'stop' to stop server and quit: ");
+                        String input = new BufferedReader(new InputStreamReader(System.in)).readLine();
+                        if (input.equals("stop")) {
+                            break;
+                        }
+                    }
+
+                    server.stop();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         try {
             server.join();
