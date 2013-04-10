@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project madtodo">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="./madtodo.jar" filesetmanifest="mergewithoutmain" excludes="**/WEB-INF/lib/*.jar">
+            <manifest>
+                <attribute name="Main-Class" value="madtodo.MadRunner"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="/home/inov/Workspace/madtodo/build/classes"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/com.sun.el-2.2.0.v201108011116.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/javax.el-2.2.0.v201108011116.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/javax.servlet.jsp-2.2.0.v201112011158.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/javax.servlet.jsp.jstl-1.2.0.v201105211821.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-annotations-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-client-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-continuation-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-deploy-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-http-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-io-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-jaas-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-jmx-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-jndi-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-plus-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-proxy-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-rewrite-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-security-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-server-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-servlet-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-servlets-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-util-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-webapp-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/jetty-xml-9.0.0.M5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/json.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/mysql-connector-java-5.1.24-bin.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/org.apache.jasper.glassfish-2.2.2.v201112011158.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/org.apache.taglibs.standard.glassfish-1.2.0.v201112081803.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/org.eclipse.jdt.core-3.7.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="./web/WEB-INF/lib/servlet-api-3.0.jar"/>
+        </jar>
+    </target>
+</project>

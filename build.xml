@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="madtodo">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+    <path id="Web App Libraries.libraryclasspath">
+        <pathelement location="web/WEB-INF/lib/com.sun.el-2.2.0.v201108011116.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.el-2.2.0.v201108011116.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.servlet.jsp-2.2.0.v201112011158.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.servlet.jsp.jstl-1.2.0.v201105211821.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-annotations-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-client-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-continuation-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-deploy-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-http-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-io-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jaas-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jmx-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jndi-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-plus-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-proxy-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-rewrite-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-security-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-server-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-servlet-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-servlets-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-util-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-webapp-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-xml-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/json.jar"/>
+        <pathelement location="web/WEB-INF/lib/mysql-connector-java-5.1.24-bin.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.apache.jasper.glassfish-2.2.2.v201112011158.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.apache.taglibs.standard.glassfish-1.2.0.v201112081803.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.eclipse.jdt.core-3.7.1.jar"/>
+        <pathelement location="web/WEB-INF/lib/servlet-api-3.0.jar"/>
+    </path>
+    <path id="EAR Libraries.libraryclasspath"/>
+    <path id="madtodo.classpath">
+        <pathelement location="build/classes"/>
+        <path refid="Web App Libraries.libraryclasspath"/>
+        <path refid="EAR Libraries.libraryclasspath"/>
+        <pathelement location="web/WEB-INF/lib/com.sun.el-2.2.0.v201108011116.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.el-2.2.0.v201108011116.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.servlet.jsp-2.2.0.v201112011158.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.servlet.jsp.jstl-1.2.0.v201105211821.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-annotations-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-client-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-continuation-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-deploy-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-http-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-io-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jaas-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jmx-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jndi-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-plus-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-proxy-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-rewrite-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-security-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-server-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-servlet-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-servlets-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-util-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-webapp-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-xml-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/json.jar"/>
+        <pathelement location="web/WEB-INF/lib/mysql-connector-java-5.1.24-bin.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.apache.jasper.glassfish-2.2.2.v201112011158.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.apache.taglibs.standard.glassfish-1.2.0.v201112081803.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.eclipse.jdt.core-3.7.1.jar"/>
+        <pathelement location="web/WEB-INF/lib/servlet-api-3.0.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="build/classes"/>
+        <copy includeemptydirs="false" todir="build/classes">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="build/classes">
+            <fileset dir="web">
+                <exclude name="**/*.java"/>
+                <exclude name="**/WEB-INF/lib/*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="build/classes"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="build/classes" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <src path="web"/>
+            <exclude name="**/WEB-INF/lib/*.jar"/>
+            <classpath refid="madtodo.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="TrySql">
+        <java classname="madtodo.etc.TrySql" failonerror="true" fork="yes">
+            <classpath refid="madtodo.classpath"/>
+        </java>
+    </target>
+    <target name="TryReflection">
+        <java classname="madtodo.etc.TryReflection" failonerror="true" fork="yes">
+            <classpath refid="madtodo.classpath"/>
+        </java>
+    </target>
+    <target name="TryRoute">
+        <java classname="madtodo.etc.TryRoute" failonerror="true" fork="yes">
+            <classpath refid="madtodo.classpath"/>
+        </java>
+    </target>
+    <target name="TryModel">
+        <java classname="madtodo.etc.TryModel" failonerror="true" fork="yes">
+            <classpath refid="madtodo.classpath"/>
+        </java>
+    </target>
+    <target name="MadRunner">
+        <java classname="madtodo.MadRunner" failonerror="true" fork="yes">
+            <classpath refid="madtodo.classpath"/>
+        </java>
+    </target>
+</project>
