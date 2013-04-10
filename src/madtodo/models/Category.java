@@ -57,11 +57,11 @@ public class Category extends MadModel {
         });
     }
 
-    public static Category searchByName(final String name, final int userId) {
+    public static List<Category> searchByName(final String name, final int userId) {
         String sql = "SELECT category.* FROM " + table +
                 " WHERE category.name LIKE ? AND category.user_id = ?";
 
-        return findOne(sql, Category.class, new PrepareFunction() {
+        return findAll(sql, Category.class, new PrepareFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {
                 stmt.setString(1, "%" + name + "%");
                 stmt.setInt(2, userId);
