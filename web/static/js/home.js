@@ -200,7 +200,7 @@
         var password = $id('signin_password').val();
 
         doSignIn(username, password, function(res) {
-            if (res == null) {
+            if (res !== 'success') {
                 addErrorMessage($id('signin_username'), "Invalid username or password");
                 $id('signin_password').addClass('error');
             } else {
@@ -221,7 +221,7 @@
             if (callbackfunc !== undefined) {
                 callbackfunc(res);
             } else {
-                if (res !== null) {
+                if (res === 'success') {
                     $.open($.AppRoot + 'page/dashboard', '_self');
                 }
             }
