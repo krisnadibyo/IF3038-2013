@@ -121,7 +121,8 @@ public class Task extends MadModel {
     }
 
     public String getAssignee() {
-        return User.findById(getAssigneeId()).getUsername();
+        User assignee = User.findById(getAssigneeId());
+        return (assignee != null) ? assignee.getUsername() : null;
     }
 
     public List<Tag> getTags() {

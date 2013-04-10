@@ -74,7 +74,7 @@ public class User extends MadModel {
     }
 
     public static List<User> searchByUsername(final String username) {
-        String sql = "SEELECT user.* FROM " + table +
+        String sql = "SELECT user.* FROM " + table +
                 " WHERE user.username LIKE ?";
 
         return findAll(sql, User.class, new PrepareFunction() {
