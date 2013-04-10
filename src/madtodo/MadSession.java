@@ -43,14 +43,14 @@ public class MadSession {
         this
         .set("login", true)
         .set("username", username)
-        .set("userid", userId);
+        .set("userId", userId);
     }
 
     public void logout() {
         this
         .rm("login")
         .rm("username")
-        .rm("userid");
+        .rm("userId");
 
         session.invalidate();
     }
