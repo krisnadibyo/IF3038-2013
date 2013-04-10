@@ -3,7 +3,7 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="madtodo">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Build madtodo">
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.5"/>
@@ -117,28 +117,9 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="TrySql">
-        <java classname="madtodo.etc.TrySql" failonerror="true" fork="yes">
-            <classpath refid="madtodo.classpath"/>
-        </java>
-    </target>
-    <target name="TryReflection">
-        <java classname="madtodo.etc.TryReflection" failonerror="true" fork="yes">
-            <classpath refid="madtodo.classpath"/>
-        </java>
-    </target>
-    <target name="TryRoute">
-        <java classname="madtodo.etc.TryRoute" failonerror="true" fork="yes">
-            <classpath refid="madtodo.classpath"/>
-        </java>
-    </target>
-    <target name="TryModel">
-        <java classname="madtodo.etc.TryModel" failonerror="true" fork="yes">
-            <classpath refid="madtodo.classpath"/>
-        </java>
-    </target>
     <target name="MadRunner">
         <java classname="madtodo.MadRunner" failonerror="true" fork="yes">
+        	<jvmarg value="-Dorg.apache.jasper.compiler.disablejsr199=true"/>
             <classpath refid="madtodo.classpath"/>
         </java>
     </target>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="MadRunner" name="Run madtodo on embedded Jetty server">
+    <path id="madtodo.classpath">
+        <pathelement location="build/classes"/>
+        <pathelement location="web/WEB-INF/lib/com.sun.el-2.2.0.v201108011116.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.el-2.2.0.v201108011116.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.servlet.jsp-2.2.0.v201112011158.jar"/>
+        <pathelement location="web/WEB-INF/lib/javax.servlet.jsp.jstl-1.2.0.v201105211821.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-annotations-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-client-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-continuation-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-deploy-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-http-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-io-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jaas-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jmx-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-jndi-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-plus-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-proxy-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-rewrite-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-security-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-server-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-servlet-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-servlets-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-util-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-webapp-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/jetty-xml-9.0.0.M5.jar"/>
+        <pathelement location="web/WEB-INF/lib/json.jar"/>
+        <pathelement location="web/WEB-INF/lib/mysql-connector-java-5.1.24-bin.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.apache.jasper.glassfish-2.2.2.v201112011158.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.apache.taglibs.standard.glassfish-1.2.0.v201112081803.jar"/>
+        <pathelement location="web/WEB-INF/lib/org.eclipse.jdt.core-3.7.1.jar"/>
+        <pathelement location="web/WEB-INF/lib/servlet-api-3.0.jar"/>
+    </path>
+    <target name="MadRunner">
+        <java classname="madtodo.MadRunner" failonerror="true" fork="yes">
+            <jvmarg value="-Dorg.apache.jasper.compiler.disablejsr199=true"/>
+            <classpath refid="madtodo.classpath"/>
+        </java>
+    </target>
+</project>
