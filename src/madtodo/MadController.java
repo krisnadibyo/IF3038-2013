@@ -63,9 +63,9 @@ public abstract class MadController {
         printPlainText("\"404 Not Found\"");
     }
 
-    public void renderJSP(String uri) {
+    public void renderJSPView(String uri) {
         try {
-            request.getRequestDispatcher(uri).forward(request, response);
+            request.getRequestDispatcher("/views" + uri).forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);
             e.printStackTrace(resWriter);
@@ -142,7 +142,7 @@ public abstract class MadController {
     // Default action
     public void index() throws IOException {
         setAttr("ctrlClassName", this.getClass().getSimpleName());
-        renderJSP("/default.jsp");
+        renderJSPView("/default.jsp");
     }
 
     // Static functions

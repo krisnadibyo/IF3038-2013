@@ -15,6 +15,6 @@ public class PageController extends MadController {
         setAttr("list", list);
         setAttr("params", getParams());
 
-        renderJSP("/page/jeyesp.jsp");
+        renderJSPView("/page/jeyesp.jsp");
     }
 }

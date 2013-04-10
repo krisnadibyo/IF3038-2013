@@ -24,8 +24,12 @@ public class Configuration {
     private String appDefaultAction;
     private List<String> appServletUriException;
 
+    public static boolean isLoaded() {
+        return config != null;
+    }
+
     public static Configuration getConfig() {
-        if (config == null) {
+        if (!isLoaded()) {
             System.err.println("Warning! Configuration is not loaded!");
         }
         return config;

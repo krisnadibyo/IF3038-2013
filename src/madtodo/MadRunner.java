@@ -42,7 +42,10 @@ public class MadRunner {
         WebAppContext hWebApp = new WebAppContext();
         hWebApp.setContextPath("/");
         hWebApp.setDescriptor(getResource("WEB-INF/web.xml"));
-        hWebApp.setResourceBase(getResource("web"));
+
+        String resourceBase = getResource("WEB-INF/");
+        resourceBase = resourceBase.substring(0, resourceBase.indexOf("WEB-INF/"));
+        hWebApp.setResourceBase(resourceBase);
 
         HandlerList hl = new HandlerList();
         hl.addHandler(getStaticHandler());

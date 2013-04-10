@@ -19,16 +19,10 @@ public class MadFilter implements Filter {
 
     }
 
-    /**
-     * @see Filter#destroy()
-     */
     public void destroy() {
 
     }
 
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
                     throws IOException, ServletException {
@@ -58,9 +52,6 @@ public class MadFilter implements Filter {
         return false;
     }
 
-    /**
-     * @see Filter#init(FilterConfig)
-     */
     public void init(FilterConfig fConfig) throws ServletException {
 
     }
