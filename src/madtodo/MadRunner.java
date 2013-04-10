@@ -72,7 +72,9 @@ public class MadRunner {
                 config.getBindAddress(), config.getPort(), config.getPort());
         System.out.format("Hit Ctrl-C to stop server.\n");
 
-        RunnerGUI.run(server);
+        if (!(args.length > 0) || !args[0].equals("--no-gui")) {
+            RunnerGUI.run(server);
+        }
 
         try {
             server.join();
