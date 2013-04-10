@@ -37,14 +37,12 @@ public class AuthController extends MadController {
             User user = User.findByUsername(username);
             if (user == null) {
                 printFailed();
-                System.out.println("User not found");
             } else {
                 if (user.getPassword().equals(md5sum(password))) {
                     session.login(username, user.getId());
                     printSuccess();
                 } else {
                     printFailed();
-                    System.out.println("Wrong password");
                 }
             }
         }

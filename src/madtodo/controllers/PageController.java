@@ -53,7 +53,8 @@ public class PageController extends MadController {
                     "/static/js/dashboard.js",
                     "/static/js/dialog.js"
             }))
-            .setAttr("user", user);
+            .setAttr("user", user)
+            .setAttr("isUserSet", true);
 
             renderJSPView("/pages/c-dashboard.jsp");
         }
@@ -80,7 +81,8 @@ public class PageController extends MadController {
                     "/static/js/profile.js",
                     "/static/js/dialog.js"
             }))
-            .setAttr("user", user);
+            .setAttr("user", user)
+            .setAttr("isUserSet", true);
 
             renderJSPView("/pages/c-profile.jsp");
         }
@@ -139,11 +141,22 @@ public class PageController extends MadController {
                     "/static/js/search.js",
             }))
             .setAttr("user", user)
+            .setAttr("isUserSet", true)
             .setAttr("filter", filter)
             .setAttr("keyword", keyword);
 
             renderJSPView("/pages/c-search.jsp");
         }
+    }
+
+    ////
+    // url { /page/logout
+    public void logout() {
+        if (session.isLoggedIn()) {
+            session.logout();
+        }
+
+        sendRedirect("/");
     }
 
     // For testing purpose:
