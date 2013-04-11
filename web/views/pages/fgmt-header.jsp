@@ -5,7 +5,7 @@
 
 boolean isUserSet = request.getAttribute("isUserSet") != null;
 String pageTitle = (String) request.getAttribute("pageTitle");
-List<String> headerScripts = (List<String>) request.getAttribute("headerScripts");
+String[] headerScripts = (String[]) request.getAttribute("headerScripts");
 
 %>
 <html xmlns="http://www.w3.org/1999/xhtml">

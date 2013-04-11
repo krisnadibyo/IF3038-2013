@@ -2,8 +2,10 @@
 <%@page import="java.util.Enumeration"%>
 <%@ page import="java.util.List" %>
 <%
-    List<String> list = (List<String>) request.getAttribute("list");
-    List<String> params = (List<String>) request.getAttribute("params");
+
+String[] list = (String[]) request.getAttribute("list");
+String[] params = (String[]) request.getAttribute("params");
+
 %>
 <html>
 <head>
@@ -17,31 +19,31 @@
     <h3>list:</h3>
     <ul>
         <%
-            for (String str : list) {
-                out.write("<li>" + str + "</li>\n");
-            }
+        for (String str : list) {
+            out.write("<li>" + str + "</li>\n");
+        }
         %>
     </ul>
     
     <h3>params:</h3>
     <ul>
         <%
-            if (params != null) {
-                for (String str : params) {
-                    out.write("<li>" + str + "</li>\n");
-                }
+        if (params != null) {
+            for (String str : params) {
+                out.write("<li>" + str + "</li>\n");
             }
+        }
         %>
     </ul>
     
     <h3>queries:</h3>
     <ul>
         <%
-            Enumeration<String> names = request.getParameterNames();
-            while (names.hasMoreElements()) {
-                String name = names.nextElement();
-                out.write("<li>" + name + ": " + request.getParameter(name) + "</li>");
-            }
+        Enumeration<String> names = request.getParameterNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            out.write("<li>" + name + ": " + request.getParameter(name) + "</li>");
+        }
         %>
     </ul>
 </body>

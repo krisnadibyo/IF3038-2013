@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import madtodo.MadDB.PrepareFunction;
 import madtodo.MadModel;
@@ -45,7 +44,7 @@ public class User extends MadModel {
                 rs.getString("bio"));
     }
 
-    public static List<User> findAll() {
+    public static User[] findAll() {
         String sql = "SELECT user.* FROM " + table;
 
         return findAll(sql, User.class, null);
@@ -73,7 +72,7 @@ public class User extends MadModel {
         });
     }
 
-    public static List<User> searchByUsername(final String username) {
+    public static User[] searchByUsername(final String username) {
         String sql = "SELECT user.* FROM " + table +
                 " WHERE user.username LIKE ?";
 

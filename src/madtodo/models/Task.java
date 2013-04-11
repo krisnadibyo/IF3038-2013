@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import madtodo.MadDB.PrepareFunction;
 import madtodo.MadModel;
@@ -45,13 +44,13 @@ public class Task extends MadModel {
                 rs.getInt("assignee_id"));
     }
 
-    public static List<Task> findAll() {
+    public static Task[] findAll() {
         String sql = "SELECT task.* FROM " + table;
 
         return findAll(sql, Task.class, null);
     }
 
-    public static List<Task> findAllByUsername(final String username) {
+    public static Task[] findAllByUsername(final String username) {
         String sql = "SELECT task.* FROM " + table +
                 " LEFT JOIN " + User.table + " ON (task.user_id = user.id)" +
                 " WHERE user.username = ?";
@@ -63,7 +62,7 @@ public class Task extends MadModel {
         });
     }
 
-    public static List<Task> findAllByAssignee(final String assignee) {
+    public static Task[] findAllByAssignee(final String assignee) {
         String sql = "SELECT task.* FROM " + table +
                 " LEFT JOIN " + User.table + " ON (task.assignee_id = user.id)" +
                 " WHERE user.username = ?";
@@ -75,7 +74,7 @@ public class Task extends MadModel {
         });
     }
 
-    public static List<Task> findAllByUserCategory(final String category, final String username) {
+    public static Task[] findAllByUserCategory(final String category, final String username) {
         String sql = "SELECT task.* FROM " + table +
                 " LEFT JOIN " + Category.table + " ON (task.category_id = category.id)" +
                 " LEFT JOIN " + User.table + " ON (category.user_id = user.id)" +
@@ -100,7 +99,7 @@ public class Task extends MadModel {
         });
     }
 
-    public static List<Task> searchByName(final String name) {
+    public static Task[] searchByName(final String name) {
         String sql = "SELECT task.* FROM " + table +
                 " WHERE task.name LIKE ?";
 
@@ -125,7 +124,7 @@ public class Task extends MadModel {
         return (assignee != null) ? assignee.getUsername() : null;
     }
 
-    public List<Tag> getTags() {
+    public Tag[] getTags() {
         return Tag.findByTaskId(getId());
     }
 
@@ -133,7 +132,7 @@ public class Task extends MadModel {
         int i = 0;
         StringBuilder sb = new StringBuilder();
 
-        List<Tag> tags = getTags();
+        Tag[] tags = getTags();
         if (tags != null) {
             for (Tag tag : getTags()) {
                 if (i++ != 0) {

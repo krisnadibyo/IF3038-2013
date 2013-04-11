@@ -14,9 +14,9 @@ String filter = (String) request.getAttribute("filter");
     <% if (filter.equals("all")) { %>
     <!-- [[[ All ]]] -->
         <%
-        List<User> users = (List<User>) request.getAttribute("users");
-        List<Category> cats = (List<Category>) request.getAttribute("cats");
-        List<Task> tasks = (List<Task>) request.getAttribute("tasks");
+        User[] users = (User[]) request.getAttribute("users");
+        Category[] cats = (Category[]) request.getAttribute("cats");
+        Task[] tasks = (Task[]) request.getAttribute("tasks");
         int i = 0;
         %>
 
@@ -79,7 +79,7 @@ String filter = (String) request.getAttribute("filter");
     
     <% if (filter.equals("username")) { %>
     <!-- [[[[ Username ]]]] -->
-        <% List<User> users = (List<User>) request.getAttribute("users"); %>
+        <% User[] users = (User[]) request.getAttribute("users"); %>
         <% if (users != null) { %>
             <% int i = 0; for (User user : users) { %>
             <div>
@@ -97,7 +97,7 @@ String filter = (String) request.getAttribute("filter");
 
     <% if (filter.equals("category")) { %>
     <!-- [[[[ Category ]]]] -->
-        <% List<Category> cats = (List<Category>) request.getAttribute("cats"); %>
+        <% Category[] cats = (Category[]) request.getAttribute("cats"); %>
         <% if (cats != null) { %>
             <% int i = 0; for (Category cat : cats) { %>
             <div>
@@ -111,7 +111,7 @@ String filter = (String) request.getAttribute("filter");
 
     <% if (filter.equals("task")) { %>
     <!-- [[[[ Task ]]]] -->
-        <% List<Task> tasks = (List<Task>) request.getAttribute("tasks"); %>
+        <% Task[] tasks = (Task[]) request.getAttribute("tasks"); %>
         <% if (tasks != null) { %>
             <% int i = 0; for (Task task : tasks) { %>
             <ul class="task">

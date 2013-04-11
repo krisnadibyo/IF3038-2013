@@ -4,7 +4,7 @@
 boolean isDashboard = request.getAttribute("isDasboard") != null;
 boolean isProfile = request.getAttribute("isProfile") != null;
 boolean isUserSet = request.getAttribute("isUser") != null;
-List<String> footerScripts = (List<String>) request.getAttribute("footerScripts");
+String[] footerScripts = (String[]) request.getAttribute("footerScripts");
 
 %>
 <div id="footer"></div>

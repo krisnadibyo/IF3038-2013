@@ -1,8 +1,5 @@
 package madtodo.controllers;
 
-import java.util.Arrays;
-import java.util.List;
-
 import madtodo.MadController;
 import madtodo.models.Category;
 import madtodo.models.Task;
@@ -19,14 +16,14 @@ public class PageController extends MadController {
             this
             .setAttr("pageTitle", "Home - MadToDo")
             .setAttr("isHome", true)
-            .setAttr("headerScripts", Arrays.asList(new String[] {
+            .setAttr("headerScripts", new String[] {
                     "/static/js/madtodo.js",
                     "/static/js/xhr.js",
                     "/static/js/user.js"
-            }))
-            .setAttr("footerScripts", Arrays.asList(new String[] {
+            })
+            .setAttr("footerScripts", new String[] {
                     "/static/js/home.js"
-            }));
+            });
 
             renderJSPView("/pages/c-index.jsp");
         }
@@ -43,16 +40,16 @@ public class PageController extends MadController {
             this
             .setAttr("pageTitle", "Dashboard - MadToDo")
             .setAttr("isDashboard", true)
-            .setAttr("headerScripts", Arrays.asList(new String[] {
+            .setAttr("headerScripts", new String[] {
                     "/static/js/madtodo.js",
                     "/static/js/xhr.js",
                     "/static/js/user.js",
                     "/static/js/task.js"
-            }))
-            .setAttr("footerScripts", Arrays.asList(new String[] {
+            })
+            .setAttr("footerScripts", new String[] {
                     "/static/js/dashboard.js",
                     "/static/js/dialog.js"
-            }))
+            })
             .setAttr("user", user)
             .setAttr("isUserSet", true);
 
@@ -71,16 +68,16 @@ public class PageController extends MadController {
             this
             .setAttr("pageTitle", "Profile - MadToDo")
             .setAttr("isProfile", true)
-            .setAttr("headerScripts", Arrays.asList(new String[] {
+            .setAttr("headerScripts", new String[] {
                     "/static/js/madtodo.js",
                     "/static/js/xhr.js",
                     "/static/js/user.js",
                     "/static/js/task.js"
-            }))
-            .setAttr("footerScripts", Arrays.asList(new String[] {
+            })
+            .setAttr("footerScripts", new String[] {
                     "/static/js/profile.js",
                     "/static/js/dialog.js"
-            }))
+            })
             .setAttr("user", user)
             .setAttr("isUserSet", true);
 
@@ -100,25 +97,24 @@ public class PageController extends MadController {
             int userId = session.getInt("userId");
 
             if (filter.equals("all")) {
-                List<User> users = User.searchByUsername(keyword);
+                User[] users = User.searchByUsername(keyword);
+                Category[] cats = Category.searchByName(keyword, userId);
+                Task[] tasks = Task.searchByName(keyword);
+
                 setAttr("users", users);
-
-                List<Category> cats = Category.searchByName(keyword, userId);
                 setAttr("cats", cats);
-
-                List<Task> tasks = Task.searchByName(keyword);
                 setAttr("tasks", tasks);
             }
             else if (filter.equals("username")) {
-                List<User> users = User.searchByUsername(keyword);
+                User[] users = User.searchByUsername(keyword);
                 setAttr("users", users);
             }
             else if (filter.equals("category")) {
-                List<Category> cats = Category.searchByName(keyword, userId);
+                Category[] cats = Category.searchByName(keyword, userId);
                 setAttr("cats", cats);
             }
             else if (filter.equals("task")) {
-                List<Task> tasks = Task.searchByName(keyword);
+                Task[] tasks = Task.searchByName(keyword);
                 setAttr("tasks", tasks);
             }
             else {
@@ -131,15 +127,15 @@ public class PageController extends MadController {
             this
             .setAttr("pageTitle", "Search - MadToDo")
             .setAttr("isSearch", true)
-            .setAttr("headerScripts", Arrays.asList(new String[] {
+            .setAttr("headerScripts", new String[] {
                     "/static/js/madtodo.js",
                     "/static/js/xhr.js",
                     "/static/js/user.js",
                     "/static/js/task.js",
-            }))
-            .setAttr("footerScripts", Arrays.asList(new String[] {
+            })
+            .setAttr("footerScripts", new String[] {
                     "/static/js/search.js",
-            }))
+            })
             .setAttr("user", user)
             .setAttr("isUserSet", true)
             .setAttr("filter", filter)
@@ -164,9 +160,9 @@ public class PageController extends MadController {
     ////
     // url { /page/jeyesp }
     public void jeyesp() {
-        List<String> list = Arrays.asList(new String[] {
+        String[] list = new String[] {
                 "Foo", "Bar", "Qux"
-        });
+        };
 
         setAttr("title", "Jeyesp Test");
         setAttr("list", list);

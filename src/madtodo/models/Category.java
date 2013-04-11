@@ -3,7 +3,6 @@ package madtodo.models;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import madtodo.MadDB.PrepareFunction;
 import madtodo.MadModel;
@@ -28,7 +27,7 @@ public class Category extends MadModel {
                 rs.getInt("user_id"));
     }
 
-    public static List<Category> findAll() {
+    public static Category[] findAll() {
         String sql = "SELECT category.* FROM " + table;
 
         return findAll(sql, Category.class, null);
@@ -57,7 +56,7 @@ public class Category extends MadModel {
         });
     }
 
-    public static List<Category> searchByName(final String name, final int userId) {
+    public static Category[] searchByName(final String name, final int userId) {
         String sql = "SELECT category.* FROM " + table +
                 " WHERE category.name LIKE ? AND category.user_id = ?";
 

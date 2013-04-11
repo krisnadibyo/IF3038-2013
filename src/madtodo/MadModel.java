@@ -1,9 +1,10 @@
 package madtodo;
 
+import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import madtodo.MadDB.PrepareFunction;
@@ -16,8 +17,9 @@ public abstract class MadModel {
     abstract public void init(ResultSet rs) throws SQLException;
 
     // Generic base findAll() and findOne();
-    protected static<T extends MadModel> List<T> findAll(String sql, final Class<T> c, final PrepareFunction pf) {
-        final List<T> list = new ArrayList<T>();
+    @SuppressWarnings("unchecked")
+    protected static<T extends MadModel> T[] findAll(String sql, final Class<T> c, final PrepareFunction pf) {
+        final List<T> list = new LinkedList<T>();
 
         db.executeQuery(sql, new ResultSetFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {
@@ -40,14 +42,14 @@ public abstract class MadModel {
         });
 
         if (list.size() > 0) {
-            return list;
+            return list.toArray((T[]) Array.newInstance(c, list.size()));
         } else {
             return null;
         }
     }
 
     protected static<T extends MadModel> T findOne(String sql, final Class<T> c, final PrepareFunction pf) {
-        final List<T> list = new ArrayList<T>();
+        final List<T> list = new LinkedList<T>();
 
         db.executeQuery(sql, new ResultSetFunction() {
             public void prepare(PreparedStatement stmt) throws SQLException {
