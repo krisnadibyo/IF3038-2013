@@ -106,7 +106,7 @@ public abstract class MadController {
     }
 
     // Getters & setters
-    //// {[
+    // {[
     public HttpServletRequest getRequest() {
         return request;
     }
@@ -130,7 +130,7 @@ public abstract class MadController {
     public void setParams(List<String> params) {
         this.params = params;
     }
-    //// ]}
+    // ]}
 
     // Param getters
     protected String getParam(int index, String defaultValue) {

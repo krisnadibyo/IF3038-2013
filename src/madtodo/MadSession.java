@@ -55,7 +55,7 @@ public class MadSession {
         session.invalidate();
     }
 
-    //// {[
+    // {[
     public HttpSession getHttpSession() {
         return session;
     }
@@ -63,5 +63,5 @@ public class MadSession {
     public void setHttpSession(HttpSession session) {
         this.session = session;
     }
-    //// ]}
+    // ]}
 }

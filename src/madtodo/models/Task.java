@@ -145,7 +145,7 @@ public class Task extends MadModel {
         return sb.toString();
     }
 
-    //// {[
+    // {[
     public int getId() {
         return id;
     }
@@ -209,5 +209,5 @@ public class Task extends MadModel {
     public void setAssigneeId(int assigneeId) {
         this.assigneeId = assigneeId;
     }
-    //// ]}
+    // ]}
 }

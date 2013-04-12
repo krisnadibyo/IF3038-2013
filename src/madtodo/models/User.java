@@ -83,7 +83,7 @@ public class User extends MadModel {
         });
     }
 
-    //// {[
+    // {[
     public int getId() {
         return id;
     }
@@ -147,5 +147,5 @@ public class User extends MadModel {
     public void setBio(String bio) {
         this.bio = bio;
     }
-    //// ]}
+    // ]}
 }

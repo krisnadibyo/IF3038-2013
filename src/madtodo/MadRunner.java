@@ -96,7 +96,7 @@ public class MadRunner {
         t.join();
     }
 
-    //// Runner GUI
+    // Runner GUI
     private static class RunnerGUI extends JFrame {
         private static final long serialVersionUID = 1L;
 

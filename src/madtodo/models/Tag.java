@@ -67,7 +67,7 @@ public class Tag extends MadModel {
         });
     }
 
-    //// {[
+    // {[
     public int getId() {
         return id;
     }
@@ -83,5 +83,5 @@ public class Tag extends MadModel {
     public void setName(String name) {
         this.name = name;
     }
-    //// ]}
+    // ]}
 }

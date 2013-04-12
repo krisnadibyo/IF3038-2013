@@ -80,7 +80,7 @@ public class Category extends MadModel {
         });
     }
 
-    //// {[
+    // {[
     public int getId() {
         return id;
     }
@@ -104,5 +104,5 @@ public class Category extends MadModel {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-    //// ]}
+    // ]}
 }
