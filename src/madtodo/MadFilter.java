@@ -32,7 +32,7 @@ public class MadFilter implements Filter {
         String uri = xrequest.getRequestURI();
 
         // jsp files, servlets, /tests/, /static/, go ahead
-        if (uri.endsWith(".jsp")
+        if ((uri.endsWith(".jsp") && !uri.startsWith("/views/"))
                 || uri.startsWith("/tests/")
                 || uri.startsWith("/static/")
                 || isServlet(uri)) {
