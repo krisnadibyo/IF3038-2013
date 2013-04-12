@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<%@ page import="java.util.*" %>
 <%@ page import="madtodo.models.User" %>
 <%
 
 boolean isUserSet = request.getAttribute("isUserSet") != null;
 String pageTitle = (String) request.getAttribute("pageTitle");
 String[] headerScripts = (String[]) request.getAttribute("headerScripts");
+User user = (User) request.getAttribute("user");
 
 %>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -35,7 +35,6 @@ String[] headerScripts = (String[]) request.getAttribute("headerScripts");
 </div>
 
 <% if (isUserSet) { %>
-<% User user = (User) request.getAttribute("user"); %>
 <div id="extraHeader">
     <form id="searchBar">
         <input id="searchInput" type="text" placeholder="Search..." />
@@ -49,7 +48,7 @@ String[] headerScripts = (String[]) request.getAttribute("headerScripts");
             $id('searchBar').onsubmit = function(evt) {
                 evt.preventDefault();
                 window.open("/page/search/" + $id('searchFilter').val() + "/" + $id('searchInput').val(), "_self");
-            }
+            };
         </script>
     </form>
 

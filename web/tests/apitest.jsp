@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title>API Test</title>
@@ -32,7 +33,9 @@
         }
     </style>
 </head>
+
 <body>
+
     <form id="apiTestForm" action="javascript:;">
         <label>Method: </label>
         <select id="method">
@@ -68,7 +71,7 @@
             $id('fileobj').style.display = 'none';
             $id('data').style.display = 'inline';
         }
-    }
+    };
 
     $id('apiTestForm').onsubmit = function(e) {
         var method = $id('method').val();
@@ -93,7 +96,7 @@
                 callback: function(res) {
                     $id('responseBox').html(JSON.stringify(res, null, '  '));
                 }
-            })
+            });
         }
         else if (method == 'POST-X') {
             $.XHR.doUpload({
@@ -102,10 +105,10 @@
                 callback: function(res) {
                     $id('responseBox').html(JSON.stringify(res, null, '  '));
                 }
-            })
+            });
         }
         console.log(data);
-    }
+    };
 
 })(window);
 </script>

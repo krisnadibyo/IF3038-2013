@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <%@page import="java.util.Enumeration"%>
-<%@ page import="java.util.List" %>
 <%
 
 String[] list = (String[]) request.getAttribute("list");
@@ -24,7 +23,7 @@ String[] params = (String[]) request.getAttribute("params");
         }
         %>
     </ul>
-    
+
     <h3>params:</h3>
     <ul>
         <%
@@ -35,7 +34,7 @@ String[] params = (String[]) request.getAttribute("params");
         }
         %>
     </ul>
-    
+
     <h3>queries:</h3>
     <ul>
         <%

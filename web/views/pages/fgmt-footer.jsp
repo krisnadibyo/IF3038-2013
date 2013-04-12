@@ -1,4 +1,3 @@
-<%@ page import="java.util.*" %>
 <%
 
 boolean isDashboard = request.getAttribute("isDasboard") != null;
