@@ -26,9 +26,9 @@ User user = (User) request.getAttribute("user");
     <div>
         <div id="logo"><a href="/">MadToDo!</a></div>
         <ul id="topNav">
-            <li><a href="/page/profile">Profile</a></li>
-            <li><a href="/page/dashboard">Dashboard</a></li>
-            <li><a href="/">Home</a></li>
+            <li><a <%= (request.getAttribute("isProfile") != null) ? "class=\"current\"" : "" %> href="/page/profile">Profile</a></li>
+            <li><a <%= (request.getAttribute("isDashboard") != null) ? "class=\"current\"" : "" %> href="/page/dashboard">Dashboard</a></li>
+            <li><a <%= (request.getAttribute("isHome") != null) ? "class=\"current\"" : "" %> href="/">Home</a></li>
         </ul>
         <div class="clear"></div>
     </div>

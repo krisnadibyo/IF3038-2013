@@ -1,7 +1,7 @@
 <div id="editProfileForm" class="formDialog">
     <div>
-        <div dialogId="editProfileForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
-        <form dialogId="editProfileForm" action="javascript:;">
+        <div data-dialogId="editProfileForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
+        <form data-dialogId="editProfileForm" action="javascript:;">
             <h2>Edit Profile</h2>
             <div>
                 <label>Name:</label>

@@ -73,7 +73,7 @@
 
                 var html =
                 '<ul class="task">' +
-                    '<li taskId="' + task['id'] + '" taskNumber="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
+                    '<li data-taskId="' + task['id'] + '" data-taskNumber="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
                     '<li>Deadline: <strong>' + task['deadline'] + '</strong></li>' +
                     '<li>Assignee: ' + (task['assignee'] == undefined ? 'None' :  task['assignee']) + '</li>' +
                     '<li>Tags: ' + TaskHelper.getTagsStr(task) + '</li>' +
@@ -123,7 +123,7 @@
 
                 var html =
                 '<ul class="task">' +
-                    '<li taskId="' + task['id'] + '" taskNumber="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
+                    '<li data-taskId="' + task['id'] + '" data-taskNumber="' + i + '" class="taskName" onclick="viewTask(this)"><strong>' + (i + 1) + '. ' + task['name'] + '</strong></li>' +
                     '<li>Deadline: <strong>' + task['deadline'] + '</strong></li>' +
                     '<li>User: ' + task['user'] + '</li>' +
                     '<li>Assignee: ' + (task['assignee'] == undefined ? 'None' :  task['assignee']) + '</li>' +
@@ -428,7 +428,7 @@
 
         $id('taskEditSubmitButton').attr('disabled', 'true');
 
-        var tNum = e.attr('taskNumber');
+        var tNum = e.attr('data-taskNumber');
         var task = activeCategoryTasks[tNum];
 
         $id('ve_name').html(task['name']);
@@ -449,7 +449,7 @@
 
         $id('taskEditSubmitButton').onclick = function(evt) {
             alert('Not implemented yet.');
-            $.closeDialog($e.create('div').attr('dialogId', 'viewEditTaskForm'));
+            $.closeDialog($e.create('div').attr('data-dialogId', 'viewEditTaskForm'));
         };
     };
 

@@ -61,7 +61,7 @@ Task[] tasks = (Task[]) request.getAttribute("tasks");
             attachment = attachment == "none" ? "None" : attachment;
 
             %><ul class="task">
-                <li taskId="<%= task.getId() %>" taskNumber="<%= i++ %>" class="taskName" onclick="viewTask(this)">
+                <li data-taskId="<%= task.getId() %>" data-taskNumber="<%= i++ %>" class="taskName" onclick="viewTask(this)">
                     <strong><%= i %>. <%= task.getName() %></strong>
                 </li>
 

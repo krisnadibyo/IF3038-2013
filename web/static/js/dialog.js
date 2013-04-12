@@ -33,7 +33,7 @@
 
     $.closeDialog = function(e) {
         e = $e(e);
-        var dialog = $id(e.attr('dialogId'));
+        var dialog = $id(e.attr('data-dialogId'));
 
         $id('pageBlurrer').doTransition({
             opacity: '0'

@@ -1,12 +1,12 @@
 <!-- Dashboard Dialogs -->
 <div id="newTaskForm" class="formDialog">
     <div>
-        <div dialogId="newTaskForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
-        <form dialogId="newTaskForm" action="javascript:;">
+        <div data-dialogId="newTaskForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
+        <form data-dialogId="newTaskForm" action="javascript:;">
             <h2>New Task</h2>
-            <div><input type="text" id="ntask_owner" data-rule="owner" placeholder="Owner *" disabled="true"/></div>
+            <div><input type="text" id="ntask_owner" data-rule="owner" placeholder="Owner *" disabled="disabled"/></div>
             <div>
-                <select id="ntask_category" placeholder="Category">
+                <select id="ntask_category">
 
                 </select>
             </div>
@@ -31,10 +31,10 @@
 
 <div id="viewEditTaskForm" class="formDialog">
     <div>
-        <div dialogId="viewEditTaskForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
+        <div data-dialogId="viewEditTaskForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
     </div>
 
-    <form dialogId="newTaskForm" action="javascript:;">
+    <form data-dialogId="newTaskForm" action="javascript:;">
         <h2 id="ve_name">Task Name</h2>
 
         <div id="ve_attachment"></div>
@@ -48,15 +48,15 @@
 
         <div>
             <button type="button" id="taskEditButton">Edit</button>
-            <button type="submit" id="taskEditSubmitButton" disabled="true">Save Editing</button>
+            <button type="submit" id="taskEditSubmitButton" disabled="disabled">Save Editing</button>
         </div>
     </form>
 </div>
 
 <div id="newCategoryForm" class="formDialog">
     <div>
-        <div dialogId="newCategoryForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
-        <form dialogId="newCategoryForm" action="javascript:;" onsubmit="newCategorySubmitted(this)">
+        <div data-dialogId="newCategoryForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
+        <form data-dialogId="newCategoryForm" action="javascript:;" onsubmit="newCategorySubmitted(this)">
             <input id="newCategoryName" type="text" placeholder="Enter new category name..." />
             <button type="submit">Create</button>
         </form>
@@ -65,8 +65,8 @@
 
 <div id="deleteCategoryForm" class="formDialog">
     <div>
-        <div dialogId="deleteCategoryForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
-        <form dialogId="deleteCategoryForm" action="javascript:;" onsubmit="deleteCategorySubmitted(this)">
+        <div data-dialogId="deleteCategoryForm" class="dialogCloseBox" onclick="closeDialog(this)">X</div>
+        <form data-dialogId="deleteCategoryForm" action="javascript:;" onsubmit="deleteCategorySubmitted(this)">
             <select id="deleteCategoryName"></select><br />
             <button type="submit">Delete</button>
         </form>
