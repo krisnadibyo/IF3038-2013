@@ -33,6 +33,18 @@ public class Category extends MadModel {
         return findAll(sql, Category.class, null);
     }
 
+    public static Category[] findAllByUser(final String username) {
+        String sql = "SELECT category.* FROM " + table +
+                " LEFT JOIN " + User.table + " ON (category.user_id = user.id)" +
+                " WHERE user.username = ? ORDER BY category.name";
+
+        return findAll(sql, Category.class, new PrepareFunction() {
+            public void prepare(PreparedStatement stmt) throws SQLException {
+                stmt.setString(1, username);
+            }
+        });
+    }
+
     public static Category findById(final int id) {
         String sql = "SELECT category.* FROM " + table +
                 " WHERE category.id = ?";
