@@ -6,8 +6,9 @@ import madtodo.models.Task;
 import madtodo.models.User;
 
 public class PageController extends MadController {
-    ////
-    // url { / }
+    /**
+     * url: /
+     */
     @Override
     public void index() {
         if (session.isLoggedIn()) {
@@ -29,8 +30,9 @@ public class PageController extends MadController {
         }
     }
 
-    ////
-    // url { /page/dashboard }
+    /**
+     * url: /page/dashboard
+     */
     public void dashboard() {
         if (!session.isLoggedIn()) {
             sendRedirect("/");
@@ -57,8 +59,9 @@ public class PageController extends MadController {
         }
     }
 
-    ////
-    // url { /page/profile }
+    /**
+     * url: /page/profile
+     */
     public void profile() {
         if (!session.isLoggedIn()) {
             sendRedirect("/");
@@ -85,8 +88,9 @@ public class PageController extends MadController {
         }
     }
 
-    ////
-    // url { /page/search/:filter/:keyword }
+    /**
+     * url: /page/search/:filter/[:keyword]
+     */
     public void search() {
         final String filter = getParam(0, null);
         final String keyword = getParam(1, "");
@@ -145,8 +149,9 @@ public class PageController extends MadController {
         }
     }
 
-    ////
-    // url { /page/logout
+    /**
+     * url: /page/logout
+     */
     public void logout() {
         if (session.isLoggedIn()) {
             session.logout();
@@ -157,12 +162,12 @@ public class PageController extends MadController {
 
     // For testing purpose:
 
-    ////
-    // url { /page/jeyesp }
+    /**
+     * url: /page/jeyesp
+     */
     public void jeyesp() {
         String[] list = new String[] {
-                "Foo", "Bar", "Qux"
-        };
+                "Foo", "Bar", "Qux" };
 
         setAttr("title", "Jeyesp Test");
         setAttr("list", list);

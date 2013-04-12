@@ -8,15 +8,17 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public class AuthController extends MadController {
-    ////
-    // url { /auth }
+    /**
+     * url: /auth
+     */
     @Override
     public void index() {
         print404();
     }
 
-    ////
-    // url { /auth/login }
+    /**
+     * url: /auth/login
+     */
     public void login() {
         if (!isCheckPass()) {
             printFailed();
@@ -48,8 +50,9 @@ public class AuthController extends MadController {
         }
     }
 
-    ////
-    // url { /auth/logout }
+    /**
+     * url: /auth/logout
+     */
     public void logout() {
         if (session.isLoggedIn()) {
             session.logout();

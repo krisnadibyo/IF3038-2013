@@ -3,39 +3,41 @@ package madtodo.controllers;
 import madtodo.MadController;
 import madtodo.models.User;
 
-public class UserController extends MadController
-{
-    ////
-    // url { /user }
+public class UserController extends MadController {
     @Override
     public void index() {
         print404();
     }
 
-    ////
-    // url { /user/get }
     /**
+     * url: /user/get
      * Get logged user
      */
     public void get() {
         User user = User.findById(session.getInt("userId"));
-
-        // TODO
+        if (user == null) {
+            print404();
+        } else {
+            // TODO
+        }
     }
 
-    ////
-    // url { /user/hint/:username }
+    /**
+     * url: /user/hint/:username
+     */
     public void hint() {
         String username = getParam(0, "");
 
         User[] user = User.searchByUsername(username);
-
-        // TODO
+        if (user == null) {
+            print404();
+        } else {
+            // TODO
+        }
     }
 
-    ////
-    // url { /user/getid/:username }
     /**
+     * url: /user/getid/:username
      * Retrieve the userId of specified user found by username
      */
     public void getid() {
@@ -54,32 +56,38 @@ public class UserController extends MadController
         }
     }
 
-    ////
-    // url { /user/edit }
+    /**
+     * url: (POST) /user/edit
+     */
     public void edit() {
         // TODO
     }
 
-    ////
-    // url { /user/register }
+    /**
+     * url: (POST) /user/register
+     */
     public void register() {
         // TODO
     }
 
-    ////
-    // Magic functions
-    ////
+    /* Magic functions */
 
-    ////
-    // url { /user/all }
+    /**
+     * url: /user/all
+     */
     public void all() {
         User[] users = User.findAll();
 
-        // TODO
+        if (users == null) {
+            print404();
+        } else {
+            // TODO
+        }
     }
 
-    ////
-    // url { /user/delete/:username }
+    /**
+     * url: (POST) /user/delete/:username
+     */
     public void delete() {
         String username = getParam(0);
 

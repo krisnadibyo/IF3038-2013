@@ -5,6 +5,9 @@ import madtodo.MadController;
 import org.json.JSONObject;
 
 public class FooController extends MadController {
+    /**
+     * url: /foo/hello
+     */
     public void hello() {
         String firstParam = getParam(0);
         String secondParam = getParam(1);
@@ -25,6 +28,9 @@ public class FooController extends MadController {
         }
     }
 
+    /**
+     * url: /foo/method
+     */
     public void method() {
         JSONObject json = new JSONObject()
         .put("method", request.getMethod());
