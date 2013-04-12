@@ -2,6 +2,7 @@ package madtodo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -90,6 +91,18 @@ public abstract class MadController {
     // Helper
     public String md5sum(String str) {
         return MD5.digest(str).substring(4);
+    }
+
+    public String urlDecode(String url) {
+        String dUrl = url;
+
+        try {
+            dUrl = URLDecoder.decode(url, "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dUrl;
     }
 
     // Getters & setters
