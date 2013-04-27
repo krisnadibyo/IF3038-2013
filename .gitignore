@@ -2,5 +2,7 @@ build/
 *.~
 *~
 *.swp
+*.project
 config.json
 madtodo.jar
+manifest.yml
