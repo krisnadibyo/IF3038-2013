@@ -4,3 +4,5 @@
 config/config.php
 config/db.php
 static/uploads/*
+.project
+manifest.yml
