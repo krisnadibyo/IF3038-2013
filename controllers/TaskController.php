@@ -35,12 +35,7 @@ class TaskController extends Controller
     {
         $tasks = Task::getAll(array(
             'where' => array(
-                array('name', 'LIKE', '%' . $name . '%'),
-                'AND (',
-                array('user_id', '=', $this->userId),
-                'OR',
-                array('assignee_id', '=', $this->userId),
-                ')',
+                array('name', 'LIKE', '%' . $name . '%')
             ),
         ));
 
@@ -61,12 +56,7 @@ class TaskController extends Controller
 
         $tasks = Task::getAll(array(
             'where' => array(
-                array('name', 'LIKE', $name . '%'),
-                'AND (',
-                array('user_id', '=', $this->userId),
-                'OR',
-                array('assignee_id', '=', $this->userId),
-                ')',
+                array('name', 'LIKE', $name . '%')
             ),
         ));
 
@@ -79,10 +69,15 @@ class TaskController extends Controller
         return $this->response->renderJson($hints);
     }
 
-    // GET /task/category/<category_name>/[<complete>]
+    // GET /task/category/<category_name>/[<complete>][?userId=<userId>]
     public function category($category='Uncategorized', $complete=false)
     {
-        $tasks = Task::getByCategoryName($category, $this->userId);
+    	$userId = $this->request->getParam("userId");
+		if($userId != null) {
+			$userId = $this->userId;
+		}
+		
+        $tasks = Task::getByCategoryName($category, $userId);
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
@@ -130,10 +125,15 @@ class TaskController extends Controller
         return $this->response->renderJson($tasks, true);
     }
 
-    // GET /task/tag/<tag_name>/[<complete>]
+    // GET /task/tag/<tag_name>/[<complete>][?userId=<userId>]
     public function tag($tagname='', $complete=false)
     {
-        $tasks = Task::getByTag($tagname, $this->userId);
+    	$userId = $this->request->getParam("userId");
+		if($userId != null) {
+			$userId = $this->userId;
+		}
+		
+        $tasks = Task::getByTag($tagname, $userId);
 
         if ($complete && $tasks != null) {
             foreach ($tasks as $task) {
@@ -145,7 +145,7 @@ class TaskController extends Controller
     }
 
 
-    // GET /task/get/<id>/[<complete>]
+    // GET /task/get/<task_id>/[<complete>]
     public function get($id=0, $complete=false)
     {
         if (!$task = Task::getOneById($id)) {
@@ -171,7 +171,7 @@ class TaskController extends Controller
         return $this->response->renderJson(array('status' => 'success'));
     }
 
-    // POST /task/done/<task_id>
+    // POST /task/undone/<task_id>
     public function undone($id=0)
     {
         if (!$this->_isPOST() || !$task = Task::getOneById($id)) {
@@ -203,7 +203,7 @@ class TaskController extends Controller
         return $this->response->renderJson(array('status' => 'success', 'id' => $task->get_id()));
     }
 
-    // POST /task/edit/<id> + JSON data
+    // POST /task/edit/<task_id> + JSON data
     public function edit($id=0)
     {
         $taskData = null;
@@ -227,7 +227,7 @@ class TaskController extends Controller
         return $this->response->renderJson(array('status' => 'success'));
     }
 
-    // POST /task/delete/<id>
+    // POST /task/delete/<task_id>
     public function delete($id=0)
     {
         if (!$this->_isPOST() || !$task = Task::getOneById($id)) {

@@ -14,7 +14,7 @@ class UploadController extends Controller
         }
     }
 
-    // POST /upload/test + multipart data
+    // POST /upload/test + multipart data (fileobj)
     public function test()
     {
         if (!$this->_isPOST()) {
@@ -35,7 +35,7 @@ class UploadController extends Controller
         ));
     }
 
-    // POST /upload/avatar/<username> + multipart data
+    // POST /upload/avatar/<username> + multipart data (fileobj)
     public function avatar($username=null)
     {
         if (!$this->_isPOST() || !$username || !isset($_FILES['fileobj'])) {
@@ -57,7 +57,7 @@ class UploadController extends Controller
         ));
     }
 
-    // POST /upload/attachment/<task_id> + multipart data
+    // POST /upload/attachment/<task_id> + multipart data (fileobj)
     public function attachment()
     {
         if (!$this->_isPOST() ||  !isset($_FILES['fileobj'])) {
