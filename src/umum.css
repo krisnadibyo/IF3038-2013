@@ -1,0 +1,71 @@
+/*
+.bghijau1 {background-color: #A3FFA3;}
+.bghijau2 {background-color: #66FF66;}
+.bghijau3 {background-color: #52CC52;}
+.bghijau4 {background-color: #33CC33;}
+/**/
+
+@font-face
+{
+    font-family: coolvet;
+    src: url('fonts/coolvetica.ttf');
+}
+
+
+.bghijau1 {background-color: #999;}
+.bghijau2 {background-color: #CCC;}
+.bghijau3 {background-color: #bbb;}
+.bghijau4 {background-color: #CCC;}
+
+.twarna1 {color: #000;}
+.twarna2 {color: #000;}
+.twarna3 {color: #000;}
+.twarna4 {color: #000;}
+
+.font1 {
+    font-family: coolvet,arial black;
+}
+.font2 {
+    font-family: verdana;
+}
+.fsize1 {
+    font-size: 60;
+}
+
+.borderradius{
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius: 5px;
+}
+
+.mepet {
+    position: relative;
+    display: inline-block;
+}
+.vishidden {
+    visibility: hidden;
+}
+div.disnone {
+    display: none;   
+}
+.pad10 {
+    padding: 10 0 10 0;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+}
+body {
+    width: 100%;
+    height: 100%;
+}
+
+input:hover {
+    -webkit-box-shadow: 
+      inset 0 0 10px  rgba(0,0,0,0.5); 
+    -moz-box-shadow: 
+      inset 0 0 10px  rgba(0,0,0,0.5); 
+    box-shadow: 
+      inset 0 0 10px  rgba(0,0,0,0.5);
+}
