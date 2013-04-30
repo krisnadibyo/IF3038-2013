@@ -43,11 +43,14 @@ class CategoryController extends Controller
         return $this->response->renderJson($cat);
     }
 
-    // GET /category/user/[<username>]
+    // GET /category/user/[<username>][?username=<username>]
     public function user($username='')
     {
         if ($username === '') {
-            $username = $this->username;
+            $username = $this->request->getParam("username");
+			if($this->username != null) {
+				$username = $this->username;
+			}
         } else {
             $username = $username;
         }
